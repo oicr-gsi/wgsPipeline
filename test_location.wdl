@@ -14,6 +14,14 @@ task find_tools {
         echo "@@@@@@@@@@@@@@@@"
         ls $HTSLIB_ROOT
         echo "@@@@@@@@@@@@@@@@"
+        ls $BAM_QC_METRICS_ROOT
+        echo "@@@@@@@@@@@@@@@@"
+        ls $VCF2MAF_ROOT
+        echo "@@@@@@@@@@@@@@@@"
+        ls $SEQUENZA_RES_ROOT
+        echo "@@@@@@@@@@@@@@@@"
+        ls $BARCODEX_ROOT
+        echo "@@@@@@@@@@@@@@@@"
 
         echo $PATH
         echo "################"
@@ -30,7 +38,7 @@ task find_tools {
         String message = read_string(stdout())
     }
     runtime {
-        docker: "g3chen/starfusion:2.0"
-        modules: "star-fusion/1.8.1"
+        docker: "g3chen/wgspipeline@sha256:05d3b337cdb4bfd413d9835c6f8b1989bcdf9ef4227b8bff2cb738492a835580"
+        modules: "star-fusion/1.8.1 bam-qc-metrics/0.2.5 vcf2maf/1.6.17 sequenza-res/2.1.2 barcodex/1.0.5"
     }
 }
