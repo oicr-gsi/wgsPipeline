@@ -21,7 +21,7 @@ workflow wgsPipeline {
   }
   meta {
     author: "Fenglin Chen"
-    description: "Workflow to produce FASTQ files from an Illumina instrument's run directory"
+    description: "Workflow to wrap the WGS Analysis Pipeline"
     dependencies: [{
       name: "bcl2fastq",
       url: "https://emea.support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software.html"
