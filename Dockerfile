@@ -28,6 +28,9 @@ RUN ./build-local-code /modulator/code/gsi/recipe_main.yaml --initsh /usr/share/
 
 # add final batch of modules here
 
+# install required packages
+RUN apt-get -m update && apt-get install -y gzip zip unzip
+
 # add the user
 RUN groupadd -r -g 1000 ubuntu && useradd -r -g ubuntu -u 1000 ubuntu
 USER ubuntu
