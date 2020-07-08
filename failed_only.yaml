@@ -4,7 +4,7 @@
   hidden: true
   build_type: copy
   build_args:
-    from: faSplit-20200114T16_09
+    from: /build_files/faSplit-20200114T16_09
     to: "bin/faSplit"
 
 # bcftools/1.9
@@ -34,7 +34,7 @@
   version: 0
   build_type: copy
   build_args:
-    from: vep_hg19_filter_somaticsites.sh
+    from: /build_files/vep_hg19_filter_somaticsites.sh
     to: bin/vep_hg19_filter_somaticsites
   depends:
     - name: bcftools

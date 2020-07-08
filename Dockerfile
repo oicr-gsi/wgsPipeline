@@ -20,6 +20,8 @@ RUN apt-get -m update && apt-get install -y rpm2cpio cpio
 # COPY wgs_pipeline_recipe_main.yaml /modulator/code/gsi/recipe_main.yaml
 COPY failed_only.yaml /modulator/code/gsi/recipe_main.yaml
 
+COPY faSplit-20200114T16_09 /build_files/faSplit-20200114T16_09
+COPY vep_hg19_filter_somaticsites.sh /build_files/vep_hg19_filter_somaticsites.sh
 COPY GenomeAnalysisTK.jar /build_files/GenomeAnalysisTK.jar
 COPY bcl2fastq2-v2.20.0.422-Linux-x86_64.rpm /build_files/bcl2fastq2-v2.20.0.422-Linux-x86_64.rpm
 COPY bcl2fastq2-v2.18.0.12-Linux-x86_64.rpm /build_files/bcl2fastq2-v2.18.0.12-Linux-x86_64.rpm
