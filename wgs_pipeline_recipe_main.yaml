@@ -812,10 +812,8 @@
   hidden: true
   build_type: copy
   build_args:
-    prereq_args:
-        sha256: 0d05bb505d9ff8a6f1dfb3fb0b6756b7ed0c284cb95c5a1061c1a4027f04fa11
-        file: ucsc-tools/faSplit-20200114T16:09
-    prereq_type: archive
+    sha256: 0d05bb505d9ff8a6f1dfb3fb0b6756b7ed0c284cb95c5a1061c1a4027f04fa11
+    from: faSplit-20200114T16:09
     to: "bin/faSplit"
 
 # vep-hg19-filter-somaticsites/0
@@ -823,10 +821,8 @@
   version: 0
   build_type: copy
   build_args:
-    prereq_type: archive
-    prereq_args:
-      md5: ab5b200f64ba64a268669e8e8575c2d7
-      file: vep/vep_hg19_filter_somaticsites.sh
+    sha256: 0f8a0f3dc0ee2d9609c4375f0b71530bd47ae23ae6b5876da01921e0c382927a
+    from: vep_hg19_filter_somaticsites.sh
     to: bin/vep_hg19_filter_somaticsites
   depends:
     - name: bcftools
