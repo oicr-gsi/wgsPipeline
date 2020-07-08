@@ -17,7 +17,9 @@ RUN ./build-local-code /modulator/code/gsi/recipe_basic.yaml --initsh /usr/share
 RUN apt-get -m update && apt-get install -y rpm2cpio cpio
 
 # second copy and build layer for the next batch of modules
-COPY wgs_pipeline_recipe_main.yaml /modulator/code/gsi/recipe_main.yaml
+# COPY wgs_pipeline_recipe_main.yaml /modulator/code/gsi/recipe_main.yaml
+COPY failed_only.yaml /modulator/code/gsi/recipe_main.yaml
+
 COPY GenomeAnalysisTK.jar /build_files/GenomeAnalysisTK.jar
 COPY bcl2fastq2-v2.20.0.422-Linux-x86_64.rpm /build_files/bcl2fastq2-v2.20.0.422-Linux-x86_64.rpm
 COPY bcl2fastq2-v2.18.0.12-Linux-x86_64.rpm /build_files/bcl2fastq2-v2.18.0.12-Linux-x86_64.rpm
