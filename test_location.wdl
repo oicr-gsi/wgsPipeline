@@ -18,6 +18,6 @@ task find_tools {
     }
     runtime {
         docker: "g3chen/wgspipeline@sha256:c1a2f1842f5e51df5ac5b6cda552b6151f945fd9c6f8388135bf83095e65f57c"
-        modules: "fasplit/1.0 vep-hg19-filter-somaticsites/0 rsem/1.3.0"
+        modules: "fasplit/1.0 vep-hg19-filter-somaticsites/0 rsem/1.3.0 tabix/1.9"
     }
 }
