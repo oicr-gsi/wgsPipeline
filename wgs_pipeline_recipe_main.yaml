@@ -812,8 +812,7 @@
   hidden: true
   build_type: copy
   build_args:
-    sha256: 0d05bb505d9ff8a6f1dfb3fb0b6756b7ed0c284cb95c5a1061c1a4027f04fa11
-    from: faSplit-20200114T16:09
+    from: /build_files/faSplit-20200114T16_09
     to: "bin/faSplit"
 
 # vep-hg19-filter-somaticsites/0
@@ -821,8 +820,7 @@
   version: 0
   build_type: copy
   build_args:
-    sha256: 0f8a0f3dc0ee2d9609c4375f0b71530bd47ae23ae6b5876da01921e0c382927a
-    from: vep_hg19_filter_somaticsites.sh
+    from: /build_files/vep_hg19_filter_somaticsites.sh
     to: bin/vep_hg19_filter_somaticsites
   depends:
     - name: bcftools
