@@ -379,6 +379,28 @@
     - name: java
       version: 8
 
+# rsem/1.3.0
+- name: rsem
+  version: 1.3.0
+  build_type: make
+  build_args:
+    prereq_type: git
+    prereq_args:
+      url: https://github.com/deweylab/RSEM.git
+      tag: v1.3.0
+  depends:
+  - name: bowtie
+    version: 1.2.2
+    required_at: soft_runtime
+  - name: python
+    version: 3.6
+  - name: rstats
+    version: 3.6
+  - name: bioconductor
+    version: 3.8-rstats3.6
+  - name: perl
+    version: "5.30"
+
 # rsem/1.3.3
 - name: rsem
   version: 1.3.3
@@ -702,26 +724,6 @@
     - name: tabix
       version: 0.2.6 
 
-# sequenza-res/2.1.2
-- name: sequenza-res
-  version: 2.1.2
-  build_type: custom
-  build_args:
-    prereq_type: download
-    prereq_args:
-      sha256: b6604cf111849db6997c4ab0fc618f233fd63fc87a6381491470dfa6b1243bdc
-      url: http://api.gdc.cancer.gov/data/dea893cd-9189-4091-9611-e761a1d31ebe
-    steps:
-      - command: [ "Rscript", "{sequenza-scripts_root}/bin/Generate_plody_priors_table.R", "download" ]
-      - command: [ "cp", "PANCAN_ASCAT_ploidy_prob.Rdata", "{output_dir}/" ]
-  depends:
-    - name: sequenza-scripts
-      version: 2.1.2
-      required_at: build
-    - name: rstats
-      version: 3.6
-      required_at: build
-
 # bcl2fastq/2.20.0.422
 - name: bcl2fastq
   version: 2.20.0.422
@@ -803,3 +805,31 @@
   depends: 
     - name: python 
       version: 3.6
+
+# fasplit/1.0
+- name: fasplit
+  version: 1.0
+  hidden: true
+  build_type: copy
+  build_args:
+    prereq_args:
+        sha256: 0d05bb505d9ff8a6f1dfb3fb0b6756b7ed0c284cb95c5a1061c1a4027f04fa11
+        file: ucsc-tools/faSplit-20200114T16:09
+    prereq_type: archive
+    to: "bin/faSplit"
+
+# vep-hg19-filter-somaticsites/0
+- name: vep-hg19-filter-somaticsites
+  version: 0
+  build_type: copy
+  build_args:
+    prereq_type: archive
+    prereq_args:
+      md5: ab5b200f64ba64a268669e8e8575c2d7
+      file: vep/vep_hg19_filter_somaticsites.sh
+    to: bin/vep_hg19_filter_somaticsites
+  depends:
+    - name: bcftools
+      version: 1.9
+    - name: tabix
+      version: 1.9

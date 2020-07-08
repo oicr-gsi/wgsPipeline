@@ -31,6 +31,14 @@
     - name: libbz2-dev
     - name: liblzma-dev
 
+# tabix/1.9
+- name: tabix
+  version: 1.9
+  build_type: aggregate
+  depends:
+    - name: htslib
+      version: 1.9
+
 # tabix/0.2.6
 - name: tabix
   version: 0.2.6
