@@ -3,7 +3,7 @@
   version: p13
   build_type: custom
   build_args:
-    prereq_type: extract
+    prereq_type: extract_file
     prereq_args:
       output_name: hg19.fa
       prereq_type: download
