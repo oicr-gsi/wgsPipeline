@@ -35,11 +35,7 @@ RUN ./build-local-code /modulator/code/gsi/recipe_main.yaml --initsh /usr/share/
 # install required packages
 RUN apt-get -m update && apt-get install -y gzip zip unzip
 
-# add the user
-RUN groupadd -r -g 1000 ubuntu && useradd -r -g ubuntu -u 1000 ubuntu
-USER ubuntu
-
 # copy the setup file to load the modules at startup
-COPY .bashrc /home/ubuntu/.bashrc
+COPY .bashrc /root/.bashrc
 
 CMD /bin/bash
