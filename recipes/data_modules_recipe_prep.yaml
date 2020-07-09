@@ -280,10 +280,126 @@
   version: 0
   build_type: copy
   build_args:
-    from: /build_files/vep_hg19_filter_somaticsites.sh
+    from: /pipeline/build_files/vep_hg19_filter_somaticsites.sh
     to: bin/vep_hg19_filter_somaticsites
   depends:
     - name: bcftools
       version: 1.9
     - name: tabix
       version: 1.9
+
+# fasplit/1.0
+- name: fasplit
+  version: 1.0
+  hidden: true
+  build_type: copy
+  build_args:
+    from: /pipeline/build_files/faSplit-20200114T16_09
+    to: "bin/faSplit"
+
+# java/8
+- name: java
+  version: 8
+  build_type: extract
+  build_args:
+    prereq_args:
+      sha256: 4ee3b37cb70fe1dbfad0ef449fe2c5fec43d81bd37ef0a65ec9f65afac190b4f
+      url: https://github.com/AdoptOpenJDK/openjdk8-upstream-binaries/releases/download/jdk8u222-b10/OpenJDK8U-jdk_x64_linux_8u222b10.tar.gz
+    prereq_type: download
+  system_depends:
+    - name: libfontconfig1-dev
+
+# picard/2.19.2
+- name: picard
+  version: 2.19.2
+  build_type: copy
+  build_args:
+    prereq_args:
+      sha256: 2b27f3c19529bfa9b1120b9a149b7b2a5ddf0832b1a9011dc803a80779b8ca35
+      url: https://github.com/broadinstitute/picard/releases/download/2.19.2/picard.jar
+    prereq_type: download
+    to: 'picard.jar'
+  depends:
+    - name: java
+      version: 8
+
+# bwa/0.7.12
+- name: bwa
+  version: 0.7.12
+  build_type: custom
+  build_args:
+    prereq_args:
+      prereq_args:
+        sha256: 285f55b7fa1f9e873eda9a9b06752378a799ecdecbc886bbd9ba238045bf62e0
+        url: https://github.com/lh3/bwa/archive/0.7.12.tar.gz
+      prereq_type: download
+    prereq_type: extract
+    steps:
+      - command:
+        - make
+      - command:
+        - install
+        - -Dm750
+        - bwa
+        - '{output_dir}/bin/bwa'
+      - command:
+        - install
+        - -Dm750
+        - qualfa2fq.pl
+        - '{output_dir}/bin/qualfa2fq'
+      - command:
+        - install
+        - -Dm750
+        - xa2multi.pl
+        - '{output_dir}/bin/xa2multi'
+
+# bwa/0.7.17
+- name: bwa
+  version: 0.7.17
+  build_type: custom
+  build_args:
+    prereq_args:
+      prereq_args:
+        sha256: de1b4d4e745c0b7fc3e107b5155a51ac063011d33a5d82696331ecf4bed8d0fd
+        url: https://github.com/lh3/bwa/releases/download/v0.7.17/bwa-0.7.17.tar.bz2
+      prereq_type: download
+    prereq_type: extract
+    steps:
+      - command:
+        - make
+      - command:
+        - install
+        - -Dm750
+        - bwa
+        - '{output_dir}/bin/bwa'
+      - command:
+        - install
+        - -Dm750
+        - qualfa2fq.pl
+        - '{output_dir}/bin/qualfa2fq'
+      - command:
+        - install
+        - -Dm750
+        - xa2multi.pl
+        - '{output_dir}/bin/xa2multi'
+
+# star/2.7.3a
+- name: star
+  version: 2.7.3a
+  build_type: custom
+  build_args:
+    prereq_args:
+      prereq_args:
+        sha256: de204175351dc5f5ecc40cf458f224617654bdb8e00df55f0bb03a5727bf26f9
+        url: https://github.com/alexdobin/STAR/archive/2.7.3a.tar.gz
+      prereq_type: download
+    prereq_type: extract
+    steps:
+      - build_type: copy
+        build_args:
+         from: bin/Linux_x86_64_static/STAR
+         to: "bin/STAR"
+      - build_type: copy
+        build_args:
+         from: bin/Linux_x86_64_static/STARlong
+         to: "bin/STARlong"
