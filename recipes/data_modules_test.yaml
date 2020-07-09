@@ -11,12 +11,10 @@
         sha256: ac73947d38df63ccb00724520a5c31d880c1ca423702ca7ccb7e6c2182a362d9
         url: file:/data/data_files/hg19-20180821T12:56.fa.gz
     steps:
-      - build_type: custom
+      - build_type: download
         build_args:
-          prereq_type: download
-          prereq_args:
-            sha256: b404927655a4aada254ea94ad4da0c8901ed0737e67a0dcabedf673354b1f505
-            url: file:/data/data_files/hg19-20090308T14:56.chrom.sizes
+          sha256: b404927655a4aada254ea94ad4da0c8901ed0737e67a0dcabedf673354b1f505
+          url: file:/data/data_files/hg19-20090308T14:56.chrom.sizes
       - command:
           - /bin/bash
           - -c
