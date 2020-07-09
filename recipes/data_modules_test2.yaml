@@ -1,0 +1,20 @@
+# hg19-dbsnp-leftaligned/138
+- name: hg19-dbsnp-leftaligned
+  version: 138
+  build_type: custom
+  build_args:
+    steps:
+      - build_type: copy
+        build_args:
+          to: 'dbsnp_138.hg19.leftAligned.vcf.gz'
+          prereq_type: archive
+          prereq_args:
+            sha256: 4b7f98573ad23039b775648193f6bc33bbfe60d6a45906547a2d1d60be44dd5d
+            file: dbSNP/hg19_random/dbsnp_138.hg19.leftAligned.vcf.gz
+      - build_type: copy
+        build_args:
+          to: 'dbsnp_138.hg19.leftAligned.vcf.gz.tbi'
+          prereq_type: archive
+          prereq_args:
+            sha256: f44d09a135d691be9da500254167e85ea11137f215a45bf1bab0f0c5b8b7276b
+            file: dbSNP/hg19_random/dbsnp_138.hg19.leftAligned.vcf.gz.tbi 
