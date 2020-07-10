@@ -4,13 +4,15 @@
   build_type: custom
   build_args:
     steps:
-      - build_type: extract_file
-        build_args:
-          output_name: hg19.fa
-          prereq_type: archive
+      - build_type: custom
+        build_args:  
+          prereq_type: extract_file
           prereq_args:
-            sha256: ac73947d38df63ccb00724520a5c31d880c1ca423702ca7ccb7e6c2182a362d9
-            file: ucsc-goldenpath/hg19-20180821T12:56.fa.gz
+            output_name: hg19.fa
+            prereq_type: archive
+            prereq_args:
+              sha256: ac73947d38df63ccb00724520a5c31d880c1ca423702ca7ccb7e6c2182a362d9
+              file: ucsc-goldenpath/hg19-20180821T12:56.fa.gz
       - build_type: custom
         build_args:
           prereq_type: archive
