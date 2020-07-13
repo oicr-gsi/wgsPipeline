@@ -22,6 +22,6 @@ task find_tools {
         String message = read_string(stdout())
     }
     runtime {
-        docker: "g3chen/wgspipeline@sha256:c1a2f1842f5e51df5ac5b6cda552b6151f945fd9c6f8388135bf83095e65f57c /bin/bash -c 'source /home/ubuntu/.bashrc; ${\"module load \" + modules + \" || exit 1; \"} /bin/bash"
+        docker: "g3chen/wgspipeline@sha256:c1a2f1842f5e51df5ac5b6cda552b6151f945fd9c6f8388135bf83095e65f57c /bin/bash -c 'source /home/ubuntu/.bashrc; module load ${modules} || exit 1; /bin/bash '"
     }
 }
