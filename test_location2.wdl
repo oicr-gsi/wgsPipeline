@@ -1,3 +1,5 @@
+version 1.0
+
 workflow test_location {
     call find_tools
 }
@@ -16,7 +18,7 @@ task find_tools {
         ls $VEP_HG19_FILTER_SOMATICSITES_ROOT
         echo "@@@@@@@@@@@@@@@@"
     }
-    output{
+    output {
         String message = read_string(stdout())
     }
     runtime {
