@@ -6,9 +6,12 @@ workflow test_location {
 
 task find_tools {
     input {
-        String modules = "fasplit/1.0 vep-hg19-filter-somaticsites/0 rsem/1.3.0 tabix/1.9 aweiurh/4"
+        String modules = "fasplit/1.0 vep-hg19-filter-somaticsites/0 rsem/1.3.0 tabix/1.9"
     }
     command <<<
+        source /home/ubuntu/.bashrc 
+        ~{"module load " + modules + " || exit 20; "} 
+
         ls $FASPLIT_ROOT
         echo "@@@@@@@@@@@@@@@@"
         ls $TABIX_ROOT
