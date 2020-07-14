@@ -22,7 +22,7 @@ task find_tools {
         String message = read_string(stdout())
     }
     runtime {
-        docker: "g3chen/wgspipeline@sha256:c1a2f1842f5e51df5ac5b6cda552b6151f945fd9c6f8388135bf83095e65f57c"
+        docker: "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d"
     }
 }
 
