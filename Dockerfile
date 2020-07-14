@@ -38,4 +38,11 @@ RUN apt-get -m update && apt-get install -y gzip zip unzip
 # copy the setup file to load the modules at startup
 COPY .bashrc /root/.bashrc
 
+# add the user
+RUN groupadd -r -g 1000 ubuntu && useradd -r -g ubuntu -u 1000 ubuntu
+USER ubuntu
+
+# copy the setup file to load the modules at startup
+COPY .bashrc /home/ubuntu/.bashrc
+
 CMD /bin/bash
