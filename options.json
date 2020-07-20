@@ -1,6 +1,5 @@
 {
   "default_runtime_attributes": {
-    "docker": "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d",
     "docker_volume": "/home/ubuntu/data/data_modules:/data_modules"
   }
 }
