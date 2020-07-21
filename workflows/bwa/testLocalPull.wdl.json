@@ -4,6 +4,6 @@
   "bwaMem.doTrim": "true",
   "bwaMem.outputFileNamePrefix": "121005_h804_0096_AD0V4NACXX_PCSI0022C_NoIndex_L006_001",
   "bwaMem.readGroups": "'@RG\\tID:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tLB:PCSI0022C\\tPL:ILLUMINA\\tPU:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tSM:PCSI0022C'",
-  "bwaMem.runBwaMem.modules": "samtools/1.9 bwa/0.7.12 hg19-bwa-index/0.7.12",
-  "bwaMem.runBwaMem.bwaRef": "$HG19_BWA_INDEX_ROOT/hg19_random.fa"
+  "bwaMem.runBwaMem_modules": "samtools/1.9 bwa/0.7.12 hg19-bwa-index/0.7.12",
+  "bwaMem.runBwaMem_bwaRef": "$HG19_BWA_INDEX_ROOT/hg19_random.fa"
 }
