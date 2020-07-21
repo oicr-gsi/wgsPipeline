@@ -1,0 +1,4 @@
+{
+	"callHaplotypes": ["modules", "refFasta", "dbsnpFilePath"],
+	"mergeGVCFs": ["modules"]
+}
