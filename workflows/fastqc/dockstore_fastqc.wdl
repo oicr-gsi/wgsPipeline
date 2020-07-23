@@ -130,9 +130,9 @@ parameter_meta {
 command <<<
  set -euo pipefail
  if [[ ~{basename(inputFile)} != "~{customPrefix}.~{extension}" ]];then 
-   ln -s ~{inputFile} "~{customPrefix}.~{extension}"
+   cp ~{inputFile} "~{customPrefix}.~{extension}"
  else
-   ln -s ~{inputFile}
+   cp ~{inputFile} .
  fi
 >>>
 
