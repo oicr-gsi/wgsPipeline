@@ -2,9 +2,33 @@ version 1.0
 
 workflow bwaMem {
     input {
+        String docker = "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d"
+        Int adapterTrimmingLog_timeout = 48
+        Int adapterTrimmingLog_jobMemory = 12
+        Int indexBam_timeout = 48
+        String indexBam_modules = "samtools/1.9"
+        Int indexBam_jobMemory = 12
+        Int bamMerge_timeout = 72
+        String bamMerge_modules = "samtools/1.9"
+        Int bamMerge_jobMemory = 32
+        Int runBwaMem_timeout = 96
+        Int runBwaMem_jobMemory = 32
+        Int runBwaMem_threads = 8
+        String? runBwaMem_addParam
         String runBwaMem_bwaRef
         String runBwaMem_modules
-        String docker = "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d"
+        Int adapterTrimming_timeout = 48
+        Int adapterTrimming_jobMemory = 16
+        String? adapterTrimming_addParam
+        String adapterTrimming_modules = "cutadapt/1.8.3"
+        Int slicerR2_timeout = 48
+        Int slicerR2_jobMemory = 16
+        String slicerR2_modules = "slicer/0.3.0"
+        Int slicerR1_timeout = 48
+        Int slicerR1_jobMemory = 16
+        String slicerR1_modules = "slicer/0.3.0"
+        Int countChunkSize_timeout = 48
+        Int countChunkSize_jobMemory = 16
         File fastqR1
         File fastqR2
         String readGroups
@@ -35,6 +59,8 @@ workflow bwaMem {
         call countChunkSize {
             input:
             docker = docker,
+            timeout = countChunkSize_timeout,
+            jobMemory = countChunkSize_jobMemory,
             fastqR1 = fastqR1,
             numChunk = numChunk
         }
@@ -42,12 +68,18 @@ workflow bwaMem {
         call slicer as slicerR1 { 
             input: 
             docker = docker,
+            timeout = slicerR1_timeout,
+            jobMemory = slicerR1_jobMemory,
+            modules = slicerR1_modules,
             fastqR = fastqR1,
             chunkSize = countChunkSize.chunkSize
         }
         call slicer as slicerR2 { 
             input: 
             docker = docker,
+            timeout = slicerR2_timeout,
+            jobMemory = slicerR2_jobMemory,
+            modules = slicerR2_modules,
             fastqR = fastqR2,
             chunkSize = countChunkSize.chunkSize
         }
@@ -72,9 +104,13 @@ workflow bwaMem {
         }
         call runBwaMem  { 
                 input: 
+                docker = docker,
+                timeout = runBwaMem_timeout,
+                jobMemory = runBwaMem_jobMemory,
+                threads = runBwaMem_threads,
+                addParam = runBwaMem_addParam,
                 bwaRef = runBwaMem_bwaRef,
                 modules = runBwaMem_modules,
-                docker = docker,
                 read1s = select_first([adapterTrimming.resultR1, p.left]),
                 read2s = select_first([adapterTrimming.resultR2, p.right]),
                 readGroups = readGroups
@@ -84,6 +120,9 @@ workflow bwaMem {
     call bamMerge {
         input:
         docker = docker,
+        timeout = bamMerge_timeout,
+        modules = bamMerge_modules,
+        jobMemory = bamMerge_jobMemory,
         bams = runBwaMem.outputBam,
         outputFileNamePrefix = outputFileNamePrefix
     }
@@ -91,6 +130,9 @@ workflow bwaMem {
     call indexBam { 
         input: 
         docker = docker,
+        timeout = indexBam_timeout,
+        modules = indexBam_modules,
+        jobMemory = indexBam_jobMemory,
         inputBam = bamMerge.outputMergedBam
     }
 
@@ -98,6 +140,12 @@ workflow bwaMem {
         call adapterTrimmingLog {
             input:
             docker = docker,
+            timeout = adapterTrimmingLog_timeout,
+            jobMemory = adapterTrimmingLog_jobMemory,
+            timeout = adapterTrimming_timeout,
+            jobMemory = adapterTrimming_jobMemory,
+            addParam = adapterTrimming_addParam,
+            modules = adapterTrimming_modules,
             inputLogs = select_all(adapterTrimming.log),
             outputFileNamePrefix = outputFileNamePrefix,
             numChunk = numChunk

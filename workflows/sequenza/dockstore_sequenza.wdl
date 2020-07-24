@@ -4,6 +4,20 @@ workflow sequenza {
 input {
     # Normally we need only tumor bam, normal bam may be used when availablea
     String docker = "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d"
+    Int formatJson_jobMemory = 8
+    String formatJson_prefix = "SEQUENZA"
+    Int runSequenza_jobMemory = 10
+    Int runSequenza_timeout = 20
+    String runSequenza_modules = "sequenza/2.1.2 sequenza-scripts/2.1.2 sequenza-res/2.1.2"
+    String runSequenza_ploidyFile = "$SEQUENZA_RES_ROOT/PANCAN_ASCAT_ploidy_prob.Rdata"
+    String runSequenza_sequenzaScript = "$SEQUENZA_SCRIPTS_ROOT/bin/SequenzaProcess_v2.2.R"
+    String runSequenza_prefix = "SEQUENZA"
+    String runSequenza_rScript = "$RSTATS_ROOT/bin/Rscript"
+    Int preprocessInputs_jobMemory = 10
+    Int preprocessInputs_timeout = 20
+    String preprocessInputs_modules = "sequenza/2.1.2 sequenza-scripts/2.1.2"
+    String preprocessInputs_preprocessScript = "$SEQUENZA_SCRIPTS_ROOT/bin/SequenzaPreProcess_v2.2.R"
+    String preprocessInputs_rScript = "$RSTATS_ROOT/bin/Rscript"
     File snpFile
     File cnvFile
     Array[String] gammaRange = ["50","100","200","300","400","500","600","700","800","900","1000","1250","1500","2000"]
@@ -13,13 +27,13 @@ input {
 String sampleID = if outputFileNamePrefix=="" then basename(snpFile, ".snp") else outputFileNamePrefix
 
 # Preprocess VarScan data
-call preprocessInputs { input: snpFile = snpFile, cnvFile = cnvFile, prefix = sampleID, docker = docker }
+call preprocessInputs { input: snpFile = snpFile, cnvFile = cnvFile, prefix = sampleID, rScript = preprocessInputs_rScript, preprocessScript = preprocessInputs_preprocessScript, modules = preprocessInputs_modules, timeout = preprocessInputs_timeout, jobMemory = preprocessInputs_jobMemory, docker = docker }
 # Configure and run Sequenza
 scatter (g in gammaRange) {
-  call runSequenza { input: seqzFile = preprocessInputs.seqzFile, gamma = g, docker = docker }
+  call runSequenza { input: seqzFile = preprocessInputs.seqzFile, gamma = g, rScript = runSequenza_rScript, prefix = runSequenza_prefix, sequenzaScript = runSequenza_sequenzaScript, ploidyFile = runSequenza_ploidyFile, modules = runSequenza_modules, timeout = runSequenza_timeout, jobMemory = runSequenza_jobMemory, docker = docker }
 }
 # Format combined json and re-zip results in a single zip
-call formatJson { input: txtPaths = runSequenza.altSolutions, zips = runSequenza.outZip,  gammaValues = runSequenza.gammaOut, docker = docker }
+call formatJson { input: txtPaths = runSequenza.altSolutions, zips = runSequenza.outZip,  gammaValues = runSequenza.gammaOut, prefix = formatJson_prefix, jobMemory = formatJson_jobMemory, docker = docker }
 
 parameter_meta {
   snpFile: "File (data file with CNV calls from Varscan)."

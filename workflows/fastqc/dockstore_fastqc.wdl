@@ -6,15 +6,20 @@ version 1.0
 workflow fastQC {
 input {
         String docker = "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d"
-        Int renameOutput_timeout = 1
-        String? renameOutput_customPrefix
-        String? renameOutput_extension
-        File? renameOutput_inputFile
-        Int renameOutput_jobMemory = 2
-        String runFastQC_modules = "perl/5.28 java/8 fastqc/0.11.8"
-        File? runFastQC_inputFastq
-        Int runFastQC_timeout = 20
-        Int runFastQC_jobMemory = 6
+        Int secondMateZip_timeout = 1
+        Int secondMateZip_jobMemory = 2
+        Int secondMateHtml_timeout = 1
+        Int secondMateHtml_jobMemory = 2
+        String secondMateFastQC_modules = "perl/5.28 java/8 fastqc/0.11.8"
+        Int secondMateFastQC_timeout = 20
+        Int secondMateFastQC_jobMemory = 6
+        Int firstMateZip_timeout = 1
+        Int firstMateZip_jobMemory = 2
+        Int firstMateHtml_timeout = 1
+        Int firstMateHtml_jobMemory = 2
+        String firstMateFastQC_modules = "perl/5.28 java/8 fastqc/0.11.8"
+        Int firstMateFastQC_timeout = 20
+        Int firstMateFastQC_jobMemory = 6
         File fastqR1 
         File? fastqR2
         String outputFileNamePrefix = ""
@@ -25,16 +30,16 @@ Array[File] inputFastqs = select_all([fastqR1,fastqR2])
 String outputPrefixOne = if outputFileNamePrefix == "" then basename(inputFastqs[0], '.fastq.gz') + "_fastqc"
                                                        else outputFileNamePrefix + r1Suffix
 
-call runFastQC as firstMateFastQC { input: inputFastq = inputFastqs[0], jobMemory = runFastQC_jobMemory, timeout = runFastQC_timeout, modules = runFastQC_modules, docker = docker }
-call renameOutput as firstMateHtml { input: inputFile = firstMateFastQC.html_report_file, extension = "html", customPrefix = outputPrefixOne, jobMemory = renameOutput_jobMemory, timeout = renameOutput_timeout, docker = docker }
-call renameOutput as firstMateZip { input: inputFile = firstMateFastQC.zip_bundle_file, extension = "zip", customPrefix = outputPrefixOne, jobMemory = renameOutput_jobMemory, timeout = renameOutput_timeout, docker = docker }
+call runFastQC as firstMateFastQC { input: inputFastq = inputFastqs[0], jobMemory = firstMateFastQC_jobMemory, timeout = firstMateFastQC_timeout, modules = firstMateFastQC_modules, docker = docker }
+call renameOutput as firstMateHtml { input: inputFile = firstMateFastQC.html_report_file, extension = "html", customPrefix = outputPrefixOne, jobMemory = firstMateHtml_jobMemory, timeout = firstMateHtml_timeout, docker = docker }
+call renameOutput as firstMateZip { input: inputFile = firstMateFastQC.zip_bundle_file, extension = "zip", customPrefix = outputPrefixOne, jobMemory = firstMateZip_jobMemory, timeout = firstMateZip_timeout, docker = docker }
 
 if (length(inputFastqs) > 1) {
  String outputPrefixTwo = if outputFileNamePrefix=="" then basename(inputFastqs[1], '.fastq.gz') + "_fastqc"
                                                       else outputFileNamePrefix + r2Suffix
- call runFastQC as secondMateFastQC { input: inputFastq = inputFastqs[1], jobMemory = runFastQC_jobMemory, timeout = runFastQC_timeout, modules = runFastQC_modules, docker = docker }
- call renameOutput as secondMateHtml { input: inputFile = secondMateFastQC.html_report_file, extension = "html", customPrefix = outputPrefixTwo, jobMemory = renameOutput_jobMemory, timeout = renameOutput_timeout, docker = docker }
- call renameOutput as secondMateZip { input: inputFile = secondMateFastQC.zip_bundle_file, extension = "zip", customPrefix = outputPrefixTwo, jobMemory = renameOutput_jobMemory, timeout = renameOutput_timeout, docker = docker }
+ call runFastQC as secondMateFastQC { input: inputFastq = inputFastqs[1], jobMemory = secondMateFastQC_jobMemory, timeout = secondMateFastQC_timeout, modules = secondMateFastQC_modules, docker = docker }
+ call renameOutput as secondMateHtml { input: inputFile = secondMateFastQC.html_report_file, extension = "html", customPrefix = outputPrefixTwo, jobMemory = secondMateHtml_jobMemory, timeout = secondMateHtml_timeout, docker = docker }
+ call renameOutput as secondMateZip { input: inputFile = secondMateFastQC.zip_bundle_file, extension = "zip", customPrefix = outputPrefixTwo, jobMemory = secondMateZip_jobMemory, timeout = secondMateZip_timeout, docker = docker }
 }
 
 parameter_meta {
