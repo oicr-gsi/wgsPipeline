@@ -94,6 +94,10 @@ workflow bwaMem {
             call adapterTrimming { 
                 input:
                 docker = docker,
+                timeout = adapterTrimming_timeout,
+                jobMemory = adapterTrimming_jobMemory,
+                addParam = adapterTrimming_addParam,
+                modules = adapterTrimming_modules,
                 fastqR1 = p.left,
                 fastqR2 = p.right,
                 trimMinLength = trimMinLength,
@@ -142,10 +146,6 @@ workflow bwaMem {
             docker = docker,
             timeout = adapterTrimmingLog_timeout,
             jobMemory = adapterTrimmingLog_jobMemory,
-            timeout = adapterTrimming_timeout,
-            jobMemory = adapterTrimming_jobMemory,
-            addParam = adapterTrimming_addParam,
-            modules = adapterTrimming_modules,
             inputLogs = select_all(adapterTrimming.log),
             outputFileNamePrefix = outputFileNamePrefix,
             numChunk = numChunk

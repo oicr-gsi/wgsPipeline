@@ -3,17 +3,85 @@ version 1.0
 workflow bamMergePreprocessing {
 
   input {
-    Int mergeBams_timeout = "6"
-    Int gatherBQSRReports_timeout = "6"
-    Int applyBaseQualityScoreRecalibration_timeout = "6"
-    Int analyzeCovariates_timeout = "6"
-    Int baseQualityScoreRecalibration_timeout = "6"
-    Array[String] baseQualityScoreRecalibration_knownSites
-    Int indelRealign_timeout = "6"
-    Array[String] indelRealign_knownAlleles
-    Int realignerTargetCreator_timeout = "6"
-    Array[String] realignerTargetCreator_knownIndels
     String docker = "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d"
+    String mergeSplitByIntervalBams_modules = "gatk/4.1.6.0"
+    Int mergeSplitByIntervalBams_timeout = 6
+    Int mergeSplitByIntervalBams_cores = 1
+    Int mergeSplitByIntervalBams_overhead = 6
+    Int mergeSplitByIntervalBams_jobMemory = 24
+    String? mergeSplitByIntervalBams_additionalParams
+    String collectFilesBySample_modules = "python/3.7"
+    Int collectFilesBySample_timeout = 1
+    Int collectFilesBySample_cores = 1
+    Int collectFilesBySample_jobMemory = 1
+    String applyBaseQualityScoreRecalibration_modules = "gatk/4.1.6.0"
+    Int applyBaseQualityScoreRecalibration_timeout = 6
+    Int applyBaseQualityScoreRecalibration_cores = 1
+    Int applyBaseQualityScoreRecalibration_overhead = 6
+    Int applyBaseQualityScoreRecalibration_jobMemory = 24
+    String? applyBaseQualityScoreRecalibration_additionalParams
+    String applyBaseQualityScoreRecalibration_suffix = ".recalibrated"
+    String applyBaseQualityScoreRecalibration_outputFileName = "basename(bam,".bam")"
+    String analyzeCovariates_modules = "gatk/4.1.6.0"
+    Int analyzeCovariates_timeout = 6
+    Int analyzeCovariates_cores = 1
+    Int analyzeCovariates_overhead = 6
+    Int analyzeCovariates_jobMemory = 24
+    String analyzeCovariates_outputFileName = "gatk.recalibration.pdf"
+    String? analyzeCovariates_additionalParams
+    String gatherBQSRReports_modules = "gatk/4.1.6.0"
+    Int gatherBQSRReports_timeout = 6
+    Int gatherBQSRReports_cores = 1
+    Int gatherBQSRReports_overhead = 6
+    Int gatherBQSRReports_jobMemory = 24
+    String gatherBQSRReports_outputFileName = "gatk.recalibration.csv"
+    String? gatherBQSRReports_additionalParams
+    String baseQualityScoreRecalibration_modules = "gatk/4.1.6.0"
+    Int baseQualityScoreRecalibration_timeout = 6
+    Int baseQualityScoreRecalibration_cores = 1
+    Int baseQualityScoreRecalibration_overhead = 6
+    Int baseQualityScoreRecalibration_jobMemory = 24
+    String baseQualityScoreRecalibration_outputFileName = "gatk.recalibration.csv"
+    String? baseQualityScoreRecalibration_additionalParams
+    Array[String] baseQualityScoreRecalibration_knownSites
+    Array[String] baseQualityScoreRecalibration_intervals = []
+    String indelRealign_gatkJar = "$GATK_ROOT/GenomeAnalysisTK.jar"
+    String indelRealign_modules = "python/3.7 gatk/3.6-0"
+    Int indelRealign_timeout = 6
+    Int indelRealign_cores = 1
+    Int indelRealign_overhead = 6
+    Int indelRealign_jobMemory = 24
+    String? indelRealign_additionalParams
+    Array[String] indelRealign_knownAlleles
+    String realignerTargetCreator_gatkJar = "$GATK_ROOT/GenomeAnalysisTK.jar"
+    String realignerTargetCreator_modules = "gatk/3.6-0"
+    Int realignerTargetCreator_timeout = 6
+    Int realignerTargetCreator_cores = 1
+    Int realignerTargetCreator_overhead = 6
+    Int realignerTargetCreator_jobMemory = 24
+    String? realignerTargetCreator_additionalParams
+    String? realignerTargetCreator_downsamplingType
+    Array[String] realignerTargetCreator_knownIndels
+    DefaultRuntimeAttributes preprocessBam_defaultRuntimeAttributes = {"memory": 24, "overhead": 6, "cores": 1, "timeout": 6, "modules": "samtools/1.9 gatk/4.1.6.0"}
+    String? preprocessBam_splitNCigarReadsAdditionalParams
+    Array[String] preprocessBam_readFilters = []
+    Boolean preprocessBam_refactorCigarString = false
+    String preprocessBam_splitNCigarReadsSuffix = ".split"
+    String? preprocessBam_markDuplicatesAdditionalParams
+    Int preprocessBam_opticalDuplicatePixelDistance = 100
+    Boolean preprocessBam_removeDuplicates = false
+    String preprocessBam_markDuplicatesSuffix = ".deduped"
+    String? preprocessBam_filterAdditionalParams
+    Int? preprocessBam_minMapQuality
+    Int preprocessBam_filterFlags = 260
+    String preprocessBam_filterSuffix = ".filter"
+    String preprocessBam_temporaryWorkingDir = ""
+    String splitStringToArray_modules = "python/3.7"
+    Int splitStringToArray_timeout = 1
+    Int splitStringToArray_cores = 1
+    Int splitStringToArray_jobMemory = 1
+    String splitStringToArray_recordSeparator = "+"
+    String splitStringToArray_lineSeparator = ","
     Array[InputGroup] inputGroups
     String intervalsToParallelizeByString
     Boolean doFilter = true
@@ -74,6 +142,12 @@ workflow bamMergePreprocessing {
   call splitStringToArray {
     input:
       docker = docker,
+      modules = splitStringToArray_modules,
+      timeout = splitStringToArray_timeout,
+      cores = splitStringToArray_cores,
+      jobMemory = splitStringToArray_jobMemory,
+      recordSeparator = splitStringToArray_recordSeparator,
+      lineSeparator = splitStringToArray_lineSeparator,
       str = intervalsToParallelizeByString
   }
   Array[Intervals] intervalsToParallelizeBy = splitStringToArray.intervalsList.intervalsList
@@ -116,6 +190,20 @@ workflow bamMergePreprocessing {
       call preprocessBam {
         input:
           docker = docker,
+          defaultRuntimeAttributes = preprocessBam_defaultRuntimeAttributes,
+          splitNCigarReadsAdditionalParams = preprocessBam_splitNCigarReadsAdditionalParams,
+          readFilters = preprocessBam_readFilters,
+          refactorCigarString = preprocessBam_refactorCigarString,
+          splitNCigarReadsSuffix = preprocessBam_splitNCigarReadsSuffix,
+          markDuplicatesAdditionalParams = preprocessBam_markDuplicatesAdditionalParams,
+          opticalDuplicatePixelDistance = preprocessBam_opticalDuplicatePixelDistance,
+          removeDuplicates = preprocessBam_removeDuplicates,
+          markDuplicatesSuffix = preprocessBam_markDuplicatesSuffix,
+          filterAdditionalParams = preprocessBam_filterAdditionalParams,
+          minMapQuality = preprocessBam_minMapQuality,
+          filterFlags = preprocessBam_filterFlags,
+          filterSuffix = preprocessBam_filterSuffix,
+          temporaryWorkingDir = preprocessBam_temporaryWorkingDir,
           bams = inputGroupBams,
           bamIndexes = inputGroupBamIndexes,
           intervals = intervals.intervalsList,
@@ -134,9 +222,16 @@ workflow bamMergePreprocessing {
     if(doIndelRealignment) {
       call realignerTargetCreator {
         input:
-          timeout = realignerTargetCreator_timeout,
-          knownIndels = realignerTargetCreator_knownIndels,
           docker = docker,
+          gatkJar = realignerTargetCreator_gatkJar,
+          modules = realignerTargetCreator_modules,
+          timeout = realignerTargetCreator_timeout,
+          cores = realignerTargetCreator_cores,
+          overhead = realignerTargetCreator_overhead,
+          jobMemory = realignerTargetCreator_jobMemory,
+          additionalParams = realignerTargetCreator_additionalParams,
+          downsamplingType = realignerTargetCreator_downsamplingType,
+          knownIndels = realignerTargetCreator_knownIndels,
           bams = preprocessedBams,
           bamIndexes = preprocessedBamIndexes,
           intervals = intervals.intervalsList,
@@ -145,9 +240,15 @@ workflow bamMergePreprocessing {
 
       call indelRealign {
         input:
-          timeout = indelRealign_timeout,
-          knownAlleles = indelRealign_knownAlleles,
           docker = docker,
+          gatkJar = indelRealign_gatkJar,
+          modules = indelRealign_modules,
+          timeout = indelRealign_timeout,
+          cores = indelRealign_cores,
+          overhead = indelRealign_overhead,
+          jobMemory = indelRealign_jobMemory,
+          additionalParams = indelRealign_additionalParams,
+          knownAlleles = indelRealign_knownAlleles,
           bams = preprocessedBams,
           bamIndexes = preprocessedBamIndexes,
           intervals = intervals.intervalsList,
@@ -161,9 +262,16 @@ workflow bamMergePreprocessing {
     if(doBqsr) {
       call baseQualityScoreRecalibration {
         input:
-          timeout = baseQualityScoreRecalibration_timeout,
-          knownSites = baseQualityScoreRecalibration_knownSites,
           docker = docker,
+          modules = baseQualityScoreRecalibration_modules,
+          timeout = baseQualityScoreRecalibration_timeout,
+          cores = baseQualityScoreRecalibration_cores,
+          overhead = baseQualityScoreRecalibration_overhead,
+          jobMemory = baseQualityScoreRecalibration_jobMemory,
+          outputFileName = baseQualityScoreRecalibration_outputFileName,
+          additionalParams = baseQualityScoreRecalibration_additionalParams,
+          knownSites = baseQualityScoreRecalibration_knownSites,
+          intervals = baseQualityScoreRecalibration_intervals,
           bams = select_first([indelRealignedBams, preprocessedBams]),
           reference = reference
       }
@@ -178,23 +286,42 @@ workflow bamMergePreprocessing {
   if(doBqsr) {
     call gatherBQSRReports {
       input:
-        timeout = gatherBQSRReports_timeout,
         docker = docker,
+        modules = gatherBQSRReports_modules,
+        timeout = gatherBQSRReports_timeout,
+        cores = gatherBQSRReports_cores,
+        overhead = gatherBQSRReports_overhead,
+        jobMemory = gatherBQSRReports_jobMemory,
+        outputFileName = gatherBQSRReports_outputFileName,
+        additionalParams = gatherBQSRReports_additionalParams,
         recalibrationTables = select_all(recalibrationTableByInterval)
     }
 
     call analyzeCovariates {
       input:
-        timeout = analyzeCovariates_timeout,
         docker = docker,
+        modules = analyzeCovariates_modules,
+        timeout = analyzeCovariates_timeout,
+        cores = analyzeCovariates_cores,
+        overhead = analyzeCovariates_overhead,
+        jobMemory = analyzeCovariates_jobMemory,
+        outputFileName = analyzeCovariates_outputFileName,
+        additionalParams = analyzeCovariates_additionalParams,
         recalibrationTable = gatherBQSRReports.recalibrationTable
     }
 
     scatter(bam in processedBams) {
       call applyBaseQualityScoreRecalibration {
         input:
-          timeout = applyBaseQualityScoreRecalibration_timeout,
           docker = docker,
+          modules = applyBaseQualityScoreRecalibration_modules,
+          timeout = applyBaseQualityScoreRecalibration_timeout,
+          cores = applyBaseQualityScoreRecalibration_cores,
+          overhead = applyBaseQualityScoreRecalibration_overhead,
+          jobMemory = applyBaseQualityScoreRecalibration_jobMemory,
+          additionalParams = applyBaseQualityScoreRecalibration_additionalParams,
+          suffix = applyBaseQualityScoreRecalibration_suffix,
+          outputFileName = applyBaseQualityScoreRecalibration_outputFileName,
           recalibrationTable = gatherBQSRReports.recalibrationTable,
           bam = bam
       }
@@ -206,6 +333,10 @@ workflow bamMergePreprocessing {
   call collectFilesBySample {
     input:
       docker = docker,
+      modules = collectFilesBySample_modules,
+      timeout = collectFilesBySample_timeout,
+      cores = collectFilesBySample_cores,
+      jobMemory = collectFilesBySample_jobMemory,
       inputGroups = inputGroups,
       bams = select_first([recalibratedBams, processedBams]),
       bamIndexes = select_first([recalibratedBamIndexes, processedBamIndexes])
@@ -215,8 +346,13 @@ workflow bamMergePreprocessing {
     if(length(o.bams) > 1) {
       call mergeBams as mergeSplitByIntervalBams {
         input:
-          timeout = mergeBams_timeout,
           docker = docker,
+          modules = mergeSplitByIntervalBams_modules,
+          timeout = mergeSplitByIntervalBams_timeout,
+          cores = mergeSplitByIntervalBams_cores,
+          overhead = mergeSplitByIntervalBams_overhead,
+          jobMemory = mergeSplitByIntervalBams_jobMemory,
+          additionalParams = mergeSplitByIntervalBams_additionalParams,
           bams = o.bams,
           outputFileName = o.outputFileName,
           suffix = "" # collectFilesBySample task generates the file name

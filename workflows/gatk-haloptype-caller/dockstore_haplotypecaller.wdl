@@ -2,11 +2,27 @@ version 1.0
 
 workflow haplotypeCaller {
   input {
+    String docker = "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d"
+    Int mergeGVCFs_timeout = 24
+    Int mergeGVCFs_cores = 1
+    Int mergeGVCFs_overhead = 6
+    Int mergeGVCFs_jobMemory = 24
     String mergeGVCFs_modules
-    String callHaplotypes_dbsnpFilePath
+    Int callHaplotypes_timeout = 72
+    Int callHaplotypes_cores = 1
+    Int callHaplotypes_overhead = 6
+    Int callHaplotypes_jobMemory = 24
     String callHaplotypes_refFasta
     String callHaplotypes_modules
-    String docker = "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d"
+    String callHaplotypes_erc = "GVCF"
+    String callHaplotypes_intervalSetRule = "INTERSECTION"
+    Int callHaplotypes_intervalPadding = 100
+    String? callHaplotypes_extraArgs
+    String callHaplotypes_dbsnpFilePath
+    Int splitStringToArray_timeout = 1
+    Int splitStringToArray_cores = 1
+    Int splitStringToArray_jobMemory = 1
+    String splitStringToArray_lineSeparator = ","
     File bai
     File bam
     File? filterIntervals
@@ -37,16 +53,28 @@ workflow haplotypeCaller {
   call splitStringToArray {
     input:
       docker = docker,
+      timeout = splitStringToArray_timeout,
+      cores = splitStringToArray_cores,
+      jobMemory = splitStringToArray_jobMemory,
+      lineSeparator = splitStringToArray_lineSeparator,
       intervalsToParallelizeBy = intervalsToParallelizeBy
   }
   
   scatter (intervals in splitStringToArray.out) {
      call callHaplotypes {
        input:
-         dbsnpFilePath = callHaplotypes_dbsnpFilePath,
+         docker = docker,
+         timeout = callHaplotypes_timeout,
+         cores = callHaplotypes_cores,
+         overhead = callHaplotypes_overhead,
+         jobMemory = callHaplotypes_jobMemory,
          refFasta = callHaplotypes_refFasta,
          modules = callHaplotypes_modules,
-         docker = docker,
+         erc = callHaplotypes_erc,
+         intervalSetRule = callHaplotypes_intervalSetRule,
+         intervalPadding = callHaplotypes_intervalPadding,
+         extraArgs = callHaplotypes_extraArgs,
+         dbsnpFilePath = callHaplotypes_dbsnpFilePath,
          bamIndex = bai,
          bam = bam,
          interval = intervals[0],
@@ -57,8 +85,12 @@ workflow haplotypeCaller {
 
   call mergeGVCFs {
     input:
-      modules = mergeGVCFs_modules,
       docker = docker,
+      timeout = mergeGVCFs_timeout,
+      cores = mergeGVCFs_cores,
+      overhead = mergeGVCFs_overhead,
+      jobMemory = mergeGVCFs_jobMemory,
+      modules = mergeGVCFs_modules,
       outputFileNamePrefix = outputFileNamePrefix,
       vcfs = callHaplotypes.output_vcf
   }

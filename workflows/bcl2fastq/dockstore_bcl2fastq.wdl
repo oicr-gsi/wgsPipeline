@@ -20,10 +20,16 @@ struct Outputs {
 
 workflow bcl2fastq {
   input {
-    Boolean process_ignoreMissingPositions = "false"
-    Boolean process_ignoreMissingFilter = "false"
-    Boolean process_ignoreMissingBcls = "false"
     String docker = "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d"
+    Int process_threads = 8
+    String process_temporaryDirectory = "."
+    Int process_memory = 32
+    Boolean process_ignoreMissingPositions = false
+    Boolean process_ignoreMissingFilter = false
+    Boolean process_ignoreMissingBcls = false
+    String process_extraOptions = ""
+    String process_bcl2fastqJail = "bcl2fastq-jail"
+    String process_bcl2fastq = "bcl2fastq"
     String? basesMask
     Array[Int]+ lanes
     Int mismatches
@@ -54,10 +60,16 @@ workflow bcl2fastq {
   }
   call process {
     input:
+      docker = docker,
+      threads = process_threads,
+      temporaryDirectory = process_temporaryDirectory,
+      memory = process_memory,
       ignoreMissingPositions = process_ignoreMissingPositions,
       ignoreMissingFilter = process_ignoreMissingFilter,
       ignoreMissingBcls = process_ignoreMissingBcls,
-      docker = docker,
+      extraOptions = process_extraOptions,
+      bcl2fastqJail = process_bcl2fastqJail,
+      bcl2fastq = process_bcl2fastq,
       basesMask = basesMask,
       lanes = lanes,
       mismatches  = mismatches,
