@@ -3,10 +3,30 @@ version 1.0
 workflow delly {
 input {
   # If we are in somatic mode, normal file follows tumor file in the input array
-  String dupmarkBam_modules = "java/8 picard/2.19.2"
-  String runDelly_modules = "delly/0.8.1 bcftools/1.9 tabix/0.2.6 hg19/p13 hg19-delly/1.0"
-  String runDelly_excludeList
   String docker = "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d"
+  Int mergeAndZip_jobMemory = 10
+  String mergeAndZip_prefix = ""
+  String mergeAndZip_modules = "vcftools/0.1.16 tabix/0.2.6"
+  String mergeAndZip_callType = "unmatched"
+  String mergeAndZip_sampleName = "SAMPLE"
+  Array[File]? mergeAndZip_inputTbis
+  Array[File]? mergeAndZip_inputVcfs
+  Int runDelly_timeout = 20
+  Int runDelly_jobMemory = 16
+  Int runDelly_mappingQuality = 30
+  String runDelly_modules = "delly/0.8.1 bcftools/1.9 tabix/0.2.6 hg19/p13 hg19-delly/1.0"
+  String runDelly_callType = "unmatched"
+  String runDelly_refFasta = "$HG19_ROOT/hg19_random.fa"
+  String? runDelly_excludeList
+  String runDelly_sampleName = "SAMPLE"
+  String? runDelly_dellyMode
+  Array[File]+? runDelly_inBai
+  Array[File]+? runDelly_inBams
+  String dupmarkBam_modules = "java/8 picard/2.19.2"
+  String dupmarkBam_dedup = "dedup"
+  Int dupmarkBam_timeout = 20
+  Int dupmarkBam_jobMemory = 20
+  File? dupmarkBam_inputBam
   File inputTumor
   File? inputNormal
   Boolean markdup = true
@@ -19,19 +39,19 @@ String callType = if length(inputBams) == 1 then "unmatched" else "somatic"
 
 # If we see more than one (two) bams switch to somatic mode
 scatter (f in inputBams) { 
-  call dupmarkBam { input: inputBam = f, dedup = if markdup then "dedup" else "nomark", docker = docker, modules = dupmarkBam_modules}
+  call dupmarkBam { input: inputBam = f, dedup = if markdup then "dedup" else "nomark", jobMemory = dupmarkBam_jobMemory, timeout = dupmarkBam_timeout, modules = dupmarkBam_modules, docker = docker}
 } 
 
 scatter (m in ["DEL", "DUP", "INV", "INS", "BND"]) {
-  call runDelly { input: inBams = dupmarkBam.outputBam, inBai = dupmarkBam.outputBai, dellyMode = m, callType = callType, sampleName = sampleID, docker = docker, excludeList = runDelly_excludeList, modules = runDelly_modules }
+  call runDelly { input: inBams = dupmarkBam.outputBam, inBai = dupmarkBam.outputBai, dellyMode = m, callType = callType, sampleName = sampleID, excludeList = runDelly_excludeList, refFasta = runDelly_refFasta, modules = runDelly_modules, mappingQuality = runDelly_mappingQuality, jobMemory = runDelly_jobMemory, timeout = runDelly_timeout, docker = docker }
 }
 
 # Go on with merging and zipping/indexing
-call mergeAndZip as mergeAndZipALL { input: inputVcfs = select_all(runDelly.outVcf), inputTbis = select_all(runDelly.outTbi), sampleName = sampleID, callType = callType, docker = docker}
+call mergeAndZip as mergeAndZipALL { input: inputVcfs = select_all(runDelly.outVcf), inputTbis = select_all(runDelly.outTbi), sampleName = sampleID, callType = callType, modules = mergeAndZip_modules, prefix = mergeAndZip_prefix, jobMemory = mergeAndZip_jobMemory, docker = docker}
 
 # Go on with processing somatic - filtered files
 if (callType == "somatic") {
- call mergeAndZip as mergeAndZipFiltered { input: inputVcfs = select_all(runDelly.outVcf_filtered), inputTbis = select_all(runDelly.outTbi_filtered), sampleName = sampleID, callType = callType, prefix = "_filtered", docker = docker}
+ call mergeAndZip as mergeAndZipFiltered { input: inputVcfs = select_all(runDelly.outVcf_filtered), inputTbis = select_all(runDelly.outTbi_filtered), sampleName = sampleID, callType = callType, prefix = "_filtered", modules = mergeAndZip_modules, jobMemory = mergeAndZip_jobMemory, docker = docker}
 }
 
 parameter_meta {

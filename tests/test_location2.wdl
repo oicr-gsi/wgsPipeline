@@ -23,10 +23,16 @@ workflow test_location {
             dockerrr = "x"}
 
     call find_tools as five {input: 
-        modules = modules}
+        dockerrr = "c"}
 
     call find_tools as six {
-        input: modules = modules} 
+        input: dockerrr = "c"} 
+
+    call task2
+
+    call task2 as dup1 {input: var1 = "var1 here"}
+
+    call task2 as dup2 {input: var2 = "var2 here"}
 
     parameter_meta {
         docker: "fake docker param meta"

@@ -2,6 +2,10 @@ version 1.0
 
 workflow test_location {
     input {
+        String task2_var2 = "default task2_var2"
+        String task2_var1 = "default task2_var1"
+        String find_tools_modules = "fasplit/1.0 vep-hg19-filter-somaticsites/0 rsem/1.3.0 tabix/1.9"
+        String find_tools_dockerrr = "comment out later"
         String docker = "replace this"
         String modules = "default_modules"
     }
@@ -23,10 +27,19 @@ workflow test_location {
             dockerrr = "x"}
 
     call find_tools as five {input: 
-        modules = modules}
+        modules = find_tools_modules,
+        dockerrr = "c"}
 
     call find_tools as six {
-        input: modules = modules} 
+        input: 
+            modules = find_tools_modules,
+            dockerrr = "c"} 
+
+    call task2 { input: var1 = task2_var1, var2 = task2_var2 }
+
+    call task2 as dup1 {input: var1 = "var1 here", var2 = task2_var2}
+
+    call task2 as dup2 {input: var2 = "var2 here", var1 = task2_var1}
 
     parameter_meta {
         docker: "fake docker param meta"

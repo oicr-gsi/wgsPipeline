@@ -5,16 +5,15 @@ version 1.0
 # ======================================================
 workflow fastQC {
 input {
-        String docker = "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d"
-        Int renameOutput_timeout = 1
-        String? renameOutput_customPrefix
-        String? renameOutput_extension
-        File? renameOutput_inputFile
-        Int renameOutput_jobMemory = 2
+        Int renameOutput_timeout = "1"
+        String renameOutput_customPrefix
+        String renameOutput_extension
+        File renameOutput_inputFile
+        Int renameOutput_jobMemory = "2"
         String runFastQC_modules = "perl/5.28 java/8 fastqc/0.11.8"
-        File? runFastQC_inputFastq
-        Int runFastQC_timeout = 20
-        Int runFastQC_jobMemory = 6
+        File runFastQC_inputFastq
+        Int runFastQC_timeout = "20"
+        Int runFastQC_jobMemory = "6"
         File fastqR1 
         File? fastqR2
         String outputFileNamePrefix = ""
@@ -25,16 +24,16 @@ Array[File] inputFastqs = select_all([fastqR1,fastqR2])
 String outputPrefixOne = if outputFileNamePrefix == "" then basename(inputFastqs[0], '.fastq.gz') + "_fastqc"
                                                        else outputFileNamePrefix + r1Suffix
 
-call runFastQC as firstMateFastQC { input: inputFastq = inputFastqs[0], jobMemory = runFastQC_jobMemory, timeout = runFastQC_timeout, modules = runFastQC_modules, docker = docker }
-call renameOutput as firstMateHtml { input: inputFile = firstMateFastQC.html_report_file, extension = "html", customPrefix = outputPrefixOne, jobMemory = renameOutput_jobMemory, timeout = renameOutput_timeout, docker = docker }
-call renameOutput as firstMateZip { input: inputFile = firstMateFastQC.zip_bundle_file, extension = "zip", customPrefix = outputPrefixOne, jobMemory = renameOutput_jobMemory, timeout = renameOutput_timeout, docker = docker }
+call runFastQC as firstMateFastQC { input: inputFastq = inputFastqs[0], jobMemory = runFastQC_jobMemory, timeout = runFastQC_timeout, modules = runFastQC_modules }
+call renameOutput as firstMateHtml { input: inputFile = firstMateFastQC.html_report_file, extension = "html", customPrefix = outputPrefixOne, jobMemory = renameOutput_jobMemory, timeout = renameOutput_timeout }
+call renameOutput as firstMateZip { input: inputFile = firstMateFastQC.zip_bundle_file, extension = "zip", customPrefix = outputPrefixOne, jobMemory = renameOutput_jobMemory, timeout = renameOutput_timeout }
 
 if (length(inputFastqs) > 1) {
  String outputPrefixTwo = if outputFileNamePrefix=="" then basename(inputFastqs[1], '.fastq.gz') + "_fastqc"
                                                       else outputFileNamePrefix + r2Suffix
- call runFastQC as secondMateFastQC { input: inputFastq = inputFastqs[1], jobMemory = runFastQC_jobMemory, timeout = runFastQC_timeout, modules = runFastQC_modules, docker = docker }
- call renameOutput as secondMateHtml { input: inputFile = secondMateFastQC.html_report_file, extension = "html", customPrefix = outputPrefixTwo, jobMemory = renameOutput_jobMemory, timeout = renameOutput_timeout, docker = docker }
- call renameOutput as secondMateZip { input: inputFile = secondMateFastQC.zip_bundle_file, extension = "zip", customPrefix = outputPrefixTwo, jobMemory = renameOutput_jobMemory, timeout = renameOutput_timeout, docker = docker }
+ call runFastQC as secondMateFastQC { input: inputFastq = inputFastqs[1], jobMemory = runFastQC_jobMemory, timeout = runFastQC_timeout, modules = runFastQC_modules }
+ call renameOutput as secondMateHtml { input: inputFile = secondMateFastQC.html_report_file, extension = "html", customPrefix = outputPrefixTwo, jobMemory = renameOutput_jobMemory, timeout = renameOutput_timeout }
+ call renameOutput as secondMateZip { input: inputFile = secondMateFastQC.zip_bundle_file, extension = "zip", customPrefix = outputPrefixTwo, jobMemory = renameOutput_jobMemory, timeout = renameOutput_timeout }
 }
 
 parameter_meta {
@@ -77,7 +76,6 @@ output {
 # ===================================
 task runFastQC {
 input {
-        String docker = "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d"
         Int    jobMemory = 6
         Int    timeout   = 20
         File   inputFastq
@@ -85,9 +83,6 @@ input {
 }
 
 command <<<
- source /home/ubuntu/.bashrc 
- ~{"module load " + modules + " || exit 20; "} 
-
  set -euo pipefail
  FASTQC=$(which fastqc)
  JAVA=$(which java)
@@ -102,7 +97,6 @@ parameter_meta {
 }
 
 runtime {
-  docker: "~{docker}"
   memory:  "~{jobMemory} GB"
   modules: "~{modules}"
   timeout: "~{timeout}"
@@ -119,7 +113,6 @@ output {
 # =================================================
 task renameOutput {
 input {
-  String docker = "g3chen/wgspipeline@sha256:3c0c292c460c8db19b9744be1ea81529c4d189e4c4f9ca9a63046edcf792087d"
   Int  jobMemory = 2
   File inputFile
   String extension
@@ -145,7 +138,6 @@ command <<<
 >>>
 
 runtime {
-  docker: "~{docker}"
   memory:  "~{jobMemory} GB"
   timeout: "~{timeout}"
 }
