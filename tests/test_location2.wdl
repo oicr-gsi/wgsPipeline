@@ -75,7 +75,8 @@ task find_tools {
 task task2 {
     input {
         String var1 = "default task2_var1"
-        String var2 = "default task2_var2"
+        String var2 = basename(var1, "var1")
+        String var3 = var1
     }
 
     command <<<

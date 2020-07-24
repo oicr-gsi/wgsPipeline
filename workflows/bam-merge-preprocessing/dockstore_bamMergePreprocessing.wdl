@@ -21,7 +21,6 @@ workflow bamMergePreprocessing {
     Int applyBaseQualityScoreRecalibration_jobMemory = 24
     String? applyBaseQualityScoreRecalibration_additionalParams
     String applyBaseQualityScoreRecalibration_suffix = ".recalibrated"
-    String applyBaseQualityScoreRecalibration_outputFileName = basename(bam,".bam")
     String analyzeCovariates_modules = "gatk/4.1.6.0"
     Int analyzeCovariates_timeout = 6
     Int analyzeCovariates_cores = 1
@@ -321,7 +320,6 @@ workflow bamMergePreprocessing {
           jobMemory = applyBaseQualityScoreRecalibration_jobMemory,
           additionalParams = applyBaseQualityScoreRecalibration_additionalParams,
           suffix = applyBaseQualityScoreRecalibration_suffix,
-          outputFileName = applyBaseQualityScoreRecalibration_outputFileName,
           recalibrationTable = gatherBQSRReports.recalibrationTable,
           bam = bam
       }
