@@ -1,4 +1,5 @@
 import WDL
+import argparse
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument("-i", "--input-wdl-path", required = True, help = "source wdl path")
