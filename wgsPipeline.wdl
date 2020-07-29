@@ -1,58 +1,51 @@
 version 1.0
 
 # imports workflows for the top portion of WGSPipeline
-import "https://raw.githubusercontent.com/f73chen/WGSPipeline/master/workflows/bcl2fastq.wdl" as Bcl2fastq
-# import "https://raw.githubusercontent.com/f73chen/WGSPipeline/master/workflows/fastqc.wdl" as Fastqc
-# import "https://raw.githubusercontent.com/f73chen/WGSPipeline/master/workflows/bwaMem.wdl" as BwaMem
-# import "https://raw.githubusercontent.com/f73chen/WGSPipeline/master/workflows/bamQC.wdl" as BamQC
-# import "https://raw.githubusercontent.com/f73chen/WGSPipeline/master/workflows/bamMergePreprocessing.wdl" as BamMergePreprocessing
-# import "https://raw.githubusercontent.com/f73chen/WGSPipeline/master/workflows/insertSizeMetrics.wdl" as InsertSizeMetrics
-# import "https://raw.githubusercontent.com/f73chen/WGSPipeline/master/workflows/callability.wdl" as Callability
-# import "https://raw.githubusercontent.com/f73chen/WGSPipeline/master/workflows/wgsMetrics.wdl" as WgsMetrics
-# Sample Fingerprinting
+import "imports/dockstore_bcl2fastq.wdl" as bcl2fastq
+import "imports/dockstore_fastqc.wdl" as fastqc
+import "imports/dockstore_bwaMem.wdl" as bwaMem
+import "imports/dockstore_bamQC.wdl" as bamQC
+import "imports/dockstore_bamMergePreprocessing.wdl" as bamMergePreprocessing
+import "imports/dockstore_insertSizeMetrics.wdl" as insertSizeMetrics
+import "imports/dockstore_callability.wdl" as callability
+import "imports/dockstore_wgsMetrics.wdl" as wgsMetrics
+# import "" as sampleFingerprinting			# @@@ no WDL available
 
 # imports workflows for the bottom portion of WGSPipeline
-# Sequenza
-# Delly
-# Mavis
-# Haplotype Caller
-# Genotype gVCF
-# Variant Effect Predictor
-# Mutect2
-# Janus:MutationExtended
-# Janus:CopyNumberAlteration
-# Janus:Fusion
+# import "imports/dockstore_sequenza.wdl" as sequenza
+# import "imports/dockstore_delly.wdl" as delly
+# import "" as mavis						# @@@ qsub run not compatible with docker
+# import "imports/dockstore_haplotypecaller.wdl" as haplotypeCaller
+# import "" as genotypegVCF					# @@@ no WDL available
+# import "imports/dockstore_variantEffectPredictor.wdl" as vep
+# import "imports/dockstore_mutect2GATK4.wdl" as mutect2
+# import "" as janusMutationExtended		# @@@ no WDL available
+# import "" as janusCopyNumberAlteration	# @@@ no WDL available
+# import "" as janusFusion					# @@@ no WDL available
 
 workflow wgsPipeline {
   input {
-    # INPUTS
+    # universal inputs
   }
   parameter_meta {
     # PARAMETER METAS
   }
   meta {
     author: "Fenglin Chen"
-    description: "Workflow to wrap the WGS Analysis Pipeline"
+    description: "Wrapper workflow for the WGS Analysis Pipeline"
     dependencies: [{
       name: "bcl2fastq",
       url: "https://emea.support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software.html"
-    }]
+    }
+    # ALL DEPENDENCIES
+    ]
     output_meta: {
-      fastqs: "A list of FASTQs generated and annotations that should be applied to them."
+      # OUTPUT METAS
     }
   }
-  call Bcl2fastq.bcl2fastq {
+  call namespace.task1 {
     input:
       
-  }
-  output {
-    # OUTPUTS
-  }
-}
-
-task @@@@@@@@@@@ {
-  command {
-    # COMMANDS
   }
   output {
     # OUTPUTS
