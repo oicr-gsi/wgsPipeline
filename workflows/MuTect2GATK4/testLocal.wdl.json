@@ -1,8 +1,0 @@
-{
-  "mutect2GATK4.intervalsToParallelizeBy": "chr1,chr2",
-  "mutect2GATK4.tumorBam": "/home/ubuntu/data/sample_data/mutect2/ESBCC_0005_Br_P_EX_D03834113.merged.sorted.filter.deduped.realigned.recal.bam",
-  "mutect2GATK4.tumorBai": "/home/ubuntu/data/sample_data/mutect2/ESBCC_0005_Br_P_EX_D03834113.merged.sorted.filter.deduped.realigned.recal.bam.bai",
-  "mutect2GATK4.normalBam": "/home/ubuntu/data/sample_data/mutect2/ESBCC_0005_Pb_R_EX_D03834105.merged.sorted.filter.deduped.realigned.recal.bam",
-  "mutect2GATK4.normalBai": "/home/ubuntu/data/sample_data/mutect2/ESBCC_0005_Pb_R_EX_D03834105.merged.sorted.filter.deduped.realigned.recal.bam.bai",
-  "mutect2GATK4.intervalFile": "/home/ubuntu/data/sample_data/mutect2/S31285117_Covered.bed"
-}

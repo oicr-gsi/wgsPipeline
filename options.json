@@ -1,5 +1,0 @@
-{
-  "default_runtime_attributes": {
-    "docker_volume": "/home/ubuntu/data/data_modules:/data_modules"
-  }
-}

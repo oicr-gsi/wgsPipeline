@@ -1,4 +1,0 @@
-{
-	"findDownsampleParams": ["targetReads"],
-	"bamQCMetrics": ["workflowVersion", "refFasta", "refSizesBed"]
-}
