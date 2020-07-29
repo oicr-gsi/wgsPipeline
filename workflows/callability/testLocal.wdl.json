@@ -1,0 +1,9 @@
+{
+  "callability.normalBam": "/home/ubuntu/data/sample_data/callability/GSM732315.SRR222175.sorted.rg.bam",
+  "callability.normalBamIndex": "/home/ubuntu/data/sample_data/callability/GSM732315.SRR222175.sorted.rg.bai",
+  "callability.tumorBam": "/home/ubuntu/data/sample_data/callability/GSM732316.SRR222176.sorted.rg.bam",
+  "callability.tumorBamIndex": "/home/ubuntu/data/sample_data/callability/GSM732316.SRR222176.sorted.rg.bai",
+  "callability.intervalFile": "/home/ubuntu/data/sample_data/callability/hg19_random.genome.sizes.bed",
+  "callability.normalMinCoverage": 8,
+  "callability.tumorMinCoverage": 14
+}

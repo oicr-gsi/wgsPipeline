@@ -1,0 +1,4 @@
+{
+	"runDelly": ["excludeList", "modules"],
+	"dupmarkBam": ["modules"]
+}

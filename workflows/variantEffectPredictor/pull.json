@@ -1,0 +1,4 @@
+{
+	"vep": ["modules", "referenceFasta", "vepCacheDir"],
+	"vcf2maf": ["modules", "referenceFasta", "vepCacheDir", "vepPath", "ncbiBuild", "vcfFilter"]
+}
