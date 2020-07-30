@@ -65,18 +65,20 @@ workflow wgsPipeline {
 
   call fastQC.fastQC {
     input:
+    # Array[Output]+ bcl2fastq_fastqs
       File fastqR1 
       File? fastqR2
   }
 
   call bwaMem.bwaMem {
     input:
+    # Array[Output]+ bcl2fastq_fastqs
       File fastqR1
       File fastqR2
   }
-
-  call bamQC.bamQC {
+  call bamQC.bamQC as rawBamQC {
     input:
+    # File bwaMem_bwaMemBam
       File bamFile      
   }
 
@@ -86,13 +88,21 @@ workflow wgsPipeline {
       Array[RuntimeAttributes] preprocessingBamRuntimeAttributes = []      
   }
 
+  call bamQC.bamQC as processedBamQC {
+    input:
+    # Array[OutputGroup] bamMergePreprocessing_outputGroups
+      File bamFile      
+  }
+
   call insertSizeMetrics.insertSizeMetrics {
     input:
+    # Array[OutputGroup] bamMergePreprocessing_outputGroups
       File inputBam      
   }
 
   call callability.callability {
     input:
+    # Array[OutputGroup] bamMergePreprocessing_outputGroups
       File normalBam
       File normalBamIndex
       File tumorBam
@@ -102,41 +112,52 @@ workflow wgsPipeline {
 
   call wgsMetrics.wgsMetrics {
     input:
+    # Array[OutputGroup] bamMergePreprocessing_outputGroups
       File inputBam
   }
 
   output {
     # bcl2fastq
-    Array[Output]+ bcl2fastq_fastqs = bcl2fastq.fastqs
+    #struct Output {
+    #  String name
+    #  Pair[Array[File]+,Map[String,String]] fastqs
+    #}
+    # Array[Output]+ bcl2fastq_fastqs = bcl2fastq.fastqs
 
-    # fastQC
+    # fastQC FINAL OUTPUTS
     File? fastQC_html_report_R1  = fastQC.html_report_R1
     File? fastQC_zip_bundle_R1   = fastQC.zip_bundle_R1
     File? fastQC_html_report_R2 = fastQC.html_report_R2
     File? fastQC_zip_bundle_R2  = fastQC.zip_bundle_R2
     
     # bwaMem
-    File bwaMem_bwaMemBam = bwaMem.bwaMemBam
+    #File bwaMem_bwaMemBam = bwaMem.bwaMemBam
+    # FINAL OUTPUTS
     File bwaMem_bwaMemIndex = bwaMem.bwaMemIndex
     File? bwaMem_log = bwaMem.log
     File? bwaMem_cutAdaptAllLogs = bwaMem.cutAdaptAllLogs
 
-    # bamQC
-    File bamQC_result = bamQC.result
+    # bamQC FINAL OUTPUTS
+    File rawBamQC_result = rawBamQC.result
+    File processedBamQC_result = processedBamQC.result
 
     # bamMergePreprocessing
-    Array[OutputGroup] bamMergePreprocessing_outputGroups = bamMergePreprocessing.outputGroup
+    #OutputGroup outputGroup = { "outputIdentifier": o.outputIdentifier,
+    #                            "bam": select_first([mergeSplitByIntervalBams.mergedBam, o.bams[0]]),
+    #                            "bamIndex": select_first([mergeSplitByIntervalBams.mergedBamIndex, o.bamIndexes[0]])}
+    #Array[OutputGroup] bamMergePreprocessing_outputGroups = bamMergePreprocessing.outputGroup
+    # FINAL OUTPUTS
     File? bamMergePreprocessing_recalibrationReport = bamMergePreprocessing.recalibrationReport
     File? bamMergePreprocessing_recalibrationTable = bamMergePreprocessing.recalibrationTable
     
-    # insertSizeMetrics
+    # insertSizeMetrics FINAL OUTPUTS
     File insertSizeMetrics_insertSizeMetrics = insertSizeMetrics.insertSizeMetrics
     File insertSizeMetrics_histogramReport = insertSizeMetrics.histogramReport
 
-    # callability
+    # callability FINAL OUTPUTS
     File callability_callabilityMetrics = callability.callabilityMetrics
 
-    # wgsMetrics
+    # wgsMetrics FINAL OUTPUTS
     File wgsMetrics_outputWGSMetrics = wgsMetrics.outputWGSMetrics
   }
 }
