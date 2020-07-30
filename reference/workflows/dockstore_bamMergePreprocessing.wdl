@@ -264,6 +264,11 @@ workflow bamMergePreprocessing {
         RuntimeAttributes runtimeAttributesOverride = runtimeAttributeOverrides[0]
       }
 
+      String? x1 = preprocessBam_splitNCigarReadsAdditionalParams
+      String? x2 = preprocessBam_markDuplicatesAdditionalParams
+      String? x3 = preprocessBam_filterAdditionalParams
+      String? x4 = preprocessBam_minMapQuality
+
       call preprocessBam {
         input:
           docker = docker,
@@ -596,6 +601,9 @@ task preprocessBam {
   Array[String] prefixedReadFilters = prefix("--read-filter ", readFilters)
 
   command <<<
+    source /home/ubuntu/.bashrc 
+    ~{"module load " + modules + " || exit 20; "} 
+
     set -euxo pipefail
     inputBams="~{sep=" " bams}"
     inputBamIndexes="~{sep=" " bamIndexes}"
