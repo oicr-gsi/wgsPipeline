@@ -78,13 +78,54 @@ workflow wgsPipeline {
   }
   call bamQC.bamQC as rawBamQC {
     input:
-    # File bwaMem_bwaMemBam
-      File bamFile      
+      File bamFile = bwaMem.bwaMemBam
   }
 
   call bamMergePreprocessing.bamMergePreprocessing {
     input:    
+    # "bamMergePreprocessing.inputGroups": [
+    #   {
+    #     "outputIdentifier": "PCSI0022",
+    #     "bamAndBamIndexInputs": [
+    #       {
+    #         "bam": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022C.val.bam",
+    #         "bamIndex": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022C.val.bam.bai"
+    #       },
+    #       {
+    #         "bam": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022P.val.bam",
+    #         "bamIndex": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022P.val.bam.bai"
+    #       },
+    #       {
+    #         "bam": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022R.val.bam",
+    #         "bamIndex": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022R.val.bai"
+    #       },
+    #       {
+    #         "bam": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022X.val.bam",
+    #         "bamIndex": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022X.val.bam.bai"
+    #       }
+    #     ]
+    #   }
+    # ]
+      #File bwaMem_bwaMemBam = bwaMem.bwaMemBam
+      #File bwaMem_bwaMemIndex = bwaMem.bwaMemIndex
       Array[InputGroup] inputGroups
+    # "bamMergePreprocessing.preprocessingBamRuntimeAttributes": [
+    #   {
+    #     "id": "chr1",
+    #     "memory": 21,
+    #     "timeout": 1
+    #   },
+    #   {
+    #     "id": "PCSI0022.chr2",
+    #     "memory": 21,
+    #     "timeout": 1
+    #   },
+    #   {
+    #     "id": "*",
+    #     "memory": 18,
+    #     "timeout": 1
+    #   }
+    # ]
       Array[RuntimeAttributes] preprocessingBamRuntimeAttributes = []      
   }
 
@@ -118,10 +159,15 @@ workflow wgsPipeline {
 
   output {
     # bcl2fastq
-    #struct Output {
-    #  String name
-    #  Pair[Array[File]+,Map[String,String]] fastqs
-    #}
+    # "bcl2fastq.fastqs": [{
+    #   "fastqs": {
+    #     "right": {
+    #       "read_count": "528"
+    #     },
+    #     "left": ["/home/ubuntu/repos/wgsPipeline/cromwell-executions/bcl2fastq/2d9c661c-5fdf-4b73-8ee6-a90c9af8598d/call-process/execution/test_sample_R1.fastq.gz", "/home/ubuntu/repos/wgsPipeline/cromwell-executions/bcl2fastq/2d9c661c-5fdf-4b73-8ee6-a90c9af8598d/call-process/execution/test_sample_R2.fastq.gz"]
+    #   },
+    #   "name": "test_sample"
+    # }]
     # Array[Output]+ bcl2fastq_fastqs = bcl2fastq.fastqs
 
     # fastQC FINAL OUTPUTS
@@ -133,13 +179,12 @@ workflow wgsPipeline {
     # bwaMem
     #File bwaMem_bwaMemBam = bwaMem.bwaMemBam
     # FINAL OUTPUTS
-    File bwaMem_bwaMemIndex = bwaMem.bwaMemIndex
+    #File bwaMem_bwaMemIndex = bwaMem.bwaMemIndex
     File? bwaMem_log = bwaMem.log
     File? bwaMem_cutAdaptAllLogs = bwaMem.cutAdaptAllLogs
 
     # bamQC FINAL OUTPUTS
     File rawBamQC_result = rawBamQC.result
-    File processedBamQC_result = processedBamQC.result
 
     # bamMergePreprocessing
     #OutputGroup outputGroup = { "outputIdentifier": o.outputIdentifier,
@@ -153,6 +198,9 @@ workflow wgsPipeline {
     # insertSizeMetrics FINAL OUTPUTS
     File insertSizeMetrics_insertSizeMetrics = insertSizeMetrics.insertSizeMetrics
     File insertSizeMetrics_histogramReport = insertSizeMetrics.histogramReport
+
+    # bamQC FINAL OUTPUTS
+    File processedBamQC_result = processedBamQC.result
 
     # callability FINAL OUTPUTS
     File callability_callabilityMetrics = callability.callabilityMetrics
