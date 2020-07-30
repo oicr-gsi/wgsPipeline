@@ -98,84 +98,84 @@ workflow bamMergePreprocessing {
   }
 
   parameter_meta {
-      docker: "Docker container to run the workflow in"
-      mergeSplitByIntervalBams_modules: "Environment module name and version to load (space separated) before command execution."
-      mergeSplitByIntervalBams_timeout: "Maximum amount of time (in hours) the task can run for."
-      mergeSplitByIntervalBams_cores: "The number of cores to allocate to the job."
-      mergeSplitByIntervalBams_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
-      mergeSplitByIntervalBams_jobMemory: "Memory allocated to job (in GB)."
-      mergeSplitByIntervalBams_additionalParams: "Additional parameters to pass to GATK MergeSamFiles."
-      collectFilesBySample_modules: "Environment module name and version to load (space separated) before command execution."
-      collectFilesBySample_timeout: "Maximum amount of time (in hours) the task can run for."
-      collectFilesBySample_cores: "The number of cores to allocate to the job."
-      collectFilesBySample_jobMemory: "Memory allocated to job (in GB)."
-      applyBaseQualityScoreRecalibration_modules: "Environment module name and version to load (space separated) before command execution."
-      applyBaseQualityScoreRecalibration_timeout: "Maximum amount of time (in hours) the task can run for."
-      applyBaseQualityScoreRecalibration_cores: "The number of cores to allocate to the job."
-      applyBaseQualityScoreRecalibration_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
-      applyBaseQualityScoreRecalibration_jobMemory: "Memory allocated to job (in GB)."
-      applyBaseQualityScoreRecalibration_additionalParams: "Additional parameters to pass to GATK ApplyBQSR."
-      applyBaseQualityScoreRecalibration_suffix: "Suffix to use for recalibrated bams."
-      analyzeCovariates_modules: "Environment module name and version to load (space separated) before command execution."
-      analyzeCovariates_timeout: "Maximum amount of time (in hours) the task can run for."
-      analyzeCovariates_cores: "The number of cores to allocate to the job."
-      analyzeCovariates_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
-      analyzeCovariates_jobMemory: "Memory allocated to job (in GB)."
-      analyzeCovariates_outputFileName: "Recalibration report file name."
-      analyzeCovariates_additionalParams: "Additional parameters to pass to GATK AnalyzeCovariates"
-      gatherBQSRReports_modules: "Environment module name and version to load (space separated) before command execution."
-      gatherBQSRReports_timeout: "Maximum amount of time (in hours) the task can run for."
-      gatherBQSRReports_cores: "The number of cores to allocate to the job."
-      gatherBQSRReports_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
-      gatherBQSRReports_jobMemory: "Memory allocated to job (in GB)."
-      gatherBQSRReports_outputFileName: "Recalibration table file name."
-      gatherBQSRReports_additionalParams: "Additional parameters to pass to GATK GatherBQSRReports."
-      baseQualityScoreRecalibration_modules: "Environment module name and version to load (space separated) before command execution."
-      baseQualityScoreRecalibration_timeout: "Maximum amount of time (in hours) the task can run for."
-      baseQualityScoreRecalibration_cores: "The number of cores to allocate to the job."
-      baseQualityScoreRecalibration_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
-      baseQualityScoreRecalibration_jobMemory: "Memory allocated to job (in GB)."
-      baseQualityScoreRecalibration_outputFileName: "Recalibration table file name."
-      baseQualityScoreRecalibration_additionalParams: "Additional parameters to pass to GATK BaseRecalibrator."
-      baseQualityScoreRecalibration_knownSites: "Array of VCF with known polymorphic sites used to exclude regions around known polymorphisms from analysis."
-      baseQualityScoreRecalibration_intervals: "One or more genomic intervals over which to operate."
-      indelRealign_gatkJar: "Path to GATK jar."
-      indelRealign_modules: "Environment module name and version to load (space separated) before command execution."
-      indelRealign_timeout: "Maximum amount of time (in hours) the task can run for."
-      indelRealign_cores: "The number of cores to allocate to the job."
-      indelRealign_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
-      indelRealign_jobMemory: "Memory allocated to job (in GB)."
-      indelRealign_additionalParams: "Additional parameters to pass to GATK IndelRealigner."
-      indelRealign_knownAlleles: "Array of input VCF files with known indels."
-      realignerTargetCreator_gatkJar: "Path to GATK jar."
-      realignerTargetCreator_modules: "Environment module name and version to load (space separated) before command execution."
-      realignerTargetCreator_timeout: "Maximum amount of time (in hours) the task can run for."
-      realignerTargetCreator_cores: "The number of cores to allocate to the job."
-      realignerTargetCreator_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
-      realignerTargetCreator_jobMemory: "Memory allocated to job (in GB)."
-      realignerTargetCreator_additionalParams: "Additional parameters to pass to GATK RealignerTargetCreator."
-      realignerTargetCreator_downsamplingType: "Type of read downsampling to employ at a given locus (NONE|ALL_READS|BY_SAMPLE)."
-      realignerTargetCreator_knownIndels: "Array of input VCF files with known indels."
-      preprocessBam_defaultRuntimeAttributes: "Default runtime attributes (memory in GB, overhead in GB, cores in cpu count, timeout in hours, modules are environment modules to load before the task executes)."
-      preprocessBam_splitNCigarReadsAdditionalParams: "Additional parameters to pass to GATK SplitNCigarReads."
-      preprocessBam_readFilters: "SplitNCigarReads read filters"
-      preprocessBam_refactorCigarString: "SplitNCigarReads refactor cigar string?"
-      preprocessBam_splitNCigarReadsSuffix: "Suffix to use for SplitNCigarReads bams."
-      preprocessBam_markDuplicatesAdditionalParams: "Additional parameters to pass to GATK MarkDuplicates."
-      preprocessBam_opticalDuplicatePixelDistance: "MarkDuplicates optical distance."
-      preprocessBam_removeDuplicates: "MarkDuplicates remove duplicates?"
-      preprocessBam_markDuplicatesSuffix: "Suffix to use for duplicate marked bams."
-      preprocessBam_filterAdditionalParams: "Additional parameters to pass to samtools."
-      preprocessBam_minMapQuality: "Samtools minimum mapping quality filter to apply."
-      preprocessBam_filterFlags: "Samtools filter flags to apply."
-      preprocessBam_filterSuffix: "Suffix to use for filtered bams."
-      preprocessBam_temporaryWorkingDir: "Where to write out intermediary bam files. Only the final preprocessed bam will be written to task working directory if this is set to local tmp."
-      splitStringToArray_modules: "Environment module name and version to load (space separated) before command execution."
-      splitStringToArray_timeout: "Maximum amount of time (in hours) the task can run for."
-      splitStringToArray_cores: "The number of cores to allocate to the job."
-      splitStringToArray_jobMemory: "Memory allocated to job (in GB)."
-      splitStringToArray_recordSeparator: "Interval interval group separator - this can be used to combine multiple intervals into one group."
-      splitStringToArray_lineSeparator: "Interval group separator - these are the intervals to split by."
+    docker: "Docker container to run the workflow in"
+    mergeSplitByIntervalBams_modules: "Environment module name and version to load (space separated) before command execution."
+    mergeSplitByIntervalBams_timeout: "Maximum amount of time (in hours) the task can run for."
+    mergeSplitByIntervalBams_cores: "The number of cores to allocate to the job."
+    mergeSplitByIntervalBams_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
+    mergeSplitByIntervalBams_jobMemory: "Memory allocated to job (in GB)."
+    mergeSplitByIntervalBams_additionalParams: "Additional parameters to pass to GATK MergeSamFiles."
+    collectFilesBySample_modules: "Environment module name and version to load (space separated) before command execution."
+    collectFilesBySample_timeout: "Maximum amount of time (in hours) the task can run for."
+    collectFilesBySample_cores: "The number of cores to allocate to the job."
+    collectFilesBySample_jobMemory: "Memory allocated to job (in GB)."
+    applyBaseQualityScoreRecalibration_modules: "Environment module name and version to load (space separated) before command execution."
+    applyBaseQualityScoreRecalibration_timeout: "Maximum amount of time (in hours) the task can run for."
+    applyBaseQualityScoreRecalibration_cores: "The number of cores to allocate to the job."
+    applyBaseQualityScoreRecalibration_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
+    applyBaseQualityScoreRecalibration_jobMemory: "Memory allocated to job (in GB)."
+    applyBaseQualityScoreRecalibration_additionalParams: "Additional parameters to pass to GATK ApplyBQSR."
+    applyBaseQualityScoreRecalibration_suffix: "Suffix to use for recalibrated bams."
+    analyzeCovariates_modules: "Environment module name and version to load (space separated) before command execution."
+    analyzeCovariates_timeout: "Maximum amount of time (in hours) the task can run for."
+    analyzeCovariates_cores: "The number of cores to allocate to the job."
+    analyzeCovariates_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
+    analyzeCovariates_jobMemory: "Memory allocated to job (in GB)."
+    analyzeCovariates_outputFileName: "Recalibration report file name."
+    analyzeCovariates_additionalParams: "Additional parameters to pass to GATK AnalyzeCovariates"
+    gatherBQSRReports_modules: "Environment module name and version to load (space separated) before command execution."
+    gatherBQSRReports_timeout: "Maximum amount of time (in hours) the task can run for."
+    gatherBQSRReports_cores: "The number of cores to allocate to the job."
+    gatherBQSRReports_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
+    gatherBQSRReports_jobMemory: "Memory allocated to job (in GB)."
+    gatherBQSRReports_outputFileName: "Recalibration table file name."
+    gatherBQSRReports_additionalParams: "Additional parameters to pass to GATK GatherBQSRReports."
+    baseQualityScoreRecalibration_modules: "Environment module name and version to load (space separated) before command execution."
+    baseQualityScoreRecalibration_timeout: "Maximum amount of time (in hours) the task can run for."
+    baseQualityScoreRecalibration_cores: "The number of cores to allocate to the job."
+    baseQualityScoreRecalibration_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
+    baseQualityScoreRecalibration_jobMemory: "Memory allocated to job (in GB)."
+    baseQualityScoreRecalibration_outputFileName: "Recalibration table file name."
+    baseQualityScoreRecalibration_additionalParams: "Additional parameters to pass to GATK BaseRecalibrator."
+    baseQualityScoreRecalibration_knownSites: "Array of VCF with known polymorphic sites used to exclude regions around known polymorphisms from analysis."
+    baseQualityScoreRecalibration_intervals: "One or more genomic intervals over which to operate."
+    indelRealign_gatkJar: "Path to GATK jar."
+    indelRealign_modules: "Environment module name and version to load (space separated) before command execution."
+    indelRealign_timeout: "Maximum amount of time (in hours) the task can run for."
+    indelRealign_cores: "The number of cores to allocate to the job."
+    indelRealign_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
+    indelRealign_jobMemory: "Memory allocated to job (in GB)."
+    indelRealign_additionalParams: "Additional parameters to pass to GATK IndelRealigner."
+    indelRealign_knownAlleles: "Array of input VCF files with known indels."
+    realignerTargetCreator_gatkJar: "Path to GATK jar."
+    realignerTargetCreator_modules: "Environment module name and version to load (space separated) before command execution."
+    realignerTargetCreator_timeout: "Maximum amount of time (in hours) the task can run for."
+    realignerTargetCreator_cores: "The number of cores to allocate to the job."
+    realignerTargetCreator_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
+    realignerTargetCreator_jobMemory: "Memory allocated to job (in GB)."
+    realignerTargetCreator_additionalParams: "Additional parameters to pass to GATK RealignerTargetCreator."
+    realignerTargetCreator_downsamplingType: "Type of read downsampling to employ at a given locus (NONE|ALL_READS|BY_SAMPLE)."
+    realignerTargetCreator_knownIndels: "Array of input VCF files with known indels."
+    preprocessBam_defaultRuntimeAttributes: "Default runtime attributes (memory in GB, overhead in GB, cores in cpu count, timeout in hours, modules are environment modules to load before the task executes)."
+    preprocessBam_splitNCigarReadsAdditionalParams: "Additional parameters to pass to GATK SplitNCigarReads."
+    preprocessBam_readFilters: "SplitNCigarReads read filters"
+    preprocessBam_refactorCigarString: "SplitNCigarReads refactor cigar string?"
+    preprocessBam_splitNCigarReadsSuffix: "Suffix to use for SplitNCigarReads bams."
+    preprocessBam_markDuplicatesAdditionalParams: "Additional parameters to pass to GATK MarkDuplicates."
+    preprocessBam_opticalDuplicatePixelDistance: "MarkDuplicates optical distance."
+    preprocessBam_removeDuplicates: "MarkDuplicates remove duplicates?"
+    preprocessBam_markDuplicatesSuffix: "Suffix to use for duplicate marked bams."
+    preprocessBam_filterAdditionalParams: "Additional parameters to pass to samtools."
+    preprocessBam_minMapQuality: "Samtools minimum mapping quality filter to apply."
+    preprocessBam_filterFlags: "Samtools filter flags to apply."
+    preprocessBam_filterSuffix: "Suffix to use for filtered bams."
+    preprocessBam_temporaryWorkingDir: "Where to write out intermediary bam files. Only the final preprocessed bam will be written to task working directory if this is set to local tmp."
+    splitStringToArray_modules: "Environment module name and version to load (space separated) before command execution."
+    splitStringToArray_timeout: "Maximum amount of time (in hours) the task can run for."
+    splitStringToArray_cores: "The number of cores to allocate to the job."
+    splitStringToArray_jobMemory: "Memory allocated to job (in GB)."
+    splitStringToArray_recordSeparator: "Interval interval group separator - this can be used to combine multiple intervals into one group."
+    splitStringToArray_lineSeparator: "Interval group separator - these are the intervals to split by."
     inputGroups: "Array of objects describing sets of bams to merge together and the merged file name. These merged bams will be cocleaned together and output separately (by merged name)."
     intervalsToParallelizeByString: "Comma separated list of intervals to split by (e.g. chr1,chr2,chr3+chr4)."
     doFilter: "Enable/disable Samtools filtering."
@@ -263,11 +263,6 @@ workflow bamMergePreprocessing {
         # create a RuntimeAttributes optional
         RuntimeAttributes runtimeAttributesOverride = runtimeAttributeOverrides[0]
       }
-
-      String? x1 = preprocessBam_splitNCigarReadsAdditionalParams
-      String? x2 = preprocessBam_markDuplicatesAdditionalParams
-      String? x3 = preprocessBam_filterAdditionalParams
-      String? x4 = preprocessBam_minMapQuality
 
       call preprocessBam {
         input:
@@ -498,7 +493,7 @@ task splitStringToArray {
   }
 
   parameter_meta {
-      docker: "Docker container to run the workflow in"
+    docker: "Docker container to run the workflow in"
     str: "Interval string to split (e.g. chr1,chr2,chr3+chr4)."
     lineSeparator: "Interval group separator - these are the intervals to split by."
     recordSeparator: "Interval interval group separator - this can be used to combine multiple intervals into one group."
@@ -728,7 +723,7 @@ task preprocessBam {
   }
 
   parameter_meta {
-      docker: "Docker container to run the workflow in"
+    docker: "Docker container to run the workflow in"
     doFilter: "Enable/disable Samtools filtering."
     doMarkDuplicates: "Enable/disable GATK4 MarkDuplicates."
     doSplitNCigarReads: "Enable/disable GATK4 SplitNCigarReads."
@@ -801,7 +796,7 @@ task mergeBams {
   }
 
   parameter_meta {
-      docker: "Docker container to run the workflow in"
+    docker: "Docker container to run the workflow in"
     bams: "Array of bam files to merge together."
     outputFileName: "Output files will be prefixed with this."
     additionalParams: "Additional parameters to pass to GATK MergeSamFiles."
@@ -863,7 +858,7 @@ task realignerTargetCreator {
   }
 
   parameter_meta {
-      docker: "Docker container to run the workflow in"
+    docker: "Docker container to run the workflow in"
     bams: "Array of bam files to produce RTC intervals for."
     bamIndexes: "Array of index files for input bams."
     reference: "Path to reference file."
@@ -951,7 +946,7 @@ task indelRealign {
   }
 
   parameter_meta {
-      docker: "Docker container to run the workflow in"
+    docker: "Docker container to run the workflow in"
     bams: "Array of bam files to indel realign together."
     bamIndexes: "Array of index files for input bams."
     intervals: "One or more genomic intervals over which to operate."
@@ -1017,7 +1012,7 @@ task baseQualityScoreRecalibration {
   }
 
   parameter_meta {
-      docker: "Docker container to run the workflow in"
+    docker: "Docker container to run the workflow in"
     bams: "Array of bam files to produce a recalibration table for."
     reference: "Path to reference file."
     intervals: "One or more genomic intervals over which to operate."
@@ -1071,7 +1066,7 @@ task gatherBQSRReports {
   }
 
   parameter_meta {
-      docker: "Docker container to run the workflow in"
+    docker: "Docker container to run the workflow in"
     recalibrationTables: "Array of recalibration tables to merge."
     additionalParams: "Additional parameters to pass to GATK GatherBQSRReports."
     outputFileName: "Recalibration table file name."
@@ -1122,7 +1117,7 @@ task analyzeCovariates {
   }
 
   parameter_meta {
-      docker: "Docker container to run the workflow in"
+    docker: "Docker container to run the workflow in"
     recalibrationTable: "Recalibration table to produce report for."
     additionalParams: "Additional parameters to pass to GATK AnalyzeCovariates"
     outputFileName: "Recalibration report file name."
@@ -1177,7 +1172,7 @@ task applyBaseQualityScoreRecalibration {
   }
 
   parameter_meta {
-      docker: "Docker container to run the workflow in"
+    docker: "Docker container to run the workflow in"
     recalibrationTable: "Recalibration table to apply to all input bams."
     bam: "Bam file to recalibrate."
     outputFileName: "Output files will be prefixed with this."
@@ -1263,7 +1258,7 @@ task collectFilesBySample {
   }
 
   parameter_meta {
-      docker: "Docker container to run the workflow in"
+    docker: "Docker container to run the workflow in"
     inputGroups: "Array of objects describing output file groups. The output file group name is used to partition input bams by name."
     bams: "Array of bams to partition by inputGroup output file name."
     bamIndexes: "Array of index files for input bams."
