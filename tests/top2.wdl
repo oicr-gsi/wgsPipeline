@@ -3,17 +3,8 @@ version 1.0
 # imports workflows for the top portion of WGSPipeline
 import "imports/dockstore_bcl2fastq.wdl" as bcl2fastq
 import "imports/dockstore_fastqc.wdl" as fastQC
-import "imports/dockstore_bwaMem.wdl" as bwaMem
-import "imports/dockstore_bamQC.wdl" as bamQC
 
 workflow top4 {
-  input {
-    Array[Map[String, String]] bwaMem_fastqInfos
-  }
-
-  parameter_meta {
-    bwaMem_fastqInfos: "@@@ placeholder"
-  }
 
   call bcl2fastq.bcl2fastq {}
 
@@ -31,32 +22,10 @@ workflow top4 {
     File fastqR1 = fastqs.fastqs.left[0]
     File fastqR2 = fastqs.fastqs.left[1]
 
-    # [
-    #   "'@RG\\tID:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tLB:PCSI0022C\\tPL:ILLUMINA\\tPU:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tSM:PCSI0022C'", 
-    #   "121005_h804_0096_AD0V4NACXX_PCSI0022C_NoIndex_L006_001"
-    # ]
-
-    Map[String, String] fastqInfo = bwaMem_fastqInfos[index]
-    String readGroups = fastqInfo[readGroups]
-    String outputFileNamePrefix = fastqInfo[outputFileNamePrefix]
-
     call fastQC.fastQC {
       input:
         File fastqR1 = fastqR1
         File? fastqR2 = fastqR2
-    }
-
-    call bwaMem.bwaMem {
-      input:
-        File fastqR1 = fastqR1
-        File fastqR2 = fastqR2
-        String readGroups = readGroups
-        String outputFileNamePrefix = outputFileNamePrefix
-    }
-
-    call bamQC.bamQC as rawBamQC {
-      input:
-        File bamFile = bwaMem.bwaMemBam
     }
   }
 
@@ -66,12 +35,5 @@ workflow top4 {
     Array[File]? fastQC_zip_bundle_R1   = fastQC.zip_bundle_R1
     Array[File]? fastQC_html_report_R2 = fastQC.html_report_R2
     Array[File]? fastQC_zip_bundle_R2  = fastQC.zip_bundle_R2
-    
-    # bwaMem
-    Array[File]? bwaMem_log = bwaMem.log
-    Array[File]? bwaMem_cutAdaptAllLogs = bwaMem.cutAdaptAllLogs
-
-    # bamQC
-    Array[File] rawBamQC_result = rawBamQC.result
   }
 }

@@ -8,35 +8,17 @@ import "imports/dockstore_bamQC.wdl" as bamQC
 
 workflow top4 {
   input {
+    Array[Map[String, String]] bwaMem_fastqInfos
   }
 
   parameter_meta {
+    bwaMem_fastqInfos: "@@@ placeholder"
   }
 
   call bcl2fastq.bcl2fastq {}
 
-  call fastQC.fastQC {
-    input:
-    # Array[Output]+ bcl2fastq_fastqs
-      File fastqR1 
-      File? fastqR2
-  }
-
-  call bwaMem.bwaMem {
-    input:
-    # Array[Output]+ bcl2fastq_fastqs
-      File fastqR1
-      File fastqR2
-  }
-
-  call bamQC.bamQC as rawBamQC {
-    input:
-      File bamFile = bwaMem.bwaMemBam
-  }
-
-  output {
-    # bcl2fastq
-    # "bcl2fastq.fastqs": [{
+  scatter (index in length(bcl2fastq.fastqs)) {  # bcl2fastq.fastqs = Array[Output]+  
+    # {
     #   "fastqs": {
     #     "right": {
     #       "read_count": "528"
@@ -44,24 +26,52 @@ workflow top4 {
     #     "left": ["/home/ubuntu/repos/wgsPipeline/cromwell-executions/bcl2fastq/2d9c661c-5fdf-4b73-8ee6-a90c9af8598d/call-process/execution/test_sample_R1.fastq.gz", "/home/ubuntu/repos/wgsPipeline/cromwell-executions/bcl2fastq/2d9c661c-5fdf-4b73-8ee6-a90c9af8598d/call-process/execution/test_sample_R2.fastq.gz"]
     #   },
     #   "name": "test_sample"
-    # }]
-    # Array[Output]+ bcl2fastq_fastqs = bcl2fastq.fastqs
+    # }
+    Output fastqs = bcl2fastq.fastqs[index]
+    File fastqR1 = fastqs.fastqs.left[0]
+    File fastqR2 = fastqs.fastqs.left[1]
 
-    # fastQC FINAL OUTPUTS
-    File? fastQC_html_report_R1  = fastQC.html_report_R1
-    File? fastQC_zip_bundle_R1   = fastQC.zip_bundle_R1
-    File? fastQC_html_report_R2 = fastQC.html_report_R2
-    File? fastQC_zip_bundle_R2  = fastQC.zip_bundle_R2
+    # [
+    #   "'@RG\\tID:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tLB:PCSI0022C\\tPL:ILLUMINA\\tPU:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tSM:PCSI0022C'", 
+    #   "121005_h804_0096_AD0V4NACXX_PCSI0022C_NoIndex_L006_001"
+    # ]
+
+    Map[String, String] fastqInfo = bwaMem_fastqInfos[index]
+    String readGroups = fastqInfo[readGroups]
+    String outputFileNamePrefix = fastqInfo[outputFileNamePrefix]
+
+    call fastQC.fastQC {
+      input:
+        File fastqR1 = fastqR1
+        File? fastqR2 = fastqR2
+    }
+
+    call bwaMem.bwaMem {
+      input:
+        File fastqR1 = fastqR1
+        File fastqR2 = fastqR2
+        String readGroups = readGroups
+        String outputFileNamePrefix = outputFileNamePrefix
+    }
+
+    call bamQC.bamQC as rawBamQC {
+      input:
+        File bamFile = bwaMem.bwaMemBam
+    }
+  }
+
+  output {
+    # fastQC
+    Array[File]? fastQC_html_report_R1  = fastQC.html_report_R1
+    Array[File]? fastQC_zip_bundle_R1   = fastQC.zip_bundle_R1
+    Array[File]? fastQC_html_report_R2 = fastQC.html_report_R2
+    Array[File]? fastQC_zip_bundle_R2  = fastQC.zip_bundle_R2
     
     # bwaMem
-    #File bwaMem_bwaMemBam = bwaMem.bwaMemBam
-    # FINAL OUTPUTS
-    #File bwaMem_bwaMemIndex = bwaMem.bwaMemIndex
-    File? bwaMem_log = bwaMem.log
-    File? bwaMem_cutAdaptAllLogs = bwaMem.cutAdaptAllLogs
+    Array[File]? bwaMem_log = bwaMem.log
+    Array[File]? bwaMem_cutAdaptAllLogs = bwaMem.cutAdaptAllLogs
 
-    # bamQC FINAL OUTPUTS
-    File rawBamQC_result = rawBamQC.result
-    File processedBamQC_result = processedBamQC.result
+    # bamQC
+    Array[File] rawBamQC_result = rawBamQC.result
   }
 }
