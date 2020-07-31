@@ -56,9 +56,9 @@ workflow top2 {
 
 	output {
 		# fastQC
-		Array[File]? fastQC_html_report_R1  = fastQC.html_report_R1
-		Array[File]? fastQC_zip_bundle_R1   = fastQC.zip_bundle_R1
-		Array[File]? fastQC_html_report_R2 = fastQC.html_report_R2
-		Array[File]? fastQC_zip_bundle_R2  = fastQC.zip_bundle_R2
+		Array[File?] fastQC_html_report_R1  = fastQC.html_report_R1
+		Array[File?] fastQC_zip_bundle_R1   = fastQC.zip_bundle_R1
+		Array[File?] fastQC_html_report_R2 = fastQC.html_report_R2
+		Array[File?] fastQC_zip_bundle_R2  = fastQC.zip_bundle_R2
 	}
 }
