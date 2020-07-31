@@ -1,22 +1,35 @@
 {
-  "top2.bcl2fastq.lanes": [
-    1
-  ],
   "top2.bcl2fastq.mismatches": 1,
   "top2.bcl2fastq.modules": "bcl2fastq/2.20.0.422 bcl2fastq-jail/3.0.0",
   "top2.bcl2fastq.process_ignoreMissingBcls": true,
   "top2.bcl2fastq.process_ignoreMissingFilter": true,
   "top2.bcl2fastq.process_ignoreMissingPositions": true,
-  "top2.bcl2fastq.runDirectory": "/data_modules/bcl2fastq_tiny",
-  "top2.bcl2fastq.samples": [
-    {
-      "barcodes": [
-        "AGATCGGT",
-        "CATCGTCG",
-        "GTCATATA",
-        "TCGGACAC"
+  "top2.bcl2fastqSamples": [
+  	{
+      "samples": [
+        {
+          "barcodes": [
+            "AGATCGGT",
+            "CATCGTCG"
+          ],
+          "name": "tumor"
+        }
       ],
-      "name": "test_sample"
+      "lanes": [1],
+      "runDirectory": "/data_modules/bcl2fastq_tiny"
+    },
+    {
+      "samples": [
+        {
+          "barcodes": [
+            "GTCATATA",
+            "TCGGACAC"
+          ],
+          "name": "normal"
+        }
+      ],
+      "lanes": [1],
+      "runDirectory": "/data_modules/bcl2fastq_tiny"
     }
   ],
   "top2.fastQC.firstMateFastQC_modules": "perl/5.30 java/8 fastqc/0.11.8",
