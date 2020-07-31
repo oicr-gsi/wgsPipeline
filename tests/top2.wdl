@@ -4,7 +4,7 @@ version 1.0
 import "test_imports2/dockstore_bcl2fastq.wdl" as bcl2fastq
 import "test_imports2/dockstore_fastqc.wdl" as fastQC
 
-workflow top4 {
+workflow top2 {
 
   call bcl2fastq.bcl2fastq {}
 

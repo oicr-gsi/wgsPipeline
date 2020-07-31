@@ -1,14 +1,14 @@
 {
-  "top4.bcl2fastq.lanes": [
+  "top2.bcl2fastq.lanes": [
     1
   ],
-  "top4.bcl2fastq.mismatches": 1,
-  "top4.bcl2fastq.modules": "bcl2fastq/2.20.0.422 bcl2fastq-jail/3.0.0",
-  "top4.bcl2fastq.process_ignoreMissingBcls": true,
-  "top4.bcl2fastq.process_ignoreMissingFilter": true,
-  "top4.bcl2fastq.process_ignoreMissingPositions": true,
-  "top4.bcl2fastq.runDirectory": "/data_modules/bcl2fastq_tiny",
-  "top4.bcl2fastq.samples": [
+  "top2.bcl2fastq.mismatches": 1,
+  "top2.bcl2fastq.modules": "bcl2fastq/2.20.0.422 bcl2fastq-jail/3.0.0",
+  "top2.bcl2fastq.process_ignoreMissingBcls": true,
+  "top2.bcl2fastq.process_ignoreMissingFilter": true,
+  "top2.bcl2fastq.process_ignoreMissingPositions": true,
+  "top2.bcl2fastq.runDirectory": "/data_modules/bcl2fastq_tiny",
+  "top2.bcl2fastq.samples": [
     {
       "barcodes": [
         "AGATCGGT",
@@ -19,6 +19,6 @@
       "name": "test_sample"
     }
   ],
-  "top4.fastQC.firstMateFastQC_modules": "perl/5.30 java/8 fastqc/0.11.8",
-  "top4.fastQC.secondMateFastQC_modules": "perl/5.30 java/8 fastqc/0.11.8"
+  "top2.fastQC.firstMateFastQC_modules": "perl/5.30 java/8 fastqc/0.11.8",
+  "top2.fastQC.secondMateFastQC_modules": "perl/5.30 java/8 fastqc/0.11.8"
 }
