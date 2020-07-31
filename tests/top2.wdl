@@ -25,7 +25,7 @@ workflow top2 {
 		call bcl2fastq.bcl2fastq {
 			input:
 				# need samples, lanes, and runDirectory
-				samples = bcl2fastqSample.samples,
+				samples = bcl2fastqSample,
 				lanes = bcl2fastqSample.lanes,
 				runDirectory = bcl2fastqSample.runDirectory
 	  	  		# the rest of the inputs are the same for all runs; fed directly into subworkflow
