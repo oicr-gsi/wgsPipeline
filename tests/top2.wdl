@@ -1,8 +1,8 @@
 version 1.0
 
 # imports workflows for the top portion of WGSPipeline
-import "imports/dockstore_bcl2fastq.wdl" as bcl2fastq
-import "imports/dockstore_fastqc.wdl" as fastQC
+import "test_imports2/dockstore_bcl2fastq.wdl" as bcl2fastq
+import "test_imports2/dockstore_fastqc.wdl" as fastQC
 
 workflow top4 {
 
