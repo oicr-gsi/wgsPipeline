@@ -95,8 +95,8 @@ workflow top4 {
 		Array[File?] fastQC_zip_bundle_R2  = fastQC.zip_bundle_R2
     
 	    # bwaMem
-	    Array[File]? bwaMem_log = bwaMem.log
-	    Array[File]? bwaMem_cutAdaptAllLogs = bwaMem.cutAdaptAllLogs
+	    Array[File?] bwaMem_log = bwaMem.log
+	    Array[File?] bwaMem_cutAdaptAllLogs = bwaMem.cutAdaptAllLogs
 
 	    # bamQC
 	    Array[File] rawBamQC_result = rawBamQC.result
