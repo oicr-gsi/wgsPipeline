@@ -43,9 +43,9 @@ workflow top2 {
 	    #   },
 	    #   "name": "test_sample"
 	    # }
-		Output fastqs = bcl2fastq.fastqs[0]
-		File fastqR1 = fastqs["fastqs"].left[0]
-		File fastqR2 = fastqs["fastqs"].left[1]
+		Output bcl2fastqOut = bcl2fastq.fastqs[0]
+		File fastqR1 = bcl2fastqOut.fastqs.left[0]
+		File fastqR2 = bcl2fastqOut.fastqs.left[1]
 
 		call fastQC.fastQC {
 			input:
