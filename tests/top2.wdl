@@ -24,8 +24,8 @@ workflow top4 {
 
     call fastQC.fastQC {
       input:
-        File fastqR1 = fastqR1
-        File? fastqR2 = fastqR2
+        fastqR1 = fastqR1
+        fastqR2 = fastqR2
     }
   }
 
