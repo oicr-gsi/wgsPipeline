@@ -4,7 +4,7 @@
   "top4.bcl2fastq.process_ignoreMissingBcls": true,
   "top4.bcl2fastq.process_ignoreMissingFilter": true,
   "top4.bcl2fastq.process_ignoreMissingPositions": true,
-  "top4.bcl2fastqSamples": [
+  "top4.bcl2fastqMetas": [
   	{
       "samples": [
         {
