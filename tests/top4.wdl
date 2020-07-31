@@ -84,7 +84,7 @@ workflow top4 {
 		call bamQC.bamQC as rawBamQC {
 			input:
 				bamFile = bwaMem.bwaMemBam, 	# File
-				metadata = rawBamQCMeta.metadata	# Map[String, String]
+				metadata = rawBamQCMeta.metadata,	# Map[String, String]
 				findDownsampleParamsMarkDup_chromosomes = rawBamQCMeta.findDownsampleParamsMarkDup_chromosomes	# Array[String]
 		}
 	}
