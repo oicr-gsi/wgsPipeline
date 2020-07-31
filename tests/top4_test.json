@@ -49,7 +49,7 @@
   "top4.rawBamQC.findDownsampleParams_targetReads": 20000,
   "top4.rawBamQC.bamQCMetrics_refFasta": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19_random.fa",
   "top4.rawBamQC.bamQCMetrics_refSizesBed": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19.chrom.sizes.bed",
-  "top4.bamQCMetas": [
+  "top4.rawBamQCMetas": [
   	{
       "metadata": {
     	"donor": "Xenomorph",
@@ -57,7 +57,8 @@
     	"library design": "WY-1001",
     	"tissue origin": "LV-426",
     	"tissue type": "Claw fragment"
-  	  }
+  	  },
+  	  "findDownsampleParamsMarkDup_chromosomes": ["chr21", "chrXXI"]
   	},
   	{
 	  "metadata": {
@@ -66,7 +67,8 @@
     	"library design": "WY-1001",
     	"tissue origin": "LV-426",
     	"tissue type": "Claw fragment"
-  	  }
+  	  },
+  	  "findDownsampleParamsMarkDup_chromosomes": ["chr21", "chrXXI"]
   	}
   ]
 }

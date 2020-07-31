@@ -19,6 +19,7 @@ struct bwaMemMeta {
 
 struct bamQCMeta {
     Map[String, String] metadata
+    Array[String] findDownsampleParamsMarkDup_chromosomes
 	# possibly add more parameters here like outputFileNamePrefix
 }
 
@@ -26,7 +27,7 @@ workflow top4 {
 	input {
 		Array[bcl2fastqMeta] bcl2fastqMetas
 		Array[bwaMemMeta] bwaMemMetas
-		Array[bamQCMeta] bamQCMetas
+		Array[bamQCMeta] rawBamQCMetas
 	}
 
 	parameter_meta {
@@ -78,12 +79,13 @@ workflow top4 {
 				readGroups = bwaMemMeta.readGroups 	# String
 		}
 
-		bamQCMeta bamQCMeta = bamQCMetas[index]
+		bamQCMeta rawBamQCMeta = rawBamQCMetas[index]
 
 		call bamQC.bamQC as rawBamQC {
 			input:
 				bamFile = bwaMem.bwaMemBam, 	# File
-				metadata = bamQCMeta.metadata	# Map[String, String]
+				metadata = rawBamQCMeta.metadata	# Map[String, String]
+				findDownsampleParamsMarkDup_chromosomes = rawBamQCMeta.findDownsampleParamsMarkDup_chromosomes	# Array[String]
 		}
 	}
 
