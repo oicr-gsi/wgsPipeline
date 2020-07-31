@@ -42,15 +42,15 @@ workflow top4 {
 
     call fastQC.fastQC {
       input:
-        fastqR1 = fastqR1 	# File
+        fastqR1 = fastqR1,	# File
         fastqR2 = fastqR2   # File
     }
 
     call bwaMem.bwaMem {
       input:
-        fastqR1 = fastqR1   # File
-        fastqR2 = fastqR2   # File
-        readGroups = readGroups 	# String
+        fastqR1 = fastqR1,   # File
+        fastqR2 = fastqR2,   # File
+        readGroups = readGroups, 	# String
         outputFileNamePrefix = outputFileNamePrefix 	# String
     }
 
