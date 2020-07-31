@@ -36,7 +36,7 @@ workflow top4 {
 	# scatter over [Tumour, Normal]
 	scatter (index in [0, 1]){
 
-		bcl2fastqMeta = bcl2fastqMetas[index]
+		bcl2fastqMeta bcl2fastqMeta = bcl2fastqMetas[index]
 
 		call bcl2fastq.bcl2fastq {
 			input:
@@ -69,7 +69,7 @@ workflow top4 {
 				fastqR2 = fastqR2	# File
 		}
 
-		bwaMemMeta = bwaMemMetas[index]
+		bwaMemMeta bwaMemMeta = bwaMemMetas[index]
 
 		call bwaMem.bwaMem {
 			input:
@@ -78,11 +78,11 @@ workflow top4 {
 				readGroups = bwaMemMeta.readGroups 	# String
 		}
 
-		bamQCMeta = bamQCMetas[index]
+		bamQCMeta bamQCMeta = bamQCMetas[index]
 
 		call bamQC.bamQC as rawBamQC {
 			input:
-				bamFile = bwaMem.bwaMemBam 		# File
+				bamFile = bwaMem.bwaMemBam, 	# File
 				metadata = bamQCMeta.metadata	# Map[String, String]
 		}
 	}
