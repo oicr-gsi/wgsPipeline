@@ -5,7 +5,7 @@ import "test_imports2/dockstore_bcl2fastq.wdl" as bcl2fastq
 import "test_imports2/dockstore_fastqc.wdl" as fastQC
 
 struct bcl2fastqSample {
-	SampleList samples  # Array[Sample] where Sample: {Array[String]+, String}
+	Array[Sample]+ samples  # Sample: {Array[String]+, String}
 	Array[Int] lanes
 	String runDirectory
 }
@@ -25,7 +25,7 @@ workflow top2 {
 		call bcl2fastq.bcl2fastq {
 			input:
 				# need samples, lanes, and runDirectory
-				samples = bcl2fastqSample.samples.samples,
+				samples = bcl2fastqSample.samples,
 				lanes = bcl2fastqSample.lanes,
 				runDirectory = bcl2fastqSample.runDirectory
 	  	  		# the rest of the inputs are the same for all runs; fed directly into subworkflow
