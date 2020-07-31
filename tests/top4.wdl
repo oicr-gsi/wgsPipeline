@@ -59,7 +59,7 @@ workflow top4 {
 	    #   "name": "test_sample"
 	    # }
 	    # assumes that bcl2fastq only outputs one pair of fastqs
-		Output bcl2fastqOut = select_first(bcl2fastq.fastqs)
+		Output bcl2fastqOut = bcl2fastq.fastqs[0]
 		File fastqR1 = bcl2fastqOut.fastqs.left[0]
 		File fastqR2 = bcl2fastqOut.fastqs.left[1]
 
