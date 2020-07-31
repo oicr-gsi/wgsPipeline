@@ -24,9 +24,9 @@ struct bamQCMeta {
 
 workflow top4 {
 	input {
-		Array[bcl2fastqMeta]+ bcl2fastqMetas
-		Array[bwaMemMeta]+ bwaMemMetas
-		Array[bamQCMeta]+ bamQCMetas
+		Array[bcl2fastqMeta] bcl2fastqMetas
+		Array[bwaMemMeta] bwaMemMetas
+		Array[bamQCMeta] bamQCMetas
 	}
 
 	parameter_meta {
