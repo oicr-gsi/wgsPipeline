@@ -45,10 +45,10 @@
       "readGroups": "'@RG\\tID:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tLB:PCSI0022C\\tPL:ILLUMINA\\tPU:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tSM:PCSI0022C'"
     }
   ],
-  "top4.bamQC.bamQCMetrics_workflowVersion": "4.0.0_TEST",
-  "top4.bamQC.findDownsampleParams_targetReads": 20000,
-  "top4.bamQC.bamQCMetrics_refFasta": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19_random.fa",
-  "top4.bamQC.bamQCMetrics_refSizesBed": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19.chrom.sizes.bed",
+  "top4.rawBamQC.bamQCMetrics_workflowVersion": "4.0.0_TEST",
+  "top4.rawBamQC.findDownsampleParams_targetReads": 20000,
+  "top4.rawBamQC.bamQCMetrics_refFasta": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19_random.fa",
+  "top4.rawBamQC.bamQCMetrics_refSizesBed": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19.chrom.sizes.bed",
   "top4.bamQCMetas": [
   	{
       "metadata": {
