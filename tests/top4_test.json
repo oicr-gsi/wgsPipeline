@@ -9,27 +9,25 @@
       "samples": [
         {
           "barcodes": [
-            "AGATCGGT",
-            "CATCGTCG"
+            "CGATGT"
           ],
-          "name": "tumor"
+          "name": "NA12878_A002"
         }
       ],
       "lanes": [1],
-      "runDirectory": "/data_modules/bcl2fastq_tiny"
+      "runDirectory": "/data_modules/bcl2fastq_HiSeq"
     },
     {
       "samples": [
         {
           "barcodes": [
-            "GTCATATA",
-            "TCGGACAC"
+            "TGACCA"
           ],
-          "name": "normal"
+          "name": "NA12878_A004"
         }
       ],
       "lanes": [1],
-      "runDirectory": "/data_modules/bcl2fastq_tiny"
+      "runDirectory": "/data_modules/bcl2fastq_HiSeq"
     }
   ],
   "top4.fastQC.firstMateFastQC_modules": "perl/5.30 java/8 fastqc/0.11.8",
