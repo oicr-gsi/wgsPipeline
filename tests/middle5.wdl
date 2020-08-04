@@ -71,11 +71,11 @@ workflow top5 {
 	    File callability_callabilityMetrics = callability.callabilityMetrics
 
 	    # insertSizeMetrics
-	    File insertSizeMetrics_insertSizeMetrics = insertSizeMetrics.insertSizeMetrics
-    	File insertSizeMetrics_histogramReport = insertSizeMetrics.histogramReport
+	    Array[File] insertSizeMetrics_insertSizeMetrics = insertSizeMetrics.insertSizeMetrics
+    	Array[File] insertSizeMetrics_histogramReport = insertSizeMetrics.histogramReport
 
     	# wgsMetrics
-    	File wgsMetrics_outputWGSMetrics = wgsMetrics.outputWGSMetrics
+    	Array[File] wgsMetrics_outputWGSMetrics = wgsMetrics.outputWGSMetrics
 
 	    # bamQC
 	    Array[File] processedBamQC_result = processedBamQC.result
