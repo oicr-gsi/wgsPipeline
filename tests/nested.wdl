@@ -33,7 +33,7 @@ workflow test {
 
   output {
     Array[String] finalOutput = printMessage.outputMessage
-    Array[String] notifyOutput = notify.line
+    Array[String?] notifyOutput = notify.line
   }
 }
 
