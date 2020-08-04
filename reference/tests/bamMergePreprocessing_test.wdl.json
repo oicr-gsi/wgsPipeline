@@ -56,5 +56,9 @@
       "timeout": 1
     }
   ],
-  "bamMergePreprocessing.realignerTargetCreator_timeout": 1
+  "bamMergePreprocessing.realignerTargetCreator_timeout": 1,
+  "bamMergePreprocessing.preprocessBam_filterAdditionalParams": "",
+  "bamMergePreprocessing.preprocessBam_markDuplicatesAdditionalParams": "",
+  "bamMergePreprocessing.preprocessBam_splitNCigarReadsAdditionalParams": "",
+  "bamMergePreprocessing.preprocessBam_minMapQuality": 0
 }
