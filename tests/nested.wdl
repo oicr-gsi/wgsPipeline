@@ -13,20 +13,26 @@ workflow test {
 #      }
 #    }
 #  }
+  Array[String] array1 = ["hi 1","hi 2","hi 3"]
+  Array[String] array2 = ["4","5","6"]
 
-  Array[Pair[Int,Int]] scatterInputs = cross([1,2,3],[4,5,6])
+  Array[Pair[String, String]] scatterInputs = cross(array1, array2)
   scatter (p in scatterInputs) {
-    Int i = p.left
-    Int y = p.right
+    String message = p.left
+    String second = p.right
     call printMessage {
       input:
-        message=message,
+        message=message + second,
         maybe=maybe
+    }
+    if (second == array2[length(array2) - 1]){
+      call notify {}  # should only activate 3 times
     }
   }
 
   output {
     Array[String] finalOutput = printMessage.outputMessage
+    Array[String] notifyOutput = notify.line
   }
 }
 
@@ -41,5 +47,14 @@ task printMessage {
   >>>
   output {
     String outputMessage = stdout()
+  }
+}
+
+task notify {
+  command <<<
+    echo "next message reached"
+  >>>
+  output {
+    String line = stdout()
   }
 }

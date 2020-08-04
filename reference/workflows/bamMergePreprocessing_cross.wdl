@@ -66,6 +66,13 @@ workflow bamMergePreprocessing {
   }
   Array[Intervals] intervalsToParallelizeBy = splitStringToArray.intervalsList.intervalsList
 
+  # WORKAROUND because Cromwell can't handle optional inputs in nested scatter
+  Array[Pair[]] scatterInputs = cross(intervalsToParallelizeBy, inputGroups)
+  scatter (p in scatterInputs) {
+     intervals = p.left
+     i = p.right
+  }
+
   scatter (intervals in intervalsToParallelizeBy) {
     scatter (i in inputGroups) {
       scatter(bamAndBamIndexInput in i.bamAndBamIndexInputs) {
@@ -114,6 +121,9 @@ workflow bamMergePreprocessing {
           runtimeAttributes = runtimeAttributesOverride
       }
     }
+
+    # WORKAROUND if the second scatter reached its end (equals the last element)
+
     Array[File] preprocessedBams = preprocessBam.preprocessedBam
     Array[File] preprocessedBamIndexes = preprocessBam.preprocessedBamIndex
 
