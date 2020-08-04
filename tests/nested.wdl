@@ -24,6 +24,10 @@ workflow test {
         maybe=maybe
     }
   }
+
+  output {
+    Array[String] finalOutput = printMessage.outputMessage
+  }
 }
 
 task printMessage {
