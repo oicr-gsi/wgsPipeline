@@ -1,0 +1,74 @@
+{
+  "top4.bcl2fastq.mismatches": 1,
+  "top4.bcl2fastq.modules": "bcl2fastq/2.20.0.422 bcl2fastq-jail/3.0.0",
+  "top4.bcl2fastq.process_ignoreMissingBcls": true,
+  "top4.bcl2fastq.process_ignoreMissingFilter": true,
+  "top4.bcl2fastq.process_ignoreMissingPositions": true,
+  "top4.bcl2fastqMetas": [
+  	{
+      "samples": [
+        {
+          "barcodes": [
+            "AGATCGGT",
+            "CATCGTCG"
+          ],
+          "name": "normal"
+        }
+      ],
+      "lanes": [1],
+      "runDirectory": "/data_modules/bcl2fastq_tiny"
+    },
+    {
+      "samples": [
+        {
+          "barcodes": [
+            "GTCATATA",
+            "TCGGACAC"
+          ],
+          "name": "tumor"
+        }
+      ],
+      "lanes": [1],
+      "runDirectory": "/data_modules/bcl2fastq_tiny"
+    }
+  ],
+  "top4.fastQC.firstMateFastQC_modules": "perl/5.30 java/8 fastqc/0.11.8",
+  "top4.fastQC.secondMateFastQC_modules": "perl/5.30 java/8 fastqc/0.11.8",
+  "top4.bwaMem.doTrim": "true",
+  "top4.bwaMem.runBwaMem_modules": "samtools/1.9 bwa/0.7.12 hg19-bwa-index/0.7.12",
+  "top4.bwaMem.runBwaMem_bwaRef": "$HG19_BWA_INDEX_ROOT/hg19_random.fa",
+  "top4.bwaMemMetas": [
+    {
+      "readGroups": "'@RG\\tID:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tLB:PCSI0022C\\tPL:ILLUMINA\\tPU:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tSM:PCSI0022C'"
+    },
+    {
+      "readGroups": "'@RG\\tID:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tLB:PCSI0022C\\tPL:ILLUMINA\\tPU:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tSM:PCSI0022C'"
+    }
+  ],
+  "top4.rawBamQC.bamQCMetrics_workflowVersion": "4.0.0_TEST",
+  "top4.rawBamQC.findDownsampleParams_targetReads": 20000,
+  "top4.rawBamQC.bamQCMetrics_refFasta": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19_random.fa",
+  "top4.rawBamQC.bamQCMetrics_refSizesBed": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19.chrom.sizes.bed",
+  "top4.rawBamQCMetas": [
+  	{
+      "metadata": {
+    	"donor": "Xenomorph",
+    	"group id": "Weyland-Yutani",
+    	"library design": "WY-1001",
+    	"tissue origin": "LV-426",
+    	"tissue type": "Claw fragment"
+  	  },
+  	  "findDownsampleParamsMarkDup_chromosomes": ["chr21", "chrXXI"]
+  	},
+  	{
+	  "metadata": {
+    	"donor": "Xenomorph",
+    	"group id": "Weyland-Yutani",
+    	"library design": "WY-1001",
+    	"tissue origin": "LV-426",
+    	"tissue type": "Claw fragment"
+  	  },
+  	  "findDownsampleParamsMarkDup_chromosomes": ["chr21", "chrXXI"]
+  	}
+  ]
+}
