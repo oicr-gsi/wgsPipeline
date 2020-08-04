@@ -30,9 +30,9 @@ workflow top5 {
 
 	call callability.callability {
 		input:
-			normalBam = outputGroups[0].bam
-			normalBamIndex = outputGroups[0].bamIndex
-			tumorBam = outputGroups[1].bam
+			normalBam = outputGroups[0].bam,
+			normalBamIndex = outputGroups[0].bamIndex,
+			tumorBam = outputGroups[1].bam,
 			tumorBamIndex = outputGroups[1].bamIndex
 	}
 
