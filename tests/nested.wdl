@@ -15,6 +15,7 @@ workflow test {
 #  }
   Array[String] array1 = ["hi 1","hi 2","hi 3"]
   Array[String] array2 = ["4","5","6"]
+  Int len = length(array2) - 1
 
   Array[Pair[String, String]] scatterInputs = cross(array1, array2)
   scatter (p in scatterInputs) {
@@ -25,7 +26,7 @@ workflow test {
         message=message + second,
         maybe=maybe
     }
-    if (second == array2[length(array2) - 1]){
+    if (second == array2[len]){
       call notify {}  # should only activate 3 times
     }
   }
