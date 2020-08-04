@@ -1,0 +1,83 @@
+{
+  "top5.inputGroups": [
+    {
+      "outputIdentifier": "Normal",
+      "bamAndBamIndexInputs": [
+        {
+          "bam": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022C.val.bam",
+          "bamIndex": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022C.val.bam.bai"
+        }
+      ]
+    },
+    {
+      "outputIdentifier": "Tumor",
+      "bamAndBamIndexInputs": [
+        {
+          "bam": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022C.val.bam",
+          "bamIndex": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022C.val.bam.bai"
+        }
+      ]
+    }
+  ],
+  "top5.bamMergePreprocessing.intervalsToParallelizeByString": "chr1,chr2",
+  "top5.bamMergePreprocessing.reference": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19_random.fa",
+  "top5.bamMergePreprocessing.realignerTargetCreator_knownIndels": [
+    "/data_modules/gsi/modulator/sw/data/hg19-dbsnp-leftaligned-138/dbsnp_138.hg19.leftAligned.vcf.gz"
+  ],
+  "top5.bamMergePreprocessing.indelRealign_knownAlleles": [
+    "/data_modules/gsi/modulator/sw/data/hg19-dbsnp-leftaligned-138/dbsnp_138.hg19.leftAligned.vcf.gz"
+  ],
+  "top5.bamMergePreprocessing.baseQualityScoreRecalibration_knownSites": [
+    "/data_modules/gsi/modulator/sw/data/hg19-dbsnp-leftaligned-138/dbsnp_138.hg19.leftAligned.vcf.gz"
+  ],
+  "top5.bamMergePreprocessing.analyzeCovariates_timeout": 1,
+  "top5.bamMergePreprocessing.applyBaseQualityScoreRecalibration_timeout": 1,
+  "top5.bamMergePreprocessing.baseQualityScoreRecalibration_timeout": 1,
+  "top5.bamMergePreprocessing.gatherBQSRReports_timeout": 1,
+  "top5.bamMergePreprocessing.indelRealign_timeout": 1,
+  "top5.bamMergePreprocessing.mergeSplitByIntervalBams_timeout": 1,
+  "top5.bamMergePreprocessing.preprocessingBamRuntimeAttributes": [
+    {
+      "id": "chr1",
+      "memory": 21,
+      "timeout": 1
+    },
+    {
+      "id": "*",
+      "memory": 18,
+      "timeout": 1
+    }
+  ],
+  "top5.bamMergePreprocessing.realignerTargetCreator_timeout": 1,
+  "top5.bamMergePreprocessing.preprocessBam_filterAdditionalParams": "",
+  "top5.bamMergePreprocessing.preprocessBam_markDuplicatesAdditionalParams": "",
+  "top5.bamMergePreprocessing.preprocessBam_splitNCigarReadsAdditionalParams": "",
+  "top5.bamMergePreprocessing.preprocessBam_minMapQuality": 0,
+  "top5.callability.intervalFile": "/home/ubuntu/data/sample_data/callability/hg19_random.genome.sizes.bed",
+  "top5.callability.normalMinCoverage": 8,
+  "top5.callability.tumorMinCoverage": 14,
+  "top5.processedBamQC.bamQCMetrics_workflowVersion": "4.0.0_TEST",
+  "top5.processedBamQC.findDownsampleParams_targetReads": 20000,
+  "top5.processedBamQC.bamQCMetrics_refFasta": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19_random.fa",
+  "top5.processedBamQC.bamQCMetrics_refSizesBed": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19.chrom.sizes.bed",
+  "top5.processedBamQCMetas": [
+  	{
+      "metadata": {
+    	"donor": "Xenomorph",
+    	"group id": "Weyland-Yutani",
+    	"library design": "WY-1001",
+    	"tissue origin": "LV-426",
+    	"tissue type": "Claw fragment"
+  	  }
+  	},
+  	{
+	  "metadata": {
+    	"donor": "Xenomorph",
+    	"group id": "Weyland-Yutani",
+    	"library design": "WY-1001",
+    	"tissue origin": "LV-426",
+    	"tissue type": "Claw fragment"
+  	  }
+  	}
+  ]
+}

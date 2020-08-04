@@ -34,7 +34,7 @@ workflow top4 {
 
 	}
 
-	# scatter over [Tumour, Normal]
+	# scatter over [Normal, Tumor]
 	scatter (index in [0, 1]){
 
 		bcl2fastqMeta bcl2fastqMeta = bcl2fastqMetas[index]
