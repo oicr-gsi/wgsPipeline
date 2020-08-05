@@ -4,8 +4,8 @@
       "outputIdentifier": "Normal",
       "bamAndBamIndexInputs": [
         {
-          "bam": "/home/ubuntu/data/sample_data/bammergepreprocessing/tempBams/normal.bam",
-          "bamIndex": "/home/ubuntu/data/sample_data/bammergepreprocessing/tempBams/normal.bam.bai"
+          "bam": "/home/ubuntu/data/sample_data/wgspipeline/tempBams_HiSeq/normal.bam",
+          "bamIndex": "/home/ubuntu/data/sample_data/wgspipeline/tempBams_HiSeq/normal.bam.bai"
         }
       ]
     },
@@ -13,8 +13,8 @@
       "outputIdentifier": "Tumor",
       "bamAndBamIndexInputs": [
         {
-          "bam": "/home/ubuntu/data/sample_data/bammergepreprocessing/tempBams/tumor.bam",
-          "bamIndex": "/home/ubuntu/data/sample_data/bammergepreprocessing/tempBams/tumor.bam.bai"
+          "bam": "/home/ubuntu/data/sample_data/wgspipeline/tempBams_HiSeq/tumor.bam",
+          "bamIndex": "/home/ubuntu/data/sample_data/wgspipeline/tempBams_HiSeq/tumor.bam.bai"
         }
       ]
     }
