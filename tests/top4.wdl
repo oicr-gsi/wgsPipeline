@@ -100,12 +100,12 @@ workflow top4 {
 
 		String outputName = bcl2fastqOut.name
 
-		BamAndBamIndex bamAndBamIndex = {
+		BamAndBamIndex bamAndBamIndex = object {
 			"bam": bwaMem.bwaMemBam,
 		    "bamIndex": bwaMem.bwaMemIndex	
 		}
 
-		InputGroup inputGroup = {
+		InputGroup inputGroup = object {
 			"outputIdentifier": outputName,
 			"bamAndBamIndexInputs": [
 				bamAndBamIndex
