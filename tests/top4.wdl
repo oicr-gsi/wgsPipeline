@@ -98,13 +98,17 @@ workflow top4 {
 				findDownsampleParamsMarkDup_chromosomes = rawBamQCMeta.findDownsampleParamsMarkDup_chromosomes	# Array[String]
 		}
 
+		String outputName = bcl2fastqOut.name
+
+		BamAndBamIndex bamAndBamIndex = {
+			"bam": bwaMem.bwaMemBam,
+		    "bamIndex": bwaMem.bwaMemIndex	
+		}
+
 		InputGroup inputGroup = {
-			"outputIdentifier": bcl2fastqOut.name,
+			"outputIdentifier": outputName,
 			"bamAndBamIndexInputs": [
-		        {
-		        	"bam": bwaMem.bwaMemBam,
-		        	"bamIndex": bwaMem.bwaMemIndex
-		        }
+				bamAndBamIndex
 		    ]
 		}
 	}
