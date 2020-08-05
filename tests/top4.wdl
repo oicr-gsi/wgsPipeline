@@ -41,8 +41,8 @@ struct FastqInput {
 workflow top4 {
 	input {
 		Boolean skipBcl2fastq = false
-		Array[bcl2fastqMeta]? bcl2fastqMetas
-		Array[FastqInput]? fastqInputs
+		Array[bcl2fastqMeta] bcl2fastqMetas = []
+		Array[FastqInput] fastqInputs = []
 		Array[bwaMemMeta] bwaMemMetas
 		Array[bamQCMeta] rawBamQCMetas
 	}
