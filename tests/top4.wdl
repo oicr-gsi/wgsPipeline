@@ -112,7 +112,7 @@ workflow top4 {
 	}
 
 	output {
-		#Array[InputGroup] inputGroups = inputGroup	# will be replaced by bwaMem outputs
+		Array[InputGroup] inputGroups = inputGroup	# will be replaced by bwaMem outputs
 
 		# fastQC
 		Array[File?] fastQC_html_report_R1  = fastQC.html_report_R1
