@@ -98,21 +98,19 @@ workflow top4 {
 				findDownsampleParamsMarkDup_chromosomes = rawBamQCMeta.findDownsampleParamsMarkDup_chromosomes	# Array[String]
 		}
 
-		BamAndBamIndex bamAndBamIndex = object {
-			bam: bwaMem.bwaMemBam,
-		    bamIndex: bwaMem.bwaMemIndex	
-		}
-
 		InputGroup inputGroup = object {
 			outputIdentifier: bcl2fastqOut.name,
 			bamAndBamIndexInputs: [
-				bamAndBamIndex
+				{
+					bam: bwaMem.bwaMemBam,
+				    bamIndex: bwaMem.bwaMemIndex	
+				}
 		    ]
 		}
 	}
 
 	output {
-		Array[InputGroup] inputGroups = inputGroup	# will be replaced by bwaMem outputs
+		Array[InputGroup] inputGroups = inputGroup	# will be fed into BMPP
 
 		# fastQC
 		Array[File?] fastQC_html_report_R1  = fastQC.html_report_R1
