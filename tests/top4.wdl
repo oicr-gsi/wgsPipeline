@@ -53,9 +53,9 @@ workflow top4 {
 
 	# scatter over [Normal, Tumor]
 	scatter (index in [0, 1]){
-		File fastqR1 = ""
-		File fastqR2 = ""
-		String name = ""
+		#File fastqR1 = ""
+		#File fastqR2 = ""
+		#String name = ""
 
 	  	# bcl2fastq.fastqs = Array[Output]+
 	  	# Output:
@@ -79,16 +79,16 @@ workflow top4 {
 					runDirectory = bcl2fastqMeta.runDirectory
 		  	}
 			Output bcl2fastqOut = bcl2fastq.fastqs[0]
-			fastqR1 = bcl2fastqOut.fastqs.left[0]
-			fastqR2 = bcl2fastqOut.fastqs.left[1]
-			name = bcl2fastqOut.name
+			File fastqR1 = bcl2fastqOut.fastqs.left[0]
+			File fastqR2 = bcl2fastqOut.fastqs.left[1]
+			String name = bcl2fastqOut.name
 		}
 
 		if (skipBcl2fastq) {
 			FastqInput fastqInput = fastqInputs[index]
-			fastqR1 = fastqInput.fastqs[0]
-			fastqR2 = fastqInput.fastqs[1]
-			name = fastqInput.name
+			File fastqR1 = fastqInput.fastqs[0]
+			File fastqR2 = fastqInput.fastqs[1]
+			String name = fastqInput.name
 		}
 
 		call fastQC.fastQC {
