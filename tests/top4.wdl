@@ -24,18 +24,25 @@ struct bamQCMeta {
 }
 
 struct BamAndBamIndex {
-  File bam
-  File bamIndex
+	File bam
+	File bamIndex
 }
 
 struct InputGroup {
-  String outputIdentifier
-  Array[BamAndBamIndex]+ bamAndBamIndexInputs
+	String outputIdentifier
+	Array[BamAndBamIndex]+ bamAndBamIndexInputs
+}
+
+struct FastqInput {
+	String name
+	Array[File] fastqs
 }
 
 workflow top4 {
 	input {
-		Array[bcl2fastqMeta] bcl2fastqMetas
+		Boolean skipBcl2fastq = false
+		Array[bcl2fastqMeta]? bcl2fastqMetas
+		Array[FastqInput]? fastqInputs
 		Array[bwaMemMeta] bwaMemMetas
 		Array[bamQCMeta] rawBamQCMetas
 	}
@@ -46,17 +53,9 @@ workflow top4 {
 
 	# scatter over [Normal, Tumor]
 	scatter (index in [0, 1]){
-
-		bcl2fastqMeta bcl2fastqMeta = bcl2fastqMetas[index]
-
-		call bcl2fastq.bcl2fastq {
-			input:
-				# need samples, lanes, and runDirectory
-				samples = bcl2fastqMeta.samples,
-				lanes = bcl2fastqMeta.lanes,
-				runDirectory = bcl2fastqMeta.runDirectory
-	  	  		# the rest of the inputs are the same for all runs; fed directly into subworkflow
-	  	}
+		File fastqR1 = ""
+		File fastqR2 = ""
+		String name = ""
 
 	  	# bcl2fastq.fastqs = Array[Output]+
 	  	# Output:
@@ -70,9 +69,27 @@ workflow top4 {
 	    #   "name": "normal"
 	    # }
 	    # assumes that bcl2fastq only outputs one pair of fastqs
-		Output bcl2fastqOut = bcl2fastq.fastqs[0]
-		File fastqR1 = bcl2fastqOut.fastqs.left[0]
-		File fastqR2 = bcl2fastqOut.fastqs.left[1]
+
+		if (!skipBcl2fastq) {
+			bcl2fastqMeta bcl2fastqMeta = bcl2fastqMetas[index]
+			call bcl2fastq.bcl2fastq {
+				input:
+					samples = bcl2fastqMeta.samples,
+					lanes = bcl2fastqMeta.lanes,
+					runDirectory = bcl2fastqMeta.runDirectory
+		  	}
+			Output bcl2fastqOut = bcl2fastq.fastqs[0]
+			fastqR1 = bcl2fastqOut.fastqs.left[0]
+			fastqR2 = bcl2fastqOut.fastqs.left[1]
+			name = bcl2fastqOut.name
+		}
+
+		if (skipBcl2fastq) {
+			FastqInput fastqInput = fastqInputs[index]
+			fastqR1 = fastqInput.fastqs[0]
+			fastqR2 = fastqInput.fastqs[1]
+			name = fastqInput.name
+		}
 
 		call fastQC.fastQC {
 			input:
@@ -104,7 +121,7 @@ workflow top4 {
 		}
 
 		InputGroup inputGroup = object {
-			outputIdentifier: bcl2fastqOut.name,
+			outputIdentifier: name,
 			bamAndBamIndexInputs: [
 				bamAndBamIndex
 		    ]
