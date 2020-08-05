@@ -67,19 +67,23 @@ workflow top4 {
 	    # }
 	    # assumes that bcl2fastq only outputs one pair of fastqs
 
-		if (!skipBcl2fastq) {
-			bcl2fastqMeta bcl2fastqMeta = bcl2fastqMetas[index]
-			call bcl2fastq.bcl2fastq {
-				input:
-					samples = bcl2fastqMeta.samples,
-					lanes = bcl2fastqMeta.lanes,
-					runDirectory = bcl2fastqMeta.runDirectory
-		  	}
-		}
+		#if (!skipBcl2fastq) {
+		bcl2fastqMeta bcl2fastqMeta = bcl2fastqMetas[index]
+		call bcl2fastq.bcl2fastq {
+			input:
+				samples = bcl2fastqMeta.samples,
+				lanes = bcl2fastqMeta.lanes,
+				runDirectory = bcl2fastqMeta.runDirectory
+	  	}
+		#}
 
-		File fastqR1 = select_first([fastqInputs[index].fastqs[0], bcl2fastq.fastqs[0].fastqs.left[0]])
-		File fastqR2 = select_first([fastqInputs[index].fastqs[1], bcl2fastq.fastqs[0].fastqs.left[1]])
-		String name = select_first([fastqInputs[index].name, bcl2fastq.fastqs[0].name])
+		#File fastqR1 = select_first([fastqInputs[index].fastqs[0], bcl2fastq.fastqs[0].fastqs.left[0]])
+		#File fastqR2 = select_first([fastqInputs[index].fastqs[1], bcl2fastq.fastqs[0].fastqs.left[1]])
+		#String name = select_first([fastqInputs[index].name, bcl2fastq.fastqs[0].name])
+
+		File fastqR1 = bcl2fastq.fastqs[0].fastqs.left[0]
+		File fastqR2 = bcl2fastq.fastqs[0].fastqs.left[1]
+		String name = bcl2fastq.fastqs[0].name
 
 		call fastQC.fastQC {
 			input:
