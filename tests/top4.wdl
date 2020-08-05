@@ -77,9 +77,9 @@ workflow top4 {
 		  	}
 		}
 
-		File fastqR1 = fastqInputs[index].fastqs[0] if skipBcl2fastq else bcl2fastq.fastqs[0].fastqs.left[0]
-		File fastqR2 = fastqInputs[index].fastqs[1] if skipBcl2fastq else bcl2fastq.fastqs[0].fastqs.left[1]
-		String name = fastqInputs[index].name if skipBcl2fastq else bcl2fastq.fastqs[0].name
+		File fastqR1 = if skipBcl2fastq then fastqInputs[index].fastqs[0] else bcl2fastq.fastqs[0].fastqs.left[0]
+		File fastqR2 = if skipBcl2fastq then fastqInputs[index].fastqs[1] else bcl2fastq.fastqs[0].fastqs.left[1]
+		String name = if skipBcl2fastq then fastqInputs[index].name else bcl2fastq.fastqs[0].name
 
 		call fastQC.fastQC {
 			input:
