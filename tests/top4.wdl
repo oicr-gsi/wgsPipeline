@@ -23,6 +23,11 @@ struct bamQCMeta {
 	# possibly add more parameters here like outputFileNamePrefix
 }
 
+struct BamAndBamIndex {
+  File bam
+  File bamIndex
+}
+
 struct InputGroup {
   String outputIdentifier
   Array[BamAndBamIndex]+ bamAndBamIndexInputs
