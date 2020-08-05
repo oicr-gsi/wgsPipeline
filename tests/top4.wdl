@@ -23,6 +23,11 @@ struct bamQCMeta {
 	# possibly add more parameters here like outputFileNamePrefix
 }
 
+struct InputGroup {
+  String outputIdentifier
+  Array[BamAndBamIndex]+ bamAndBamIndexInputs
+}
+
 workflow top4 {
 	input {
 		Array[bcl2fastqMeta] bcl2fastqMetas
@@ -57,7 +62,7 @@ workflow top4 {
 	    #     },
 	    #     "left": ["/home/ubuntu/repos/wgsPipeline/cromwell-executions/bcl2fastq/2d9c661c-5fdf-4b73-8ee6-a90c9af8598d/call-process/execution/test_sample_R1.fastq.gz", "/home/ubuntu/repos/wgsPipeline/cromwell-executions/bcl2fastq/2d9c661c-5fdf-4b73-8ee6-a90c9af8598d/call-process/execution/test_sample_R2.fastq.gz"]
 	    #   },
-	    #   "name": "test_sample"
+	    #   "name": "normal"
 	    # }
 	    # assumes that bcl2fastq only outputs one pair of fastqs
 		Output bcl2fastqOut = bcl2fastq.fastqs[0]
@@ -87,9 +92,21 @@ workflow top4 {
 				metadata = rawBamQCMeta.metadata,	# Map[String, String]
 				findDownsampleParamsMarkDup_chromosomes = rawBamQCMeta.findDownsampleParamsMarkDup_chromosomes	# Array[String]
 		}
+
+		InputGroup inputGroup = {
+			"outputIdentifier": bcl2fastqOut.name,
+			"bamAndBamIndexInputs": [
+		        {
+		        	"bam": bwaMem.bwaMemBam,
+		        	"bamIndex": bwaMem.bwaMemIndex
+		        }
+		    ]
+		}
 	}
 
 	output {
+		Array[InputGroup] inputGroups = inputGroup	# will be replaced by bwaMem outputs
+
 		# fastQC
 		Array[File?] fastQC_html_report_R1  = fastQC.html_report_R1
 		Array[File?] fastQC_zip_bundle_R1   = fastQC.zip_bundle_R1
