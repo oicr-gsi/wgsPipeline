@@ -3,15 +3,15 @@
     {
       "name": "normal",
       "fastqs": [
-        "/home/ubuntu/data/sample_data/bwa/PCSI0022C.val.1.fastq.gz",
-        "/home/ubuntu/data/sample_data/bwa/PCSI0022C.val.2.fastq.gz"
+        "/home/ubuntu/data/sample_data/dnaseqqc/neat_5x_EX_hg19_chr21_R1.fastq.gz",
+        "/home/ubuntu/data/sample_data/dnaseqqc/neat_5x_EX_hg19_chr21_R2.fastq.gz"
       ]
     },
     {
       "name": "tumor",
       "fastqs": [
-        "/home/ubuntu/data/sample_data/bwa/PCSI0022C.val.1.fastq.gz",
-        "/home/ubuntu/data/sample_data/bwa/PCSI0022C.val.2.fastq.gz"
+        "/home/ubuntu/data/sample_data/dnaseqqc/neat_5x_EX_hg19_chr21_R1.fastq.gz",
+        "/home/ubuntu/data/sample_data/dnaseqqc/neat_5x_EX_hg19_chr21_R2.fastq.gz"
       ]
     }
   ],
@@ -20,10 +20,10 @@
   "link2.bwaMem.runBwaMem_bwaRef": "$HG19_BWA_INDEX_ROOT/hg19_random.fa",
   "link2.bwaMemMetas": [
     {
-      "readGroups": "'@RG\\tID:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tLB:PCSI0022C\\tPL:ILLUMINA\\tPU:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tSM:PCSI0022C'"
+      "readGroups": "'@RG\\tID:1\\tLB:neat_5x_EX_hg19_golden\\tPL:illumina\\tPU:run_barcode\\tSM:neat_5x_EX_hg19_golden'"
     },
     {
-      "readGroups": "'@RG\\tID:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tLB:PCSI0022C\\tPL:ILLUMINA\\tPU:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tSM:PCSI0022C'"
+      "readGroups": "'@RG\\tID:1\\tLB:neat_5x_EX_hg19_golden\\tPL:illumina\\tPU:run_barcode\\tSM:neat_5x_EX_hg19_golden'"
     }
   ],
   "link2.bamMergePreprocessing.intervalsToParallelizeByString": "chr1,chr2",
