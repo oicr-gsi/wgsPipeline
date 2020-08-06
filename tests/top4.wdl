@@ -77,9 +77,9 @@ workflow top4 {
 		  	}
 		}
 
-		File fastqR1 = if doBcl2fastq then bcl2fastq.fastqs[0].fastqs.left[0] else fastqInputs[index].fastqs[0]
-		File fastqR2 = if doBcl2fastq then bcl2fastq.fastqs[0].fastqs.left[1] else fastqInputs[index].fastqs[1]
-		String name = if doBcl2fastq then bcl2fastq.fastqs[0].name else fastqInputs[index].name
+		File fastqR1 = if doBcl2fastq then select_first(bcl2fastq.fastqs).fastqs.left[0] else select_first([fastqInputs])[index].fastqs[0]
+		File fastqR2 = if doBcl2fastq then select_first(bcl2fastq.fastqs).fastqs.left[1] else select_first([fastqInputs])[index].fastqs[1]
+		String name = if doBcl2fastq then select_first(bcl2fastq.fastqs).name else select_first([fastqInputs])[index].name
 
 		#File fastqR1 = select_first([fastqInputs[index].fastqs[0], bcl2fastq.fastqs[0].fastqs.left[0]])
 		#File fastqR2 = select_first([fastqInputs[index].fastqs[1], bcl2fastq.fastqs[0].fastqs.left[1]])
