@@ -2,8 +2,8 @@ version 1.0
 workflow test_location {
     input {
         Boolean yes = true
-        #Array[String]? inputString
-        String inputString = "output for no"
+        Array[String]? inputString
+        #String inputString = "output for no"
     }
 
     if (yes) {
@@ -14,14 +14,15 @@ workflow test_location {
         call task2
     }
 
-    #Array[String] selectInputString = select_all(inputString)
+#    Array[String] selectInputString = select_all(inputString)
 
-#    String out = if yes then task1.message else inputString
+    Array[String] multiOut = if yes then task1.message else inputString
 #    String out = select_first([task1.message, task2.message])
-    String out = select_first([task1.message[0], inputString])
+#    String out = select_first(multiOut)
 
     output {
-        String out1 = out
+        #String out1 = out
+        Array[String] out2 = multiOut
     }
 }
 
