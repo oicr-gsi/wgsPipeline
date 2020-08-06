@@ -33,9 +33,9 @@ struct FastqInput {
 
 workflow all9 {
 	input {
-		Boolean skipBcl2fastq = false
-		Array[bcl2fastqMeta] bcl2fastqMetas = []
-		Array[FastqInput] fastqInputs = []
+		Boolean doBcl2fastq = true
+		Array[bcl2fastqMeta]? bcl2fastqMetas
+		Array[FastqInput]? fastqInputs
 		Array[bwaMemMeta] bwaMemMetas
 		Array[bamQCMeta] rawBamQCMetas	
 		Array[bamQCMeta] processedBamQCMetas	
@@ -52,17 +52,19 @@ workflow all9 {
 
 	# scatter over [normal, tumor]
 	scatter (index in [0, 1]){
-		bcl2fastqMeta bcl2fastqMeta = bcl2fastqMetas[index]
-		call bcl2fastq.bcl2fastq {
-			input:
-				samples = bcl2fastqMeta.samples,
-				lanes = bcl2fastqMeta.lanes,
-				runDirectory = bcl2fastqMeta.runDirectory
-	  	}
+		if (doBcl2fastq) {
+			bcl2fastqMeta bcl2fastqMeta = select_first([bcl2fastqMetas])[index]
+			call bcl2fastq.bcl2fastq {
+				input:
+					samples = bcl2fastqMeta.samples,
+					lanes = bcl2fastqMeta.lanes,
+					runDirectory = bcl2fastqMeta.runDirectory
+		  	}
+		}
 
-	  	File fastqR1 = bcl2fastq.fastqs[0].fastqs.left[0]
-		File fastqR2 = bcl2fastq.fastqs[0].fastqs.left[1]
-		String name = bcl2fastq.fastqs[0].name
+		File fastqR1 = if doBcl2fastq then select_first([bcl2fastq.fastqs])[0].fastqs.left[0] else select_first([fastqInputs])[index].fastqs[0]
+		File fastqR2 = if doBcl2fastq then select_first([bcl2fastq.fastqs])[0].fastqs.left[1] else select_first([fastqInputs])[index].fastqs[1]
+		String name = if doBcl2fastq then select_first([bcl2fastq.fastqs])[0].name else select_first([fastqInputs])[index].name
 
 		call fastQC.fastQC {
 			input:
