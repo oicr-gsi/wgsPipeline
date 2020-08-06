@@ -147,24 +147,6 @@ workflow all9 {
 		}
 	}
 
-task check {
-	input {
-		Int index = index
-		InputGroup inputGroup
-	}
-
-	command {
-		echo index
-		echo inputGroup.outputIdentifier
-		echi inputGroup.bamAndBamIndexInputs[0].bam
-		echi inputGroup.bamAndBamIndexInputs[0].bamIndex
-	}
-
-	output {
-		String contents = read_string(stdout())
-	}
-}
-
 	output {
 		# fastQC
 		Array[File?] fastQC_html_report_R1  = fastQC.html_report_R1
@@ -195,5 +177,23 @@ task check {
 
 	    # bamQC
 	    Array[File] processedBamQC_result = processedBamQC.result
+	}
+}
+
+task check {
+	input {
+		Int index = index
+		InputGroup inputGroup
+	}
+
+	command {
+		echo index
+		echo inputGroup.outputIdentifier
+		echi inputGroup.bamAndBamIndexInputs[0].bam
+		echi inputGroup.bamAndBamIndexInputs[0].bamIndex
+	}
+
+	output {
+		String contents = read_string(stdout())
 	}
 }
