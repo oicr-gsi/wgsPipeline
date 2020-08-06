@@ -1,4 +1,5 @@
 {
+  "top4.doBcl2fastq": true,
   "top4.bcl2fastq.mismatches": 1,
   "top4.bcl2fastq.modules": "bcl2fastq/2.20.0.422 bcl2fastq-jail/3.0.0",
   "top4.bcl2fastq.process_ignoreMissingBcls": true,
