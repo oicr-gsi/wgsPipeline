@@ -96,6 +96,12 @@ workflow all9 {
 				bamAndBamIndex
 		    ]
 		}
+
+		call check {
+			input:
+				index = index,
+				inputGroup = inputGroup
+		}
 	}
 
 	Array[InputGroup] inputGroups = inputGroup	# congregate results from first 4 workflows
@@ -140,6 +146,24 @@ workflow all9 {
 				metadata = processedBamQCMeta.metadata	# Map[String, String]
 		}
 	}
+
+task check {
+	input {
+		Int index = index
+		InputGroup inputGroup
+	}
+
+	command {
+		echo index
+		echo inputGroup.outputIdentifier
+		echi inputGroup.bamAndBamIndexInputs[0].bam
+		echi inputGroup.bamAndBamIndexInputs[0].bamIndex
+	}
+
+	output {
+		String contents = read_string(stdout())
+	}
+}
 
 	output {
 		# fastQC
