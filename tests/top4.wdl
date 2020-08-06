@@ -42,7 +42,7 @@ workflow top4 {
 	input {
 		Boolean doBcl2fastq = true
 		Array[bcl2fastqMeta] bcl2fastqMetas = []
-		Array[FastqInput] fastqInputs = []
+		Array[FastqInput]? fastqInputs
 		Array[bwaMemMeta] bwaMemMetas
 		Array[bamQCMeta] rawBamQCMetas
 	}
