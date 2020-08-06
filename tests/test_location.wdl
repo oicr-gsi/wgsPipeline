@@ -8,7 +8,8 @@ workflow test_location {
         call find_tools
     }
 
-    String out = if yes then find_tools.message else "nope"
+#    String out = if yes then find_tools.message else "nope"
+    String out = select_first(find_tools.message, "nope")
 
     output {
         String out1 = out
@@ -20,7 +21,7 @@ task find_tools {
         echo "output for yes"
     }
 
-    output{
+    output {
         String message = read_string(stdout())
     }
 }
