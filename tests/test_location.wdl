@@ -9,7 +9,7 @@ workflow test_location {
     }
 
 #    String out = if yes then find_tools.message else "nope"
-    String out = select_first(find_tools.message, "nope")
+    String out = select_first([find_tools.message, "nope"])
 
     output {
         String out1 = out
