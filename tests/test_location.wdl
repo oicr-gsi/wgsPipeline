@@ -1,7 +1,7 @@
 version 1.0
 workflow test_location {
     input {
-        Boolean yes = true
+        Boolean yes = false
         Array[String]? inputStrings
         #String inputString = "output for no"
     }
