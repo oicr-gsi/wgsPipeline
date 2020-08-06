@@ -1,8 +1,8 @@
 version 1.0
 
 # imports workflows for the top portion of WGSPipeline
-import "test_imports9/dockstore_bwaMem.wdl" as bwaMem
-import "test_imports9/dockstore_bamMergePreprocessing.wdl" as bamMergePreprocessing 
+import "test_imports2/dockstore_bwaMem.wdl" as bwaMem
+import "test_imports2/dockstore_bamMergePreprocessing.wdl" as bamMergePreprocessing 
 
 struct bwaMemMeta {
 	String readGroups
@@ -14,7 +14,7 @@ struct FastqInput {
 	Array[File] fastqs
 }
 
-workflow all9 {
+workflow link2 {
 	input {
 		Array[FastqInput] fastqInputs
 		Array[bwaMemMeta] bwaMemMetas
