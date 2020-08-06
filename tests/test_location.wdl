@@ -1,3 +1,4 @@
+version 1.0
 workflow test_location {
     input {
         Boolean yes = true
