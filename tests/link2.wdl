@@ -34,7 +34,7 @@ workflow link2 {
 				readGroups = bwaMemMeta.readGroups 	# String
 		}
 
-		task linkBamAndBamIndex {
+		call linkBamAndBamIndex {
 			input:
 				bam = bwaMem.bwaMemBam,
 				bamIndex = bwaMem.bwaMemIndex
