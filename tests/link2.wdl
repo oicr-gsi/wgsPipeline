@@ -34,9 +34,15 @@ workflow link2 {
 				readGroups = bwaMemMeta.readGroups 	# String
 		}
 
+		task linkBamAndBamIndex {
+			input:
+				bam = bwaMem.bwaMemBam
+				bamIndex = bwaMem.bwaMemIndex
+		}
+
 		BamAndBamIndex bamAndBamIndex = object {
-			bam: bwaMem.bwaMemBam,
-		    bamIndex: bwaMem.bwaMemIndex	
+			bam: linkBamAndBamIndex.linkedBam,
+		    bamIndex: linkBamAndBamIndex.linkedBamIndex
 		}
 
 		InputGroup inputGroup = object {
@@ -49,10 +55,10 @@ workflow link2 {
 
 	Array[InputGroup] inputGroups = inputGroup	# congregate results from first 4 workflows
 
-	call bamMergePreprocessing.bamMergePreprocessing {
-		input:
-			inputGroups = inputGroups
-	}
+#	call bamMergePreprocessing.bamMergePreprocessing {
+#		input:
+#			inputGroups = inputGroups
+#	}
 
 	output {
 	    # bwaMem
@@ -60,8 +66,25 @@ workflow link2 {
 	    Array[File?] bwaMem_cutAdaptAllLogs = bwaMem.cutAdaptAllLogs
 
 	    # bamMergePreprocessing
-	    File? bamMergePreprocessing_recalibrationReport = bamMergePreprocessing.recalibrationReport
-	    File? bamMergePreprocessing_recalibrationTable = bamMergePreprocessing.recalibrationTable
-		Array[OutputGroup] outputGroups = bamMergePreprocessing.outputGroups 
+#	    File? bamMergePreprocessing_recalibrationReport = bamMergePreprocessing.recalibrationReport
+#	    File? bamMergePreprocessing_recalibrationTable = bamMergePreprocessing.recalibrationTable
+#		Array[OutputGroup] outputGroups = bamMergePreprocessing.outputGroups 
+	}
+}
+
+task linkBamAndBamIndex {
+	input {
+		File bam
+		File bamIndex
+	}
+
+	command <<<
+		ln -s ~{bam}
+		ln -s ~{bamIndex}
+	>>>
+
+	output {
+		File linkedBam
+		File linkedBamIndex
 	}
 }
