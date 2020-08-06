@@ -5,20 +5,34 @@ workflow test_location {
     }
 
     if (yes) {
-        call find_tools
+        call task1
+    }
+
+    if (!yes) {
+        call task2
     }
 
 #    String out = if yes then find_tools.message else "nope"
-    String out = select_first([find_tools.message, "nope"])
+    String out = select_first([task1.message, task2.message])
 
     output {
         String out1 = out
     }
 }
 
-task find_tools {
+task task1 {
     command {
         echo "output for yes"
+    }
+
+    output {
+        String message = read_string(stdout())
+    }
+}
+
+task task2 {
+    command {
+        echo "output for no"
     }
 
     output {
