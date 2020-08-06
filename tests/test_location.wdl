@@ -23,6 +23,10 @@ workflow test_location {
 }
 
 task task1 {
+    command {
+        echo "nothing"
+    }
+
     output {
         Array[String] message = ["output for yes", "also output for yes"]
     }
