@@ -1,5 +1,5 @@
 {
-  "all9.doBcl2fastq": false,
+  "all9.doBcl2fastq": true,
   "all9.bcl2fastq.mismatches": 1,
   "all9.bcl2fastq.modules": "bcl2fastq/2.20.0.422 bcl2fastq-jail/3.0.0",
   "all9.bcl2fastq.process_ignoreMissingBcls": true,
