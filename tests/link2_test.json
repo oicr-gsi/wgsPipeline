@@ -1,0 +1,63 @@
+{
+  "all9.fastqInputs": [
+    {
+      "name": "normal",
+      "fastqs": [
+        "/home/ubuntu/data/sample_data/bwa/PCSI0022C.val.1.fastq.gz",
+        "/home/ubuntu/data/sample_data/bwa/PCSI0022C.val.2.fastq.gz"
+      ]
+    },
+    {
+      "name": "tumor",
+      "fastqs": [
+        "/home/ubuntu/data/sample_data/bwa/PCSI0022C.val.1.fastq.gz",
+        "/home/ubuntu/data/sample_data/bwa/PCSI0022C.val.2.fastq.gz"
+      ]
+    }
+  ],
+  "all9.bwaMem.doTrim": "true",
+  "all9.bwaMem.runBwaMem_modules": "samtools/1.9 bwa/0.7.12 hg19-bwa-index/0.7.12",
+  "all9.bwaMem.runBwaMem_bwaRef": "$HG19_BWA_INDEX_ROOT/hg19_random.fa",
+  "all9.bwaMemMetas": [
+    {
+      "readGroups": "'@RG\\tID:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tLB:PCSI0022C\\tPL:ILLUMINA\\tPU:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tSM:PCSI0022C'"
+    },
+    {
+      "readGroups": "'@RG\\tID:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tLB:PCSI0022C\\tPL:ILLUMINA\\tPU:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tSM:PCSI0022C'"
+    }
+  ],
+  "all9.bamMergePreprocessing.intervalsToParallelizeByString": "chr1,chr2",
+  "all9.bamMergePreprocessing.reference": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19_random.fa",
+  "all9.bamMergePreprocessing.realignerTargetCreator_knownIndels": [
+    "/data_modules/gsi/modulator/sw/data/hg19-dbsnp-leftaligned-138/dbsnp_138.hg19.leftAligned.vcf.gz"
+  ],
+  "all9.bamMergePreprocessing.indelRealign_knownAlleles": [
+    "/data_modules/gsi/modulator/sw/data/hg19-dbsnp-leftaligned-138/dbsnp_138.hg19.leftAligned.vcf.gz"
+  ],
+  "all9.bamMergePreprocessing.baseQualityScoreRecalibration_knownSites": [
+    "/data_modules/gsi/modulator/sw/data/hg19-dbsnp-leftaligned-138/dbsnp_138.hg19.leftAligned.vcf.gz"
+  ],
+  "all9.bamMergePreprocessing.analyzeCovariates_timeout": 1,
+  "all9.bamMergePreprocessing.applyBaseQualityScoreRecalibration_timeout": 1,
+  "all9.bamMergePreprocessing.baseQualityScoreRecalibration_timeout": 1,
+  "all9.bamMergePreprocessing.gatherBQSRReports_timeout": 1,
+  "all9.bamMergePreprocessing.indelRealign_timeout": 1,
+  "all9.bamMergePreprocessing.mergeSplitByIntervalBams_timeout": 1,
+  "all9.bamMergePreprocessing.preprocessingBamRuntimeAttributes": [
+    {
+      "id": "chr1",
+      "memory": 21,
+      "timeout": 1
+    },
+    {
+      "id": "*",
+      "memory": 18,
+      "timeout": 1
+    }
+  ],
+  "all9.bamMergePreprocessing.realignerTargetCreator_timeout": 1,
+  "all9.bamMergePreprocessing.preprocessBam_filterAdditionalParams": "",
+  "all9.bamMergePreprocessing.preprocessBam_markDuplicatesAdditionalParams": "",
+  "all9.bamMergePreprocessing.preprocessBam_splitNCigarReadsAdditionalParams": "",
+  "all9.bamMergePreprocessing.preprocessBam_minMapQuality": 0
+}

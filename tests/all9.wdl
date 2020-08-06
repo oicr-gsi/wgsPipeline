@@ -98,12 +98,6 @@ workflow all9 {
 				bamFile = bwaMem.bwaMemBam, 	# File
 				metadata = rawBamQCMeta.metadata,	# Map[String, String]
 		}
-
-		call check {
-			input:
-				index = index,
-				inputGroup = inputGroup
-		}
 	}
 
 	Array[InputGroup] inputGroups = inputGroup	# congregate results from first 4 workflows
@@ -150,8 +144,6 @@ workflow all9 {
 	}
 
 	output {
-		Array[String] content = check.contents
-
 		# fastQC
 		Array[File?] fastQC_html_report_R1  = fastQC.html_report_R1
 		Array[File?] fastQC_zip_bundle_R1   = fastQC.zip_bundle_R1
@@ -181,23 +173,5 @@ workflow all9 {
 
 	    # bamQC
 	    Array[File] processedBamQC_result = processedBamQC.result
-	}
-}
-
-task check {
-	input {
-		Int index = index
-		InputGroup inputGroup
-	}
-
-	command <<<
-		echo ~{index}
-		echo ~{inputGroup.outputIdentifier}
-		echo ~{inputGroup.bamAndBamIndexInputs[0].bam}
-		echo ~{inputGroup.bamAndBamIndexInputs[0].bamIndex}
-	>>>
-
-	output {
-		String contents = read_string(stdout())
 	}
 }
