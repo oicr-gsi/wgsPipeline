@@ -2,7 +2,7 @@ version 1.0
 workflow test_location {
     input {
         Boolean yes = true
-        String? inputString
+        Array[String]? inputString
     }
 
     if (yes) {
@@ -15,7 +15,7 @@ workflow test_location {
 
 #    String out = if yes then task1.message else inputString
 #    String out = select_first([task1.message, task2.message])
-    String out = select_first([task1.message, inputString])
+    String out = select_first([task1.message[0], inputString[0]])
 
     output {
         String out1 = out
@@ -23,12 +23,8 @@ workflow test_location {
 }
 
 task task1 {
-    command {
-        echo "output for yes"
-    }
-
     output {
-        String message = read_string(stdout())
+        Array[String] = ["output for yes", "also output for yes"]
     }
 }
 
