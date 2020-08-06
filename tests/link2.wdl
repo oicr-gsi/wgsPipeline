@@ -36,7 +36,7 @@ workflow link2 {
 
 		task linkBamAndBamIndex {
 			input:
-				bam = bwaMem.bwaMemBam
+				bam = bwaMem.bwaMemBam,
 				bamIndex = bwaMem.bwaMemIndex
 		}
 
