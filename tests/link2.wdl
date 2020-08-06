@@ -79,12 +79,12 @@ task linkBamAndBamIndex {
 	}
 
 	command <<<
-		ln -s ~{bam}
-		ln -s ~{bamIndex}
+		ln -s ~{bam} "~{basename(bam)}"
+		ln -s ~{bamIndex} "~{basename(bamIndex)}"
 	>>>
 
 	output {
-		File linkedBam
-		File linkedBamIndex
+		File linkedBam = "~{basename(bam)}"
+		File linkedBamIndex = "~{basename(bamIndex)}"
 	}
 }
