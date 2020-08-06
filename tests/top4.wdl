@@ -41,7 +41,7 @@ struct FastqInput {
 workflow top4 {
 	input {
 		Boolean doBcl2fastq = true
-		Array[bcl2fastqMeta] bcl2fastqMetas = []
+		Array[bcl2fastqMeta]? bcl2fastqMetas
 		Array[FastqInput]? fastqInputs
 		Array[bwaMemMeta] bwaMemMetas
 		Array[bamQCMeta] rawBamQCMetas
@@ -68,7 +68,7 @@ workflow top4 {
 	    # assumes that bcl2fastq only outputs one pair of fastqs
 
 		if (doBcl2fastq) {
-			bcl2fastqMeta bcl2fastqMeta = bcl2fastqMetas[index]
+			bcl2fastqMeta bcl2fastqMeta = select_first([bcl2fastqMetas])[index]
 			call bcl2fastq.bcl2fastq {
 				input:
 					samples = bcl2fastqMeta.samples,
@@ -80,14 +80,6 @@ workflow top4 {
 		File fastqR1 = if doBcl2fastq then select_first([bcl2fastq.fastqs])[0].fastqs.left[0] else select_first([fastqInputs])[index].fastqs[0]
 		File fastqR2 = if doBcl2fastq then select_first([bcl2fastq.fastqs])[0].fastqs.left[1] else select_first([fastqInputs])[index].fastqs[1]
 		String name = if doBcl2fastq then select_first([bcl2fastq.fastqs])[0].name else select_first([fastqInputs])[index].name
-
-		#File fastqR1 = select_first([fastqInputs[index].fastqs[0], bcl2fastq.fastqs[0].fastqs.left[0]])
-		#File fastqR2 = select_first([fastqInputs[index].fastqs[1], bcl2fastq.fastqs[0].fastqs.left[1]])
-		#String name = select_first([fastqInputs[index].name, bcl2fastq.fastqs[0].name])
-
-		#File fastqR1 = bcl2fastq.fastqs[0].fastqs.left[0]
-		#File fastqR2 = bcl2fastq.fastqs[0].fastqs.left[1]
-		#String name = bcl2fastq.fastqs[0].name
 
 		call fastQC.fastQC {
 			input:
