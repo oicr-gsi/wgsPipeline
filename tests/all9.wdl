@@ -191,10 +191,10 @@ task check {
 	}
 
 	command <<<
-		echo index
-		echo inputGroup.outputIdentifier
-		echo inputGroup.bamAndBamIndexInputs[0].bam
-		echo inputGroup.bamAndBamIndexInputs[0].bamIndex
+		echo ~{index}
+		echo ~{inputGroup.outputIdentifier}
+		echo ~{inputGroup.bamAndBamIndexInputs[0].bam}
+		echo ~{inputGroup.bamAndBamIndexInputs[0].bamIndex}
 	>>>
 
 	output {
