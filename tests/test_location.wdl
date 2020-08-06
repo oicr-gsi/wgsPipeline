@@ -24,7 +24,7 @@ workflow test_location {
 
 task task1 {
     output {
-        Array[String] = ["output for yes", "also output for yes"]
+        Array[String] message = ["output for yes", "also output for yes"]
     }
 }
 
