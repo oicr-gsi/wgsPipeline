@@ -148,7 +148,7 @@ workflow all9 {
 	}
 
 	output {
-		String content = check.contents
+		Array[String] content = check.contents
 
 		# fastQC
 		Array[File?] fastQC_html_report_R1  = fastQC.html_report_R1
