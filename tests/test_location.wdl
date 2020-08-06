@@ -22,7 +22,7 @@ workflow test_location {
 
     output {
         #String out1 = out
-        Array[String] out2 = multiOut
+        String out2 = multiOut[0]
     }
 }
 
