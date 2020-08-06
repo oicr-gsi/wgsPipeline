@@ -55,10 +55,10 @@ workflow link2 {
 
 	Array[InputGroup] inputGroups = inputGroup	# congregate results from first 4 workflows
 
-#	call bamMergePreprocessing.bamMergePreprocessing {
-#		input:
-#			inputGroups = inputGroups
-#	}
+	call bamMergePreprocessing.bamMergePreprocessing {
+		input:
+			inputGroups = inputGroups
+	}
 
 	output {
 	    # bwaMem
@@ -66,9 +66,9 @@ workflow link2 {
 	    Array[File?] bwaMem_cutAdaptAllLogs = bwaMem.cutAdaptAllLogs
 
 	    # bamMergePreprocessing
-#	    File? bamMergePreprocessing_recalibrationReport = bamMergePreprocessing.recalibrationReport
-#	    File? bamMergePreprocessing_recalibrationTable = bamMergePreprocessing.recalibrationTable
-#		Array[OutputGroup] outputGroups = bamMergePreprocessing.outputGroups 
+	    File? bamMergePreprocessing_recalibrationReport = bamMergePreprocessing.recalibrationReport
+	    File? bamMergePreprocessing_recalibrationTable = bamMergePreprocessing.recalibrationTable
+		Array[OutputGroup] outputGroups = bamMergePreprocessing.outputGroups 
 	}
 }
 
