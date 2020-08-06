@@ -78,13 +78,6 @@ workflow all9 {
 				readGroups = bwaMemMeta.readGroups 	# String
 		}
 
-		bamQCMeta rawBamQCMeta = rawBamQCMetas[index]
-		call bamQC.bamQC as rawBamQC {
-			input:
-				bamFile = bwaMem.bwaMemBam, 	# File
-				metadata = rawBamQCMeta.metadata,	# Map[String, String]
-		}
-
 		BamAndBamIndex bamAndBamIndex = object {
 			bam: bwaMem.bwaMemBam,
 		    bamIndex: bwaMem.bwaMemIndex	
@@ -95,6 +88,13 @@ workflow all9 {
 			bamAndBamIndexInputs: [
 				bamAndBamIndex
 		    ]
+		}
+
+		bamQCMeta rawBamQCMeta = rawBamQCMetas[index]
+		call bamQC.bamQC as rawBamQC {
+			input:
+				bamFile = bwaMem.bwaMemBam, 	# File
+				metadata = rawBamQCMeta.metadata,	# Map[String, String]
 		}
 
 		call check {
@@ -186,12 +186,12 @@ task check {
 		InputGroup inputGroup
 	}
 
-	command {
+	command <<<
 		echo index
 		echo inputGroup.outputIdentifier
-		echi inputGroup.bamAndBamIndexInputs[0].bam
-		echi inputGroup.bamAndBamIndexInputs[0].bamIndex
-	}
+		echo inputGroup.bamAndBamIndexInputs[0].bam
+		echo inputGroup.bamAndBamIndexInputs[0].bamIndex
+	>>>
 
 	output {
 		String contents = read_string(stdout())
