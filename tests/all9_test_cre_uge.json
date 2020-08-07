@@ -9,15 +9,15 @@
     {
       "name": "normal",
       "fastqs": [
-        "/home/ubuntu/data/sample_data/wgspipeline/fastqs_cre/SWID_15949654_CRE_0002_Pb_R_PE_409_WG_200124_A00469_0077_BHNGLTDSXX_GAGACGAT-TAACCGGT_L002_001.annotated.subset_R1.fastq.gz",
-        "/home/ubuntu/data/sample_data/wgspipeline/fastqs_cre/SWID_15949654_CRE_0002_Pb_R_PE_409_WG_200124_A00469_0077_BHNGLTDSXX_GAGACGAT-TAACCGGT_L002_001.annotated.subset_R2.fastq.gz"
+        "/.mounts/labs/gsi/testdata/wgsPipeline/input_data/wgsPipeline_test_cre/SWID_15949654_CRE_0002_Pb_R_PE_409_WG_200124_A00469_0077_BHNGLTDSXX_GAGACGAT-TAACCGGT_L002_001.annotated.subset_R1.fastq.gz",
+        "/.mounts/labs/gsi/testdata/wgsPipeline/input_data/wgsPipeline_test_cre/SWID_15949654_CRE_0002_Pb_R_PE_409_WG_200124_A00469_0077_BHNGLTDSXX_GAGACGAT-TAACCGGT_L002_001.annotated.subset_R2.fastq.gz"
       ]
     },
     {
       "name": "tumor",
       "fastqs": [
-        "/home/ubuntu/data/sample_data/wgspipeline/fastqs_cre/SWID_15949654_CRE_0002_Pb_R_PE_409_WG_200124_A00469_0077_BHNGLTDSXX_GAGACGAT-TAACCGGT_L002_001.annotated.subset_R1.fastq.gz",
-        "/home/ubuntu/data/sample_data/wgspipeline/fastqs_cre/SWID_15949654_CRE_0002_Pb_R_PE_409_WG_200124_A00469_0077_BHNGLTDSXX_GAGACGAT-TAACCGGT_L002_001.annotated.subset_R2.fastq.gz"
+        "/.mounts/labs/gsi/testdata/wgsPipeline/input_data/wgsPipeline_test_cre/SWID_15949654_CRE_0002_Pb_R_PE_409_WG_200124_A00469_0077_BHNGLTDSXX_GAGACGAT-TAACCGGT_L002_001.annotated.subset_R1.fastq.gz",
+        "/.mounts/labs/gsi/testdata/wgsPipeline/input_data/wgsPipeline_test_cre/SWID_15949654_CRE_0002_Pb_R_PE_409_WG_200124_A00469_0077_BHNGLTDSXX_GAGACGAT-TAACCGGT_L002_001.annotated.subset_R2.fastq.gz"
       ]
     }
   ],
