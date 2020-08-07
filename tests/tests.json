@@ -1,0 +1,43 @@
+{
+  "defaults": {
+    "description": "wgsPipeline wrapper workflow test",
+    "metrics_calculate": "calculate.sh",
+    "metrics_compare": "compare.sh",
+    "output_metrics_dir": "/.mounts/labs/gsi/testdata/wgsPipeline/output_metrics",
+    "parameters": {
+      "wdl_options": {
+        "write_to_cache": false,
+        "read_from_cache": false
+      }
+    }
+  },
+  "tests": [
+    {
+      "id": "wgsPipeline_test_cre",
+      "parameters": {
+        "wdl_deps_zip": "${workflow_bundle_dir}/Workflow_Bundle_wgsPipeline/1.0.0/lib/imports.zip",
+        "wdl_inputs": {
+
+        }
+      }
+    },
+    {
+      "id": "wgsPipeline_test_pcsi",
+      "parameters": {
+        "wdl_deps_zip": "${workflow_bundle_dir}/Workflow_Bundle_wgsPipeline/1.0.0/lib/imports.zip",
+        "wdl_inputs": {
+
+        }
+      }
+    },
+    {
+      "id": "wgsPipeline_test_nextseq",
+      "parameters": {
+        "wdl_deps_zip": "${workflow_bundle_dir}/Workflow_Bundle_wgsPipeline/1.0.0/lib/imports.zip",
+        "wdl_inputs": {
+
+        }
+      }
+    }
+  ]
+}

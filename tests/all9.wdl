@@ -78,18 +78,24 @@ workflow all9 {
 				fastqR1 = fastqR1,   # File
 				fastqR2 = fastqR2,   # File
 				readGroups = bwaMemMeta.readGroups 	# String
+		}		
+
+		call linkBamAndBamIndex {
+			input:
+				bam = bwaMem.bwaMemBam,
+				bamIndex = bwaMem.bwaMemIndex
 		}
 
 		BamAndBamIndex bamAndBamIndex = object {
-			bam: bwaMem.bwaMemBam,
-		    bamIndex: bwaMem.bwaMemIndex	
+			bam: linkBamAndBamIndex.linkedBam,
+			bamIndex: linkBamAndBamIndex.linkedBamIndex
 		}
 
 		InputGroup inputGroup = object {
 			outputIdentifier: name,
 			bamAndBamIndexInputs: [
 				bamAndBamIndex
-		    ]
+			]
 		}
 
 		bamQCMeta rawBamQCMeta = rawBamQCMetas[index]
@@ -173,5 +179,22 @@ workflow all9 {
 
 	    # bamQC
 	    Array[File] processedBamQC_result = processedBamQC.result
+	}
+}
+
+task linkBamAndBamIndex {
+	input {
+		File bam
+		File bamIndex
+	}
+
+	command <<<
+		ln -s ~{bam} "~{basename(bam)}"
+		ln -s ~{bamIndex} "~{basename(bamIndex)}"
+	>>>
+
+	output {
+		File linkedBam = "~{basename(bam)}"
+		File linkedBamIndex = "~{basename(bamIndex)}"
 	}
 }
