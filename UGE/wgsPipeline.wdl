@@ -1,14 +1,14 @@
 version 1.0
 
 # imports workflows for the top portion of WGSPipeline
-import "imports/bcl2fastq.wdl" as bcl2fastq
-import "imports/fastqc.wdl" as fastQC
-import "imports/bwaMem.wdl" as bwaMem
-import "imports/bamQC.wdl" as bamQC
-import "imports/bamMergePreprocessing.wdl" as bamMergePreprocessing 
-import "imports/callability.wdl" as callability 
-import "imports/insertSizeMetrics.wdl" as insertSizeMetrics
-import "imports/wgsMetrics.wdl" as wgsMetrics
+import "imports/pull_bcl2fastq.wdl" as bcl2fastq
+import "imports/pull_fastqc.wdl" as fastQC
+import "imports/pull_bwaMem.wdl" as bwaMem
+import "imports/pull_bamQC.wdl" as bamQC
+import "imports/pull_bamMergePreprocessing.wdl" as bamMergePreprocessing 
+import "imports/pull_callability.wdl" as callability 
+import "imports/pull_insertSizeMetrics.wdl" as insertSizeMetrics
+import "imports/pull_wgsMetrics.wdl" as wgsMetrics
 # import "" as sampleFingerprinting       # @@@ no WDL available
 
 # imports workflows for the bottom portion of WGSPipeline
