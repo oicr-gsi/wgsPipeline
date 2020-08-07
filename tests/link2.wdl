@@ -42,18 +42,33 @@ workflow link2 {
 
 		BamAndBamIndex bamAndBamIndex = object {
 			bam: linkBamAndBamIndex.linkedBam,
-		    bamIndex: linkBamAndBamIndex.linkedBamIndex
+			bamIndex: linkBamAndBamIndex.linkedBamIndex
 		}
 
 		InputGroup inputGroup = object {
 			outputIdentifier: name,
 			bamAndBamIndexInputs: [
 				bamAndBamIndex
-		    ]
+			]
 		}
 	}
 
 	Array[InputGroup] inputGroups = inputGroup	# congregate results from first 4 workflows
+
+	scatter (group in inputGroups) {
+		scatter (bamAndBamIndexInput in group.bamAndBamIndexInputs) {
+			File inputGroupBam = bamAndBamIndexInput.bam
+			File inputGroupBamIndex = bamAndBamIndexInput.bamIndex
+		}
+		Array[File] inputGroupBams = inputGroupBam
+		Array[File] inputGroupBamIndexes = inputGroupBamIndex
+
+		call test {
+			input:
+				inputGroupBams = inputGroupBams
+				inputGroupBamIndexes = inputGroupBamIndexes
+		}
+	}
 
 	call bamMergePreprocessing.bamMergePreprocessing {
 		input:
@@ -61,13 +76,13 @@ workflow link2 {
 	}
 
 	output {
-	    # bwaMem
-	    Array[File?] bwaMem_log = bwaMem.log
-	    Array[File?] bwaMem_cutAdaptAllLogs = bwaMem.cutAdaptAllLogs
+		# bwaMem
+		Array[File?] bwaMem_log = bwaMem.log
+		Array[File?] bwaMem_cutAdaptAllLogs = bwaMem.cutAdaptAllLogs
 
-	    # bamMergePreprocessing
-	    File? bamMergePreprocessing_recalibrationReport = bamMergePreprocessing.recalibrationReport
-	    File? bamMergePreprocessing_recalibrationTable = bamMergePreprocessing.recalibrationTable
+		# bamMergePreprocessing
+		File? bamMergePreprocessing_recalibrationReport = bamMergePreprocessing.recalibrationReport
+		File? bamMergePreprocessing_recalibrationTable = bamMergePreprocessing.recalibrationTable
 		Array[OutputGroup] outputGroups = bamMergePreprocessing.outputGroups 
 	}
 }
@@ -86,5 +101,21 @@ task linkBamAndBamIndex {
 	output {
 		File linkedBam = "~{basename(bam)}"
 		File linkedBamIndex = "~{basename(bamIndex)}"
+	}
+}
+
+task test {		# call once for each InputGroup in InputGroups
+	input {
+		Array[File] inputGroupBams
+		Array[File] inputGroupBamIndexes
+	}
+
+	command <<<
+		echo "length of bams: ~{length(inputGroupBams)}"
+		echo "length of bamIndexes: ~{length(inoutGroupBamIndexes)}"
+	>>>
+
+	output {
+		String result = read_string(stdout())
 	}
 }
