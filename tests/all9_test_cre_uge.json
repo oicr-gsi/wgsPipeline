@@ -92,7 +92,7 @@
   "all9.bamMergePreprocessing.preprocessBam_markDuplicatesAdditionalParams": "",
   "all9.bamMergePreprocessing.preprocessBam_splitNCigarReadsAdditionalParams": "",
   "all9.bamMergePreprocessing.preprocessBam_minMapQuality": 0,
-  "all9.callability.intervalFile": "/home/ubuntu/data/sample_data/callability/hg19_random.genome.sizes.bed",
+  "all9.callability.intervalFile": "/.mounts/labs/gsi/testdata/wgsPipeline/input_data/wgsPipeline_test_cre/S31285117_Covered.bed",
   "all9.callability.normalMinCoverage": 8,
   "all9.callability.tumorMinCoverage": 14,
   "all9.processedBamQC.bamQCMetrics_workflowVersion": "4.0.0_TEST",
