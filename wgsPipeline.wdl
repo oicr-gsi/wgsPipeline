@@ -1,14 +1,14 @@
 version 1.0
 
 # imports workflows for the top portion of WGSPipeline
-import "test_imports9/dockstore_bcl2fastq.wdl" as bcl2fastq
-import "test_imports9/dockstore_fastqc.wdl" as fastQC
-import "test_imports9/dockstore_bwaMem.wdl" as bwaMem
-import "test_imports9/dockstore_bamQC.wdl" as bamQC
-import "test_imports9/dockstore_bamMergePreprocessing.wdl" as bamMergePreprocessing 
-import "test_imports9/dockstore_callability.wdl" as callability 
-import "test_imports9/dockstore_insertSizeMetrics.wdl" as insertSizeMetrics
-import "test_imports9/dockstore_wgsMetrics.wdl" as wgsMetrics
+import "dockstore_imports/dockstore_bcl2fastq.wdl" as bcl2fastq
+import "dockstore_imports/dockstore_fastqc.wdl" as fastQC
+import "dockstore_imports/dockstore_bwaMem.wdl" as bwaMem
+import "dockstore_imports/dockstore_bamQC.wdl" as bamQC
+import "dockstore_imports/dockstore_bamMergePreprocessing.wdl" as bamMergePreprocessing 
+import "dockstore_imports/dockstore_callability.wdl" as callability 
+import "dockstore_imports/dockstore_insertSizeMetrics.wdl" as insertSizeMetrics
+import "dockstore_imports/dockstore_wgsMetrics.wdl" as wgsMetrics
 # import "" as sampleFingerprinting     # @@@ no WDL available
 
 # imports workflows for the bottom portion of WGSPipeline
@@ -44,7 +44,7 @@ struct FastqInput {
   Array[File] fastqs
 }
 
-workflow all9 {
+workflow wgsPipeline {
   input {
     Boolean doBcl2fastq = true
     Array[bcl2fastqMeta]? bcl2fastqMetas
