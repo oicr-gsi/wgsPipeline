@@ -1,4 +1,5 @@
 {
+  "link2.bamMergePreprocessing.doBqsr": false,
   "link2.fastqInputs": [
     {
       "name": "normal",
