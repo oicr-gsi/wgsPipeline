@@ -111,8 +111,8 @@ task test {		# call once for each InputGroup in InputGroups
 	}
 
 	command <<<
-		echo "length of bams: ~{length(inputGroupBams)}"
-		echo "length of bamIndexes: ~{length(inputGroupBamIndexes)}"
+		echo "length of bams: ~{inputGroupBams[0]}"
+		echo "length of bamIndexes: ~{inputGroupBamIndexes[0]}"
 	>>>
 
 	output {
