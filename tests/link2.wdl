@@ -65,7 +65,7 @@ workflow link2 {
 
 		call test {
 			input:
-				inputGroupBams = inputGroupBams
+				inputGroupBams = inputGroupBams,
 				inputGroupBamIndexes = inputGroupBamIndexes
 		}
 	}
