@@ -1,4 +1,0 @@
-{
-  "insertSizeMetrics.inputBam": "/home/ubuntu/data/sample_data/insertsizemetrics/PCSI_0090_Pa_P_PE_501_WG_526_170203_D00343_0160_ACACFLANXX_CCGTCC_L008_001.annotated.chr22.bam",
-  "insertSizeMetrics.outputFileNamePrefix": "PCSI_0090_Pa_P_PE_501_WG_526_170203_D00343_0160_ACACFLANXX_CCGTCC_L008_001"
-}

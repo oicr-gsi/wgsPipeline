@@ -1,24 +1,24 @@
 version 1.0
 
 # imports workflows for the top portion of WGSPipeline
-import "dockstore_imports/dockstore_bcl2fastq.wdl" as bcl2fastq
-import "dockstore_imports/dockstore_fastqc.wdl" as fastQC
-import "dockstore_imports/dockstore_bwaMem.wdl" as bwaMem
-import "dockstore_imports/dockstore_bamQC.wdl" as bamQC
-import "dockstore_imports/dockstore_bamMergePreprocessing.wdl" as bamMergePreprocessing 
-import "dockstore_imports/dockstore_callability.wdl" as callability 
-import "dockstore_imports/dockstore_insertSizeMetrics.wdl" as insertSizeMetrics
-import "dockstore_imports/dockstore_wgsMetrics.wdl" as wgsMetrics
+import "imports/bcl2fastq.wdl" as bcl2fastq
+import "imports/fastqc.wdl" as fastQC
+import "imports/bwaMem.wdl" as bwaMem
+import "imports/bamQC.wdl" as bamQC
+import "imports/bamMergePreprocessing.wdl" as bamMergePreprocessing 
+import "imports/callability.wdl" as callability 
+import "imports/insertSizeMetrics.wdl" as insertSizeMetrics
+import "imports/wgsMetrics.wdl" as wgsMetrics
 # import "" as sampleFingerprinting       # @@@ no WDL available
 
 # imports workflows for the bottom portion of WGSPipeline
-# import "imports/dockstore_sequenza.wdl" as sequenza
-# import "imports/dockstore_delly.wdl" as delly
+# import "imports/sequenza.wdl" as sequenza
+# import "imports/delly.wdl" as delly
 # import "" as mavis                      # @@@ qsub run not compatible with docker
-# import "imports/dockstore_haplotypecaller.wdl" as haplotypeCaller
+# import "imports/haplotypecaller.wdl" as haplotypeCaller
 # import "" as genotypegVCF               # @@@ no WDL available
-# import "imports/dockstore_variantEffectPredictor.wdl" as vep
-# import "imports/dockstore_mutect2GATK4.wdl" as mutect2
+# import "imports/variantEffectPredictor.wdl" as vep
+# import "imports/mutect2GATK4.wdl" as mutect2
 # import "" as janusMutationExtended      # @@@ no WDL available
 # import "" as janusCopyNumberAlteration  # @@@ no WDL available
 # import "" as janusFusion                # @@@ no WDL available
