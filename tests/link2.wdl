@@ -55,9 +55,10 @@ workflow link2 {
 
 	Array[InputGroup] inputGroups = inputGroup	# congregate results from first 4 workflows
 
+	InputGroups groups = object {inputGroups: inputGroups}
 	call test {
 		input:
-			groups = object { inputGroups }
+			groups = groups
 	}
 
 	call bamMergePreprocessing.bamMergePreprocessing {
