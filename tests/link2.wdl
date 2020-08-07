@@ -55,19 +55,9 @@ workflow link2 {
 
 	Array[InputGroup] inputGroups = inputGroup	# congregate results from first 4 workflows
 
-	scatter (group in inputGroups) {
-		scatter (bamAndBamIndexInput in group.bamAndBamIndexInputs) {
-			File inputGroupBam = bamAndBamIndexInput.bam
-			File inputGroupBamIndex = bamAndBamIndexInput.bamIndex
-		}
-		Array[File] inputGroupBams = inputGroupBam
-		Array[File] inputGroupBamIndexes = inputGroupBamIndex
-
-		call test {
-			input:
-				inputGroupBams = inputGroupBams,
-				inputGroupBamIndexes = inputGroupBamIndexes
-		}
+	call test {
+		input:
+			groups = object { inputGroups }
 	}
 
 	call bamMergePreprocessing.bamMergePreprocessing {
@@ -106,13 +96,11 @@ task linkBamAndBamIndex {
 
 task test {		# call once for each InputGroup in InputGroups
 	input {
-		Array[File] inputGroupBams
-		Array[File] inputGroupBamIndexes
+		InputGroups groups
 	}
 
 	command <<<
-		echo "length of bams: ~{inputGroupBams[0]}"
-		echo "length of bamIndexes: ~{inputGroupBamIndexes[0]}"
+		echo "~{write_json(groups)}"
 	>>>
 
 	output {
