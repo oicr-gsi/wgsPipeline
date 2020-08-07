@@ -112,7 +112,7 @@ task test {		# call once for each InputGroup in InputGroups
 
 	command <<<
 		echo "length of bams: ~{length(inputGroupBams)}"
-		echo "length of bamIndexes: ~{length(inoutGroupBamIndexes)}"
+		echo "length of bamIndexes: ~{length(inputGroupBamIndexes)}"
 	>>>
 
 	output {
