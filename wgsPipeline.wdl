@@ -1,35 +1,66 @@
 version 1.0
 
 # imports workflows for the top portion of WGSPipeline
-import "imports/dockstore_bcl2fastq.wdl" as bcl2fastq
-import "imports/dockstore_fastqc.wdl" as fastQC
-import "imports/dockstore_bwaMem.wdl" as bwaMem
-import "imports/dockstore_bamQC.wdl" as bamQC
-import "imports/dockstore_bamMergePreprocessing.wdl" as bamMergePreprocessing
-import "imports/dockstore_insertSizeMetrics.wdl" as insertSizeMetrics
-import "imports/dockstore_callability.wdl" as callability
-import "imports/dockstore_wgsMetrics.wdl" as wgsMetrics
-# import "" as sampleFingerprinting			    # @@@ no WDL available
+import "test_imports9/dockstore_bcl2fastq.wdl" as bcl2fastq
+import "test_imports9/dockstore_fastqc.wdl" as fastQC
+import "test_imports9/dockstore_bwaMem.wdl" as bwaMem
+import "test_imports9/dockstore_bamQC.wdl" as bamQC
+import "test_imports9/dockstore_bamMergePreprocessing.wdl" as bamMergePreprocessing 
+import "test_imports9/dockstore_callability.wdl" as callability 
+import "test_imports9/dockstore_insertSizeMetrics.wdl" as insertSizeMetrics
+import "test_imports9/dockstore_wgsMetrics.wdl" as wgsMetrics
+# import "" as sampleFingerprinting     # @@@ no WDL available
 
 # imports workflows for the bottom portion of WGSPipeline
 # import "imports/dockstore_sequenza.wdl" as sequenza
 # import "imports/dockstore_delly.wdl" as delly
-# import "" as mavis						            # @@@ qsub run not compatible with docker
+# import "" as mavis            # @@@ qsub run not compatible with docker
 # import "imports/dockstore_haplotypecaller.wdl" as haplotypeCaller
-# import "" as genotypegVCF					        # @@@ no WDL available
+# import "" as genotypegVCF         # @@@ no WDL available
 # import "imports/dockstore_variantEffectPredictor.wdl" as vep
 # import "imports/dockstore_mutect2GATK4.wdl" as mutect2
-# import "" as janusMutationExtended		    # @@@ no WDL available
-# import "" as janusCopyNumberAlteration	  # @@@ no WDL available
-# import "" as janusFusion					        # @@@ no WDL available
+# import "" as janusMutationExtended    # @@@ no WDL available
+# import "" as janusCopyNumberAlteration  # @@@ no WDL available
+# import "" as janusFusion        # @@@ no WDL available
 
-workflow wgsPipeline {
+struct bcl2fastqMeta {
+  Array[Sample]+ samples  # Sample: {Array[String]+, String}
+  Array[Int] lanes
+  String runDirectory
+}
+
+struct bwaMemMeta {
+  String readGroups
+  # possibly add more parameters here like outputFileNamePrefix
+}
+
+struct bamQCMeta {
+  Map[String, String] metadata
+  # possibly add more parameters here like outputFileNamePrefix
+}
+
+struct FastqInput {
+  String name
+  Array[File] fastqs
+}
+
+workflow all9 {
   input {
-    # universal inputs
+    Boolean doBcl2fastq = true
+    Array[bcl2fastqMeta]? bcl2fastqMetas
+    Array[FastqInput]? fastqInputs
+    Array[bwaMemMeta] bwaMemMetas
+    Array[bamQCMeta] rawBamQCMetas  
+    Array[bamQCMeta] processedBamQCMetas  
   }
 
   parameter_meta {
-    # parameter_metas, only for the universal inputs
+    skipBcl2fastq: "Whether to use fastqs or bcls"
+    bcl2fastqMetas: "Samples, lanes, and runDirectory for bcl2fastq"
+    fastqInputs: "Name and list of fastqs"
+    bwaMemMetas: "ReadGroups for bwaMemMeta"
+    rawBamQCMetas: "Metadata for the raw bamQC run"
+    processedBamQCMetas: "Metadata for the processed bamQC run"
   }
 
   meta {
@@ -61,151 +92,151 @@ workflow wgsPipeline {
     }
   }
 
-  call bcl2fastq.bcl2fastq {}
+  # scatter over [normal, tumor]
+  scatter (index in [0, 1]){
+    if (doBcl2fastq) {
+      bcl2fastqMeta bcl2fastqMeta = select_first([bcl2fastqMetas])[index]
+      call bcl2fastq.bcl2fastq {
+        input:
+          samples = bcl2fastqMeta.samples,
+          lanes = bcl2fastqMeta.lanes,
+          runDirectory = bcl2fastqMeta.runDirectory
+        }
+    }
 
-  call fastQC.fastQC {
-    input:
-    # Array[Output]+ bcl2fastq_fastqs
-      File fastqR1 
-      File? fastqR2
+    File fastqR1 = if doBcl2fastq then select_first([bcl2fastq.fastqs])[0].fastqs.left[0] else select_first([fastqInputs])[index].fastqs[0]
+    File fastqR2 = if doBcl2fastq then select_first([bcl2fastq.fastqs])[0].fastqs.left[1] else select_first([fastqInputs])[index].fastqs[1]
+    String name = if doBcl2fastq then select_first([bcl2fastq.fastqs])[0].name else select_first([fastqInputs])[index].name
+
+    call fastQC.fastQC {
+      input:
+        fastqR1 = fastqR1,   # File
+        fastqR2 = fastqR2    # File
+    }
+
+    bwaMemMeta bwaMemMeta = bwaMemMetas[index]
+    call bwaMem.bwaMem {
+      input:
+        fastqR1 = fastqR1,   # File
+        fastqR2 = fastqR2,   # File
+        readGroups = bwaMemMeta.readGroups   # String
+    }    
+
+    call linkBamAndBamIndex {
+      input:
+        bam = bwaMem.bwaMemBam,
+        bamIndex = bwaMem.bwaMemIndex
+    }
+
+    BamAndBamIndex bamAndBamIndex = object {
+      bam: linkBamAndBamIndex.linkedBam,
+      bamIndex: linkBamAndBamIndex.linkedBamIndex
+    }
+
+    InputGroup inputGroup = object {
+      outputIdentifier: name,
+      bamAndBamIndexInputs: [
+        bamAndBamIndex
+      ]
+    }
+
+    bamQCMeta rawBamQCMeta = rawBamQCMetas[index]
+    call bamQC.bamQC as rawBamQC {
+      input:
+        bamFile = bwaMem.bwaMemBam,          # File
+        metadata = rawBamQCMeta.metadata,    # Map[String, String]
+    }
   }
 
-  call bwaMem.bwaMem {
-    input:
-    # Array[Output]+ bcl2fastq_fastqs
-      File fastqR1
-      File fastqR2
-  }
-  call bamQC.bamQC as rawBamQC {
-    input:
-      File bamFile = bwaMem.bwaMemBam
-  }
+  Array[InputGroup] inputGroups = inputGroup # congregate results from first 4 workflows
 
   call bamMergePreprocessing.bamMergePreprocessing {
-    input:    
-    # "bamMergePreprocessing.inputGroups": [
-    #   {
-    #     "outputIdentifier": "PCSI0022",
-    #     "bamAndBamIndexInputs": [
-    #       {
-    #         "bam": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022C.val.bam",
-    #         "bamIndex": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022C.val.bam.bai"
-    #       },
-    #       {
-    #         "bam": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022P.val.bam",
-    #         "bamIndex": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022P.val.bam.bai"
-    #       },
-    #       {
-    #         "bam": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022R.val.bam",
-    #         "bamIndex": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022R.val.bai"
-    #       },
-    #       {
-    #         "bam": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022X.val.bam",
-    #         "bamIndex": "/home/ubuntu/data/sample_data/bammergepreprocessing/PCSI0022X.val.bam.bai"
-    #       }
-    #     ]
-    #   }
-    # ]
-      #File bwaMem_bwaMemBam = bwaMem.bwaMemBam
-      #File bwaMem_bwaMemIndex = bwaMem.bwaMemIndex
-      Array[InputGroup] inputGroups
-    # "bamMergePreprocessing.preprocessingBamRuntimeAttributes": [
-    #   {
-    #     "id": "chr1",
-    #     "memory": 21,
-    #     "timeout": 1
-    #   },
-    #   {
-    #     "id": "PCSI0022.chr2",
-    #     "memory": 21,
-    #     "timeout": 1
-    #   },
-    #   {
-    #     "id": "*",
-    #     "memory": 18,
-    #     "timeout": 1
-    #   }
-    # ]
-      Array[RuntimeAttributes] preprocessingBamRuntimeAttributes = []      
-  }
-
-  call bamQC.bamQC as processedBamQC {
     input:
-    # Array[OutputGroup] bamMergePreprocessing_outputGroups
-      File bamFile      
+      inputGroups = inputGroups
   }
-
-  call insertSizeMetrics.insertSizeMetrics {
-    input:
-    # Array[OutputGroup] bamMergePreprocessing_outputGroups
-      File inputBam      
-  }
-
+    
+  Array[OutputGroup] outputGroups = bamMergePreprocessing.outputGroups 
+  
   call callability.callability {
     input:
-    # Array[OutputGroup] bamMergePreprocessing_outputGroups
-      File normalBam
-      File normalBamIndex
-      File tumorBam
-      File tumorBamIndex
-      File intervalFile      
+      normalBam = outputGroups[0].bam,
+      normalBamIndex = outputGroups[0].bamIndex,
+      tumorBam = outputGroups[1].bam,
+      tumorBamIndex = outputGroups[1].bamIndex
   }
 
-  call wgsMetrics.wgsMetrics {
-    input:
-    # Array[OutputGroup] bamMergePreprocessing_outputGroups
-      File inputBam
+  # scatter over [normal, tumor]
+  scatter (index in [0, 1]){
+
+    OutputGroup outputGroup = outputGroups[index]
+
+    call insertSizeMetrics.insertSizeMetrics {
+      input:
+        inputBam = outputGroup.bam,
+        outputFileNamePrefix = outputGroup.outputIdentifier
+    }
+
+    call wgsMetrics.wgsMetrics {
+      input: 
+        inputBam = outputGroup.bam,
+        outputFileNamePrefix = outputGroup.outputIdentifier
+    }
+
+    bamQCMeta processedBamQCMeta = processedBamQCMetas[index]
+
+    call bamQC.bamQC as processedBamQC {
+      input:
+        bamFile = outputGroup.bam,
+        metadata = processedBamQCMeta.metadata  # Map[String, String]
+    }
   }
 
   output {
-    # bcl2fastq
-    # "bcl2fastq.fastqs": [{
-    #   "fastqs": {
-    #     "right": {
-    #       "read_count": "528"
-    #     },
-    #     "left": ["/home/ubuntu/repos/wgsPipeline/cromwell-executions/bcl2fastq/2d9c661c-5fdf-4b73-8ee6-a90c9af8598d/call-process/execution/test_sample_R1.fastq.gz", "/home/ubuntu/repos/wgsPipeline/cromwell-executions/bcl2fastq/2d9c661c-5fdf-4b73-8ee6-a90c9af8598d/call-process/execution/test_sample_R2.fastq.gz"]
-    #   },
-    #   "name": "test_sample"
-    # }]
-    # Array[Output]+ bcl2fastq_fastqs = bcl2fastq.fastqs
-
-    # fastQC FINAL OUTPUTS
-    File? fastQC_html_report_R1  = fastQC.html_report_R1
-    File? fastQC_zip_bundle_R1   = fastQC.zip_bundle_R1
-    File? fastQC_html_report_R2 = fastQC.html_report_R2
-    File? fastQC_zip_bundle_R2  = fastQC.zip_bundle_R2
-    
+    # fastQC
+    Array[File?] fastQC_html_report_R1  = fastQC.html_report_R1
+    Array[File?] fastQC_zip_bundle_R1   = fastQC.zip_bundle_R1
+    Array[File?] fastQC_html_report_R2 = fastQC.html_report_R2
+    Array[File?] fastQC_zip_bundle_R2  = fastQC.zip_bundle_R2
+  
     # bwaMem
-    #File bwaMem_bwaMemBam = bwaMem.bwaMemBam
-    # FINAL OUTPUTS
-    #File bwaMem_bwaMemIndex = bwaMem.bwaMemIndex
-    File? bwaMem_log = bwaMem.log
-    File? bwaMem_cutAdaptAllLogs = bwaMem.cutAdaptAllLogs
+    Array[File?] bwaMem_log = bwaMem.log
+    Array[File?] bwaMem_cutAdaptAllLogs = bwaMem.cutAdaptAllLogs
 
-    # bamQC FINAL OUTPUTS
-    File rawBamQC_result = rawBamQC.result
+    # bamQC
+    Array[File] rawBamQC_result = rawBamQC.result
 
     # bamMergePreprocessing
-    #OutputGroup outputGroup = { "outputIdentifier": o.outputIdentifier,
-    #                            "bam": select_first([mergeSplitByIntervalBams.mergedBam, o.bams[0]]),
-    #                            "bamIndex": select_first([mergeSplitByIntervalBams.mergedBamIndex, o.bamIndexes[0]])}
-    #Array[OutputGroup] bamMergePreprocessing_outputGroups = bamMergePreprocessing.outputGroup
-    # FINAL OUTPUTS
     File? bamMergePreprocessing_recalibrationReport = bamMergePreprocessing.recalibrationReport
     File? bamMergePreprocessing_recalibrationTable = bamMergePreprocessing.recalibrationTable
-    
-    # insertSizeMetrics FINAL OUTPUTS
-    File insertSizeMetrics_insertSizeMetrics = insertSizeMetrics.insertSizeMetrics
-    File insertSizeMetrics_histogramReport = insertSizeMetrics.histogramReport
 
-    # bamQC FINAL OUTPUTS
-    File processedBamQC_result = processedBamQC.result
-
-    # callability FINAL OUTPUTS
+    # callability
     File callability_callabilityMetrics = callability.callabilityMetrics
 
-    # wgsMetrics FINAL OUTPUTS
-    File wgsMetrics_outputWGSMetrics = wgsMetrics.outputWGSMetrics
+    # insertSizeMetrics
+    Array[File] insertSizeMetrics_insertSizeMetrics = insertSizeMetrics.insertSizeMetrics
+    Array[File] insertSizeMetrics_histogramReport = insertSizeMetrics.histogramReport
+
+    # wgsMetrics
+    Array[File] wgsMetrics_outputWGSMetrics = wgsMetrics.outputWGSMetrics
+
+    # bamQC
+    Array[File] processedBamQC_result = processedBamQC.result
+  }
+}
+
+task linkBamAndBamIndex {
+  input {
+    File bam
+    File bamIndex
+  }
+
+  command <<<
+    ln -s ~{bam} "~{basename(bam)}"
+    ln -s ~{bamIndex} "~{basename(bamIndex)}"
+  >>>
+
+  output {
+    File linkedBam = "~{basename(bam)}"
+    File linkedBamIndex = "~{basename(bamIndex)}"
   }
 }
