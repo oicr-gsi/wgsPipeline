@@ -9,19 +9,19 @@ import "dockstore_imports/dockstore_bamMergePreprocessing.wdl" as bamMergePrepro
 import "dockstore_imports/dockstore_callability.wdl" as callability 
 import "dockstore_imports/dockstore_insertSizeMetrics.wdl" as insertSizeMetrics
 import "dockstore_imports/dockstore_wgsMetrics.wdl" as wgsMetrics
-# import "" as sampleFingerprinting     # @@@ no WDL available
+# import "" as sampleFingerprinting       # @@@ no WDL available
 
 # imports workflows for the bottom portion of WGSPipeline
 # import "imports/dockstore_sequenza.wdl" as sequenza
 # import "imports/dockstore_delly.wdl" as delly
-# import "" as mavis            # @@@ qsub run not compatible with docker
+# import "" as mavis                      # @@@ qsub run not compatible with docker
 # import "imports/dockstore_haplotypecaller.wdl" as haplotypeCaller
-# import "" as genotypegVCF         # @@@ no WDL available
+# import "" as genotypegVCF               # @@@ no WDL available
 # import "imports/dockstore_variantEffectPredictor.wdl" as vep
 # import "imports/dockstore_mutect2GATK4.wdl" as mutect2
-# import "" as janusMutationExtended    # @@@ no WDL available
+# import "" as janusMutationExtended      # @@@ no WDL available
 # import "" as janusCopyNumberAlteration  # @@@ no WDL available
-# import "" as janusFusion        # @@@ no WDL available
+# import "" as janusFusion                # @@@ no WDL available
 
 struct bcl2fastqMeta {
   Array[Sample]+ samples  # Sample: {Array[String]+, String}
@@ -65,30 +65,85 @@ workflow wgsPipeline {
 
   meta {
     author: "Fenglin Chen"
+    email: "g3chen@oicr.on.ca"
     description: "Wrapper workflow for the WGS Analysis Pipeline"
-    dependencies: [{
-      name: "bcl2fastq",
-      url: "https://emea.support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software.html"
-    }
-    # ALL DEPENDENCIES
+    dependencies: [
+      {
+        name: "bcl2fastq",
+        url: "https://emea.support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software.html"
+      },
+      {
+        name: "fastqc/0.11.8",
+        url: "https://www.bioinformatics.babraham.ac.uk/projects/fastqc/"
+      },
+      {
+        name: "bwa/0.7.12",
+        url: "https://github.com/lh3/bwa/archive/0.7.12.tar.gz"
+      },
+      {
+        name: "samtools/1.9",
+        url: "https://github.com/samtools/samtools/archive/0.1.19.tar.gz"
+      },
+      {
+        name: "cutadapt/1.8.3",
+        url: "https://cutadapt.readthedocs.io/en/v1.8.3/"
+      },
+      {
+        name: "slicer/0.3.0",
+        url: "https://github.com/OpenGene/slicer/archive/v0.3.0.tar.gz"
+      },
+      {
+        name: "picard/2.21.2",
+        url: "https://broadinstitute.github.io/picard/command-line-overview.html"
+      },
+      {
+        name: "python/3.6",
+        url: "https://www.python.org/downloads/"
+      },
+      {
+        name: "bam-qc-metrics/0.2.5",
+        url: "https://github.com/oicr-gsi/bam-qc-metrics.git"
+      },
+      {
+        name: "mosdepth/0.2.9",
+        url: "https://github.com/brentp/mosdepth"
+      },
+      {
+        name: "gatk/4.1.6.0",
+        url: "https://gatk.broadinstitute.org"
+      },
+      {
+        name: "gatk/3.6-0",
+        url: "https://gatk.broadinstitute.org"
+      },
+      {
+       name: "python/3.7",
+       url: "https://www.python.org"
+      },
+      {
+        name: "bedtools/2.27",
+        url: "https://bedtools.readthedocs.io/en/latest/"
+      },
+      {
+        name: "rstats/3.6",
+        url: "https://www.r-project.org/"
+      }
     ]
     output_meta: {
-      # bcl2fastq
-
-      # fastQC
-
-      # bwaMem
-
-      # bamQC
-
-      # bamMergePreprocessing
-
-      # insertSizeMetrics
-
-      # callability
-
-      # wgsMetrics
-
+      fastQC_html_report_R1: "HTML report for the first mate fastq file.",
+      fastQC_zip_bundle_R1: "zipped report from FastQC for the first mate reads.",
+      fastQC_html_report_R2: "HTML report for read second mate fastq file.",
+      fastQC_zip_bundle_R2: "zipped report from FastQC for the second mate reads.",
+      bwaMem_log: "a summary log file for adapter trimming.",
+      bwaMem_cutAdaptAllLogs: "a file containing all logs for adapter trimming for each fastq chunk.",
+      rawBamQC_result: "JSON file of collated results.",
+      bamMergePreprocessing_recalibrationReport: "Recalibration report pdf (if BQSR enabled).",
+      bamMergePreprocessing_recalibrationTable: "Recalibration csv that was used by BQSR (if BQSR enabled).",
+      callability_callabilityMetrics: "Json file with pass, fail and callability percent (# of pass bases / # total bases).",
+      insertSizeMetrics_insertSizeMetrics: "Metrics about the insert size distribution (see https://broadinstitute.github.io/picard/picard-metric-definitions.html#InsertSizeMetrics).",
+      insertSizeMetrics_histogramReport: "Insert size distribution plot.",
+      wgsMetrics_outputWGSMetrics: "Metrics about the fractions of reads that pass base and mapping-quality filters as well as coverage (read-depth) levels (see https://broadinstitute.github.io/picard/picard-metric-definitions.html#CollectWgsMetrics.WgsMetrics).",
+      processedBamQC_result: "JSON file of collated results."
     }
   }
 
