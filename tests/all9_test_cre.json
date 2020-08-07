@@ -9,15 +9,15 @@
     {
       "name": "normal",
       "fastqs": [
-        "/home/ubuntu/data/sample_data/bwa/PCSI0022C.val.1.fastq.gz",
-        "/home/ubuntu/data/sample_data/bwa/PCSI0022C.val.2.fastq.gz"
+        "/home/ubuntu/data/sample_data/wgspipeline/fastqs_cre/SWID_15949654_CRE_0002_Pb_R_PE_409_WG_200124_A00469_0077_BHNGLTDSXX_GAGACGAT-TAACCGGT_L002_001.annotated.subset_R1.fastq.gz",
+        "/home/ubuntu/data/sample_data/wgspipeline/fastqs_cre/SWID_15949654_CRE_0002_Pb_R_PE_409_WG_200124_A00469_0077_BHNGLTDSXX_GAGACGAT-TAACCGGT_L002_001.annotated.subset_R2.fastq.gz"
       ]
     },
     {
       "name": "tumor",
       "fastqs": [
-        "/home/ubuntu/data/sample_data/bwa/PCSI0022C.val.1.fastq.gz",
-        "/home/ubuntu/data/sample_data/bwa/PCSI0022C.val.2.fastq.gz"
+        "/home/ubuntu/data/sample_data/wgspipeline/fastqs_cre/SWID_15949654_CRE_0002_Pb_R_PE_409_WG_200124_A00469_0077_BHNGLTDSXX_GAGACGAT-TAACCGGT_L002_001.annotated.subset_R1.fastq.gz",
+        "/home/ubuntu/data/sample_data/wgspipeline/fastqs_cre/SWID_15949654_CRE_0002_Pb_R_PE_409_WG_200124_A00469_0077_BHNGLTDSXX_GAGACGAT-TAACCGGT_L002_001.annotated.subset_R2.fastq.gz"
       ]
     }
   ],
@@ -28,10 +28,10 @@
   "all9.bwaMem.runBwaMem_bwaRef": "$HG19_BWA_INDEX_ROOT/hg19_random.fa",
   "all9.bwaMemMetas": [
     {
-      "readGroups": "'@RG\\tID:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tLB:PCSI0022C\\tPL:ILLUMINA\\tPU:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tSM:PCSI0022C'"
+      "readGroups": "'@RG\\tID:200124_A00469_0077_BHNGLTDSXX-GAGACGAT-TAACCGGT_2\\tLB:CRE_0002_Pb_R_PE_409_WG\\tPL:ILLUMINA\\tPU:200124_A00469_0077_BHNGLTDSXX-GAGACGAT-TAACCGGT_2\\tSM:CRE_0002_Pb_R'"
     },
     {
-      "readGroups": "'@RG\\tID:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tLB:PCSI0022C\\tPL:ILLUMINA\\tPU:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tSM:PCSI0022C'"
+      "readGroups": "'@RG\\tID:200124_A00469_0077_BHNGLTDSXX-GAGACGAT-TAACCGGT_2\\tLB:CRE_0002_Pb_R_PE_409_WG\\tPL:ILLUMINA\\tPU:200124_A00469_0077_BHNGLTDSXX-GAGACGAT-TAACCGGT_2\\tSM:CRE_0002_Pb_R'"
     }
   ],
   "all9.rawBamQC.bamQCMetrics_workflowVersion": "4.0.0_TEST",
@@ -58,7 +58,6 @@
   	  }
   	}
   ],
-  "all9.bamMergePreprocessing.doBqsr": false,
   "all9.bamMergePreprocessing.intervalsToParallelizeByString": "chr1,chr2",
   "all9.bamMergePreprocessing.reference": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19_random.fa",
   "all9.bamMergePreprocessing.realignerTargetCreator_knownIndels": [

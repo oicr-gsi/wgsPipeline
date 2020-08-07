@@ -68,6 +68,7 @@
   	  }
   	}
   ],
+  "all9.bamMergePreprocessing.doBqsr": false,
   "all9.bamMergePreprocessing.intervalsToParallelizeByString": "chr1,chr2",
   "all9.bamMergePreprocessing.reference": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19_random.fa",
   "all9.bamMergePreprocessing.realignerTargetCreator_knownIndels": [
