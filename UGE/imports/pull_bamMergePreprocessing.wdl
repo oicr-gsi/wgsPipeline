@@ -1066,7 +1066,6 @@ task analyzeCovariates {
     cores: "The number of cores to allocate to the job."
     timeout: "Maximum amount of time (in hours) the task can run for."
     modules: "Environment module name and version to load (space separated) before command execution."
-    outputFileName: "The output file name."
   }
 }
 
