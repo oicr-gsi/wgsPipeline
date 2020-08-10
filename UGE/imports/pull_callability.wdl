@@ -115,8 +115,10 @@ task calculateCallability {
   PASS="$(bedtools intersect -a normal.callable -b tumor.callable -wao | awk '{sum+=$9} END{print sum}')"
   TOTAL="$(zcat -f ~{intervalFile} | awk -F'\t' 'BEGIN{SUM=0}{SUM+=$3-$2} END{print SUM}')"
 
-  echo "~{PASS}"
-  echo "~{TOTAL}"
+  echo PASS
+  echo $PASS
+  echo TOTAL
+  echo $TOTAL
 
   python3 <<CODE
   total_count = int(float("${TOTAL}"))
