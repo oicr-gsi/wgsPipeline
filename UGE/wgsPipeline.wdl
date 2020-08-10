@@ -55,7 +55,7 @@ workflow wgsPipeline {
   }
 
   parameter_meta {
-    skipBcl2fastq: "Whether to use fastqs or bcls"
+    doBcl2fastq: "Whether to use fastqs or bcls"
     bcl2fastqMetas: "Samples, lanes, and runDirectory for bcl2fastq"
     fastqInputs: "Name and list of fastqs"
     bwaMemMetas: "ReadGroups for bwaMemMeta"
