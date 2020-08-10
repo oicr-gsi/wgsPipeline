@@ -115,6 +115,9 @@ task calculateCallability {
   PASS="$(bedtools intersect -a normal.callable -b tumor.callable -wao | awk '{sum+=$9} END{print sum}')"
   TOTAL="$(zcat -f ~{intervalFile} | awk -F'\t' 'BEGIN{SUM=0}{SUM+=$3-$2} END{print SUM}')"
 
+  echo "~{PASS}"
+  echo "~{TOTAL}"
+
   python3 <<CODE
   total_count = int(float("${TOTAL}"))
   pass_count = int(float("${PASS}"))
@@ -130,6 +133,8 @@ task calculateCallability {
 
   output {
     File callabilityMetrics = outputFileName
+
+    String out = read_string(stdout())
   }
 
   runtime {
