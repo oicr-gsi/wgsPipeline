@@ -14,9 +14,6 @@ find . -type f -name "*.zip" | sed 's/.*\.//' | sort | uniq -c
 find . -type f -name "*output.txt" -exec sh -c "wc -l {}" \;
 find . -type f -name "*output.log" -exec sh -c "wc -l {}" \;
 
-# bamMergePreprocessing
-find . -type f -name "*gatk.recalibration*" -exec sh -c "wc -l {}" \;
-
 # bamQC
 module load jq
 module load python/3.6
