@@ -166,7 +166,8 @@ workflow wgsPipeline {
     call fastQC.fastQC {
       input:
         fastqR1 = fastqR1,   # File
-        fastqR2 = fastqR2    # File
+        fastqR2 = fastqR2,   # File
+        outputFileNamePrefix = "~{index}_fastqc_"
     }
 
     bwaMemMeta bwaMemMeta = bwaMemMetas[index]
@@ -174,7 +175,8 @@ workflow wgsPipeline {
       input:
         fastqR1 = fastqR1,   # File
         fastqR2 = fastqR2,   # File
-        readGroups = bwaMemMeta.readGroups   # String
+        readGroups = bwaMemMeta.readGroups,   # String
+        outputFileNamePrefix = "~{index}_output"
     }    
 
     call linkBamAndBamIndex {
@@ -200,6 +202,7 @@ workflow wgsPipeline {
       input:
         bamFile = bwaMem.bwaMemBam,          # File
         metadata = rawBamQCMeta.metadata,    # Map[String, String]
+        outputFileNamePrefix = "~{index}_rawBamQC"
     }
   }
 
@@ -228,13 +231,13 @@ workflow wgsPipeline {
     call insertSizeMetrics.insertSizeMetrics {
       input:
         inputBam = outputGroup.bam,
-        outputFileNamePrefix = outputGroup.outputIdentifier
+        outputFileNamePrefix = "~{index}_" + outputGroup.outputIdentifier
     }
 
     call wgsMetrics.wgsMetrics {
       input: 
         inputBam = outputGroup.bam,
-        outputFileNamePrefix = outputGroup.outputIdentifier
+        outputFileNamePrefix = "~{index}_" + outputGroup.outputIdentifier
     }
 
     bamQCMeta processedBamQCMeta = processedBamQCMetas[index]
@@ -242,7 +245,8 @@ workflow wgsPipeline {
     call bamQC.bamQC as processedBamQC {
       input:
         bamFile = outputGroup.bam,
-        metadata = processedBamQCMeta.metadata  # Map[String, String]
+        metadata = processedBamQCMeta.metadata,  # Map[String, String]
+        outputFileNamePrefix = "~{index}_processedBamQC"
     }
   }
 
@@ -279,6 +283,7 @@ workflow wgsPipeline {
   }
 }
 
+# provisions both files to the same directory
 task linkBamAndBamIndex {
   input {
     File bam
