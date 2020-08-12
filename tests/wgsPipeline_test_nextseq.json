@@ -6,7 +6,7 @@
   "wgsPipeline.bcl2fastq.process_ignoreMissingFilter": true,
   "wgsPipeline.bcl2fastq.process_ignoreMissingPositions": true,
   "wgsPipeline.bcl2fastqMetas": [
-  	{
+    {
       "samples": [
         {
           "barcodes": [
@@ -49,24 +49,24 @@
   "wgsPipeline.rawBamQC.bamQCMetrics_refFasta": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19_random.fa",
   "wgsPipeline.rawBamQC.bamQCMetrics_refSizesBed": "/data_modules/gsi/modulator/sw/data/hg19-p13/hg19.chrom.sizes.bed",
   "wgsPipeline.rawBamQCMetas": [
-  	{
+    {
       "metadata": {
-    	"donor": "Xenomorph",
-    	"group id": "Weyland-Yutani",
-    	"library design": "WY-1001",
-    	"tissue origin": "LV-426",
-    	"tissue type": "Claw fragment"
-  	  }
-  	},
-  	{
-	    "metadata": {
-    	"donor": "Xenomorph",
-    	"group id": "Weyland-Yutani",
-    	"library design": "WY-1001",
-    	"tissue origin": "LV-426",
-    	"tissue type": "Claw fragment"
-  	  }
-  	}
+        "donor": "Xenomorph",
+        "group id": "Weyland-Yutani",
+        "library design": "WY-1001",
+        "tissue origin": "LV-426",
+        "tissue type": "Claw fragment"
+      }
+    },
+    {
+        "metadata": {
+        "donor": "Xenomorph",
+        "group id": "Weyland-Yutani",
+        "library design": "WY-1001",
+        "tissue origin": "LV-426",
+        "tissue type": "Claw fragment"
+      }
+    }
   ],
   "wgsPipeline.bamMergePreprocessing.doBqsr": false,
   "wgsPipeline.bamMergePreprocessing.intervalsToParallelizeByString": "chr1,chr2",
