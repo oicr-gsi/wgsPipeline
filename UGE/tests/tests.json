@@ -155,10 +155,13 @@
             {
               "samples": [
                 {
+                  "acceptableUmiList": null,
                   "barcodes": [
                     "ATCACGAC-ACTTAGCA"
                   ],
-                  "name": "Normal"
+                  "inlineUmi": false,
+                  "name": "normal",
+                  "patterns": null
                 }
               ],
               "lanes": [1],
@@ -167,10 +170,13 @@
             {
               "samples": [
                 {
+                  "acceptableUmiList": null,
                   "barcodes": [
                     "ATCACGAC-ACTTAGCA"
                   ],
-                  "name": "Tumor"
+                  "inlineUmi": false,
+                  "name": "tumor",
+                  "patterns": null
                 }
               ],
               "lanes": [1],

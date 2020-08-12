@@ -159,8 +159,8 @@ workflow wgsPipeline {
         }
     }
 
-    File fastqR1 = if doBcl2fastq then select_first([bcl2fastq.fastqs])[0].fastqs.left[0] else select_first([fastqInputs])[index].fastqs[0]
-    File fastqR2 = if doBcl2fastq then select_first([bcl2fastq.fastqs])[0].fastqs.left[1] else select_first([fastqInputs])[index].fastqs[1]
+    File fastqR1 = if doBcl2fastq then select_first([bcl2fastq.fastqs])[0].fastqs.left else select_first([fastqInputs])[index].fastqs[0]
+    File fastqR2 = if doBcl2fastq then select_first([bcl2fastq.fastqs])[1].fastqs.left else select_first([fastqInputs])[index].fastqs[1]
     String name = if doBcl2fastq then select_first([bcl2fastq.fastqs])[0].name else select_first([fastqInputs])[index].name
 
     call fastQC.fastQC {
