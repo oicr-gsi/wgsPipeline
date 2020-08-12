@@ -19,7 +19,7 @@
         "wdl_inputs": {
           "wgsPipeline.doBcl2fastq": false,
           "wgsPipeline.bcl2fastq.mismatches": 1,
-          "wgsPipeline.bcl2fastq.modules": "bcl2fastq/2.20.0.422 bcl2fastq-jail/3.0.0",
+          "wgsPipeline.bcl2fastq.modules": "bcl2fastq/2.20.0.422 bcl2fastq-jail/3.1.2",
           "wgsPipeline.bcl2fastq.process_ignoreMissingBcls": true,
           "wgsPipeline.bcl2fastq.process_ignoreMissingFilter": true,
           "wgsPipeline.bcl2fastq.process_ignoreMissingPositions": true,
@@ -147,7 +147,7 @@
         "wdl_inputs": {
           "wgsPipeline.doBcl2fastq": true,
           "wgsPipeline.bcl2fastq.mismatches": 1,
-          "wgsPipeline.bcl2fastq.modules": "bcl2fastq/2.20.0.422 bcl2fastq-jail/3.0.0",
+          "wgsPipeline.bcl2fastq.modules": "bcl2fastq/2.20.0.422 bcl2fastq-jail/3.1.2",
           "wgsPipeline.bcl2fastq.process_ignoreMissingBcls": true,
           "wgsPipeline.bcl2fastq.process_ignoreMissingFilter": true,
           "wgsPipeline.bcl2fastq.process_ignoreMissingPositions": true,
@@ -286,7 +286,7 @@
         "wdl_inputs": {
           "wgsPipeline.doBcl2fastq": false,
           "wgsPipeline.bcl2fastq.mismatches": 1,
-          "wgsPipeline.bcl2fastq.modules": "bcl2fastq/2.20.0.422 bcl2fastq-jail/3.0.0",
+          "wgsPipeline.bcl2fastq.modules": "bcl2fastq/2.20.0.422 bcl2fastq-jail/3.1.2",
           "wgsPipeline.bcl2fastq.process_ignoreMissingBcls": true,
           "wgsPipeline.bcl2fastq.process_ignoreMissingFilter": true,
           "wgsPipeline.bcl2fastq.process_ignoreMissingPositions": true,
