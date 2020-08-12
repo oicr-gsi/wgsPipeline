@@ -3,6 +3,9 @@ version 1.0
 struct Sample {
     Array[String]+ barcodes
     String name
+    Boolean inlineUmi
+    String? acceptableUmiList
+    Map[String,String]? patterns
 }
 
 struct SampleList {
@@ -11,7 +14,7 @@ struct SampleList {
 
 struct Output {
     String name
-    Pair[Array[File]+,Map[String,String]] fastqs
+    Pair[File,Map[String,String]] fastqs
 }
 
 struct Outputs {
@@ -20,15 +23,6 @@ struct Outputs {
 
 workflow bcl2fastq {
   input {
-    Int process_threads = 8
-    String process_temporaryDirectory = "."
-    Int process_memory = 32
-    Boolean process_ignoreMissingPositions = false
-    Boolean process_ignoreMissingFilter = false
-    Boolean process_ignoreMissingBcls = false
-    String process_extraOptions = ""
-    String process_bcl2fastqJail = "bcl2fastq-jail"
-    String process_bcl2fastq = "bcl2fastq"
     String? basesMask
     Array[Int]+ lanes
     Int mismatches
@@ -38,15 +32,6 @@ workflow bcl2fastq {
     Int timeout = 40
   }
   parameter_meta {
-      process_threads: "The number of processing threads to use when running BCL2FASTQ"
-      process_temporaryDirectory: "A directory where bcl2fastq can dump massive amounts of garbage while running."
-      process_memory: "The memory for the BCL2FASTQ process in GB."
-      process_ignoreMissingPositions: "Flag passed to bcl2fastq, allows missing or corrupt positions files."
-      process_ignoreMissingFilter: "Flag passed to bcl2fastq, allows missing or corrupt filter files."
-      process_ignoreMissingBcls: "Flag passed to bcl2fastq, allows missing bcl files."
-      process_extraOptions: "Any other options that will be passed directly to bcl2fastq."
-      process_bcl2fastqJail: "The name ro path of the BCL2FASTQ wrapper script executable."
-      process_bcl2fastq: "The name or path of the BCL2FASTQ executable."
     basesMask: "An Illumina bases mask string to use. If absent, the one written by the instrument will be used."
     lanes: "The lane numbers to process from this run"
     mismatches: "Number of mismatches to allow in the barcodes (usually, 1)"
@@ -68,15 +53,6 @@ workflow bcl2fastq {
   }
   call process {
     input:
-      threads = process_threads,
-      temporaryDirectory = process_temporaryDirectory,
-      memory = process_memory,
-      ignoreMissingPositions = process_ignoreMissingPositions,
-      ignoreMissingFilter = process_ignoreMissingFilter,
-      ignoreMissingBcls = process_ignoreMissingBcls,
-      extraOptions = process_extraOptions,
-      bcl2fastqJail = process_bcl2fastqJail,
-      bcl2fastq = process_bcl2fastq,
       basesMask = basesMask,
       lanes = lanes,
       mismatches  = mismatches,
@@ -146,6 +122,7 @@ task process {
       --processing-threads ~{threads} \
       --runfolder-dir "~{runDirectory}" \
       --tiles "^(s_)?[~{sep="" lanes}]_" \
+      --interop-dir "~{temporaryDirectory}" \
       ~{if ignoreMissingBcls then "--ignore-missing-bcls" else ""} \
       ~{if ignoreMissingFilter then "--ignore-missing-filter" else ""} \
       ~{if ignoreMissingPositions then "--ignore-missing-positions" else ""} \
