@@ -1,0 +1,33 @@
+{
+  "defaults": {
+    "description": "InsertSizeMetrics workflow test",
+    "metrics_calculate": "calculate.sh",
+    "metrics_compare": "compare.sh",
+    "output_metrics_dir": "/.mounts/labs/gsi/testdata/insertSizeMetrics/output_metrics/",
+    "parameters": {
+      "wdl_options": {
+        "write_to_cache": false,
+        "read_from_cache": false
+      }
+    }
+  },
+  "tests": [
+    {
+      "id": "test_01_basic",
+      "parameters": {
+        "wdl_inputs": {
+          "insertSizeMetrics.inputBam": "/.mounts/labs/gsi/testdata/insertSizeMetrics/input_data/PCSI_0090_Pa_P_PE_501_WG_526_170203_D00343_0160_ACACFLANXX_CCGTCC_L008_001.annotated.chr22.bam",
+          "insertSizeMetrics.outputFileNamePrefix": "PCSI_0090_Pa_P_PE_501_WG_526_170203_D00343_0160_ACACFLANXX_CCGTCC_L008_001"
+        }
+      }
+    },
+    {
+      "id": "no_output_prefix",
+      "parameters": {
+        "wdl_inputs": {
+          "insertSizeMetrics.inputBam": "/.mounts/labs/gsi/testdata/insertSizeMetrics/input_data/PCSI_0090_Pa_P_PE_501_WG_526_170203_D00343_0160_ACACFLANXX_CCGTCC_L008_001.annotated.chr22.bam"
+        }
+      }
+    }
+  ]
+}
